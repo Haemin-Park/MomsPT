@@ -12,8 +12,8 @@ abstract class BaseActivity<B : ViewDataBinding, VM : BaseViewModel>(@LayoutRes 
     protected lateinit var binding: B
     protected abstract val viewModel: VM
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layoutResId)
         binding.lifecycleOwner = this
     }
