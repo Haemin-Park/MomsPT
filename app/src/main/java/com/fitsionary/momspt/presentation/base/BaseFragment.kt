@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 
 abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutResId: Int) :
     Fragment() {
-    private lateinit var binding: B
+    protected lateinit var binding: B
     protected abstract val viewModel: VM
 
     override fun onCreateView(
