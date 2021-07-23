@@ -4,10 +4,12 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.fitsionary.momspt.util.listener.OnItemClickListener
 
 abstract class BaseRecyclerView<B : ViewDataBinding, T : Any>(
     @LayoutRes private val layoutResId: Int,
-    private val bindingVariableId: Int? = null
+    private val bindingVariableItemId: Int? = null,
+    private val bindingVariableListenerId: Int? = null
 ) : RecyclerView.Adapter<BaseViewHolder<B, T>>() {
     private val items = mutableListOf<T>()
 
@@ -20,17 +22,22 @@ abstract class BaseRecyclerView<B : ViewDataBinding, T : Any>(
         }
     }
 
+    var onItemClickListener = object : OnItemClickListener<T> {
+        override fun onClick(item: T) {}
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         object : BaseViewHolder<B, T>(
             layoutResId = layoutResId,
             parent = parent,
-            bindingVariableId = bindingVariableId
+            bindingVariableItemId = bindingVariableItemId,
+            bindingVariableListenerId = bindingVariableListenerId
         ) {}
 
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: BaseViewHolder<B, T>, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], onItemClickListener)
     }
 }
 
