@@ -10,7 +10,7 @@ import com.fitsionary.momspt.presentation.daily.view.DailyFragment
 import com.fitsionary.momspt.presentation.home.view.HomeFragment
 import com.fitsionary.momspt.presentation.main.viewmodel.MainViewModel
 import com.fitsionary.momspt.presentation.mypage.view.MyPageFragment
-import com.fitsionary.momspt.presentation.training.view.TrainingFragment
+import com.fitsionary.momspt.presentation.workout.view.WorkoutFragment
 
 class MainActivity :
     BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
@@ -24,7 +24,7 @@ class MainActivity :
         binding.bottomNavigationMain.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.main_home -> bottomNavigationReplaceFragment(HomeFragment())
-                R.id.main_trainig -> bottomNavigationReplaceFragment(TrainingFragment())
+                R.id.main_trainig -> bottomNavigationReplaceFragment(WorkoutFragment())
                 R.id.main_daily -> bottomNavigationReplaceFragment(DailyFragment())
                 R.id.main_mypage -> bottomNavigationReplaceFragment(MyPageFragment())
                 else -> false
