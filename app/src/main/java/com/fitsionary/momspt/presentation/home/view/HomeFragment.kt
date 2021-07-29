@@ -7,7 +7,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.BR
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.data.api.response.RoutineItem
+import com.fitsionary.momspt.data.api.response.WorkoutItem
 import com.fitsionary.momspt.databinding.FragmentHomeBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.base.BaseRecyclerView
@@ -30,9 +30,9 @@ class HomeFragment :
             currentActivity = activity as MainActivity
     }
 
-    private val routineAdapter = object : BaseRecyclerView<FragmentHomeBinding, RoutineItem>(
-        layoutResId = R.layout.item_routine,
-        bindingVariableItemId = BR.RoutineItem,
+    private val routineAdapter = object : BaseRecyclerView<FragmentHomeBinding, WorkoutItem>(
+        layoutResId = R.layout.item_home_fragment_workout,
+        bindingVariableItemId = BR.WorkoutItem,
         bindingVariableListenerId = BR.Listener
     ) {}
 
@@ -40,11 +40,11 @@ class HomeFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.run {
             vm = viewModel
-            rvRoutine.adapter = routineAdapter
+            rvRecommendWorkout.adapter = routineAdapter
         }
 
-        routineAdapter.onItemClickListener = object : OnItemClickListener<RoutineItem> {
-            override fun onClick(item: RoutineItem) {
+        routineAdapter.onItemClickListener = object : OnItemClickListener<WorkoutItem> {
+            override fun onClick(item: WorkoutItem) {
                 val intent = Intent(currentActivity, WorkoutStartActivity::class.java)
                 startActivity(intent)
             }

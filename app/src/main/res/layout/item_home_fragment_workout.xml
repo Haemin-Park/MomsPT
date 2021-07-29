@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="RoutineItem"
-            type="com.fitsionary.momspt.data.api.response.RoutineItem" />
+            name="WorkoutItem"
+            type="com.fitsionary.momspt.data.api.response.WorkoutItem" />
 
         <variable
             name="Listener"
@@ -19,7 +19,7 @@
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:onClick="@{()->Listener.onClick(RoutineItem)}">
+        android:onClick="@{()->Listener.onClick(WorkoutItem)}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:singleLine="true"
-                android:text="@{RoutineItem.name}"
+                android:text="@{WorkoutItem.name}"
                 android:textColor="@color/black"
                 tool:text="선명하고 탄탄한 복근 만들기" />
 
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@{String.valueOf(RoutineItem.time)}"
+                    android:text="@{String.valueOf(WorkoutItem.time)}"
                     android:textColor="@color/dark_gray"
                     tool:text="13" />
 
@@ -94,7 +94,7 @@
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(RoutineItem.kcal)}"
+                    android:text="@{String.valueOf(WorkoutItem.kcal)}"
                     android:textColor="@color/dark_gray"
                     tool:text="47" />
 
@@ -114,7 +114,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/custom_checkbox"
             android:button="@null"
-            android:checked="@{RoutineItem.finish}"
+            android:checked="@{WorkoutItem.finish}"
             android:clickable="false"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
