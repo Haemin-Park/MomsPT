@@ -1,9 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="vm"
+            type="com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            style="@style/bold_60sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="D+27"
+            android:textColor="@color/pink" />
+
+        <TextView
+            style="@style/medium_14sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="근력 회복 운동을 집중적으로 해야하는 시기에요."
+            android:textColor="@color/dark_gray" />
+
+        <TextView
+            style="@style/bold_18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/noto_sans_bold"
+            android:text="@string/daily_recommended_workout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_workout"
+            replaceAll="@{vm.workoutList}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
 </layout>
