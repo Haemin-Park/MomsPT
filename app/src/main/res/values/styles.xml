@@ -29,6 +29,13 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="bold_100sp">
+        <item name="android:fontFamily">@font/noto_sans_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">100sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <style name="bold_60sp">
         <item name="android:fontFamily">@font/noto_sans_bold</item>
         <item name="android:textColor">@color/black</item>
