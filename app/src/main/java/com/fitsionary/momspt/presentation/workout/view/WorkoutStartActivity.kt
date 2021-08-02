@@ -84,7 +84,7 @@ class WorkoutStartActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mediaUrl = getString(R.string.ex_video_1)
+        mediaUrl = getString(R.string.ex_video_3)
         binding.vm = viewModel
 //        viewModel.timerCountDown.observe(this, Observer {
 //            if (this::poseLandmarks.isInitialized) {
@@ -312,12 +312,12 @@ class WorkoutStartActivity :
                     if (!isEnd) {
                         if (player!!.playWhenReady) {
                             player!!.playWhenReady = false
-                            viewModel.timerStop()
+                            viewModel.countDownTimerStop()
                             dlg.btn_control.setImageResource(R.drawable.exo_controls_play)
 
                         } else {
                             player!!.playWhenReady = true
-                            viewModel.timerStart()
+                            viewModel.countDownTimerStart()
                             dlg.btn_control.setImageResource(R.drawable.exo_controls_pause)
                         }
                     }
@@ -332,10 +332,10 @@ class WorkoutStartActivity :
                 if (player!!.playWhenReady && state == Player.STATE_READY) {
                     // media actually playing
                     if (isFirst) {
-                        viewModel.timerSet(player!!.contentDuration)
+                        viewModel.countDownTimerSet(player!!.contentDuration)
                         isFirst = false
                     }
-                    viewModel.timerStart()
+                    viewModel.countDownTimerStart()
                 } else if (player!!.playWhenReady) {
                     // might be idle (plays after prepare()),
                     // buffering (plays when data available)
@@ -348,11 +348,11 @@ class WorkoutStartActivity :
                         startActivity(intent)
                         finish()
                     } else {
-                        viewModel.timerStop()
+                        viewModel.countDownTimerStop()
                     }
                 } else {
                     // player paused in any state
-                    viewModel.timerStop()
+                    viewModel.countDownTimerStop()
                 }
             }
         })
