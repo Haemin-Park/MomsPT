@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.fitsionary.momspt">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-feature
+        android:glEsVersion="0x00030000"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.ar"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +25,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MomsPT">
+        android:theme="@style/Theme.MomsPT"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".presentation.main.view.MainActivity"
             android:screenOrientation="portrait">
@@ -23,7 +38,24 @@
         </activity>
         <activity
             android:name=".presentation.workout.view.WorkoutStartActivity"
-            android:screenOrientation="landscape" />
-    </application>
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
+        <activity
+            android:name=".presentation.workout.view.WorkoutResultActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
+        <activity
+            android:name=".presentation.analysis.view.AnalysisActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MomsPT" />
+        <activity
+            android:name=".presentation.analysis.view.AnalysisResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MomsPT" />
 
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="required" />
+
+    </application>
 </manifest>

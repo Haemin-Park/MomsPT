@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/button3"
+            style="@style/bold_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="체형분석"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/button1"
+            style="@style/bold_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AR 1번 방식"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/button2"
+            style="@style/bold_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AR 2번 방식"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
 </layout>
