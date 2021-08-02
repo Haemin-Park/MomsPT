@@ -81,6 +81,20 @@ class AnalysisActivity :
                 Toast.makeText(this, "$path 영상 저장이 완료되었습니다.", Toast.LENGTH_LONG).show()
             }
         })
+
+        viewModel.resultUrl.observe(this, {
+            it.getContentIfNotHandled()?.let { url ->
+                val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
+                val intentUri: Uri =
+                    Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
+                        .appendQueryParameter("file", url)
+                        .appendQueryParameter("mode", "ar_preferred")
+                        .build()
+                sceneViewerIntent.data = intentUri
+                sceneViewerIntent.setPackage("com.google.ar.core")
+                startActivity(sceneViewerIntent)
+            }
+        })
     }
 
     override fun onResume() {
