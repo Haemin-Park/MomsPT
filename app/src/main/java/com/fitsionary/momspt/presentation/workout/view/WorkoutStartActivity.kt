@@ -6,18 +6,19 @@ import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.ActivityWorkoutStartBinding
 import com.fitsionary.momspt.presentation.base.BaseActivity
+import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutStartViewModel
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
-import kotlinx.android.synthetic.main.dialog_player_control.*
 
 class WorkoutStartActivity :
     BaseActivity<ActivityWorkoutStartBinding, WorkoutStartViewModel>(R.layout.activity_workout_start) {
     override val viewModel: WorkoutStartViewModel by lazy {
         ViewModelProvider(this).get(WorkoutStartViewModel::class.java)
     }
+    lateinit var playerControlDialogFragment: PlayerControlDialogFragment
     var isFirst = true
     var isEnd = false
 
@@ -307,22 +308,26 @@ class WorkoutStartActivity :
             controllerAutoShow = false
             useController = false
             videoSurfaceView?.setOnClickListener {
-                val dlg = PlayerControlDialog(this@WorkoutStartActivity)
-                dlg.setOnClickedListener {
+                playerControlDialogFragment =
+                    PlayerControlDialogFragment.newInstance(player!!.playWhenReady)
+                playerControlDialogFragment.setOnClickedListener {
                     if (!isEnd) {
                         if (player!!.playWhenReady) {
                             player!!.playWhenReady = false
                             viewModel.countDownTimerStop()
-                            dlg.btn_control.setImageResource(R.drawable.exo_controls_play)
+                            playerControlDialogFragment.setState(isPlaying = false)
 
                         } else {
                             player!!.playWhenReady = true
                             viewModel.countDownTimerStart()
-                            dlg.btn_control.setImageResource(R.drawable.exo_controls_pause)
+                            playerControlDialogFragment.setState(isPlaying = true)
                         }
                     }
                 }
-                dlg.start()
+                playerControlDialogFragment.show(
+                    supportFragmentManager,
+                    PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
+                )
             }
         }
 
