@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.S3_URL
+import com.fitsionary.momspt.data.Landmark
 import com.fitsionary.momspt.data.api.request.Pose
 import com.fitsionary.momspt.data.api.request.Position
 import com.fitsionary.momspt.data.enum.PoseEnum
@@ -32,6 +33,7 @@ import com.google.mediapipe.framework.Packet
 import com.google.mediapipe.framework.PacketGetter
 import com.google.mediapipe.glutil.EglManager
 import com.google.protobuf.InvalidProtocolBufferException
+import org.json.JSONObject
 import kotlin.properties.Delegates
 
 open class WorkoutStartActivity :
@@ -39,6 +41,8 @@ open class WorkoutStartActivity :
     override val viewModel: WorkoutStartViewModel by lazy {
         ViewModelProvider(this).get(WorkoutStartViewModel::class.java)
     }
+    val landmarksList = ArrayList<ArrayList<Landmark>>()
+
     private lateinit var playerControlDialogFragment: PlayerControlDialogFragment
     var isFirst = true
     var isEnd = false
@@ -46,8 +50,9 @@ open class WorkoutStartActivity :
     private lateinit var mediaUrl: String
 
     companion object {
-        private const val TAG = "MainActivity"
+        private val TAG = WorkoutStartActivity::class.java.simpleName
         const val WORKOUT_NAME = "WORKOUT_NAME"
+        const val JSON_NAME = "tabata.json"
 
         private const val OUTPUT_LANDMARKS_STREAM_NAME = "pose_landmarks"
 
@@ -109,8 +114,11 @@ open class WorkoutStartActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        readJson()
 
         mediaUrl = S3_URL + "/" + intent.getStringExtra(WORKOUT_NAME) + ".mp4"
+        //mediaUrl = getString(R.string.ex_video_1)
+
         binding.vm = viewModel
         viewModel.timerCountDown.observe(this, {
 //            if (this::poseLandmarks.isInitialized) {
@@ -425,5 +433,33 @@ open class WorkoutStartActivity :
             )
         }
         return poseList
+    }
+
+    private fun readJson() {
+        landmarksList.clear()
+
+        val assetManager = resources.assets
+        val inputStream = assetManager.open(JSON_NAME)
+        val jsonString = inputStream.bufferedReader().use { it.readText() }
+        val jObject = JSONObject(jsonString)
+        val jArray = jObject.getJSONArray("posedata")
+
+        for (i in 0 until jArray.length()) {
+            val obj = jArray.getJSONObject(i)
+            val landmarks = obj.getJSONArray("landmarks")
+            val landmarkList = ArrayList<Landmark>()
+            landmarkList.clear()
+            for (j in 0 until landmarks.length()) {
+                val landmark = landmarks.getJSONObject(j)
+                val part = landmark.getString("part")
+                val x = landmark.getDouble("x")
+                val y = landmark.getDouble("y")
+                val z = landmark.getDouble("z")
+                val visibility = landmark.getDouble("visibility")
+                landmarkList.add(Landmark(part, x, y, z, visibility))
+            }
+            landmarksList.add(landmarkList)
+        }
+        Log.i(TAG, landmarksList[0][0].part + " " + landmarksList[0][0].x + " " + landmarksList[1675][0].x)
     }
 }
