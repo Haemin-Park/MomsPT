@@ -3,14 +3,12 @@ package com.fitsionary.momspt.presentation.daily.view
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.FragmentDailyBinding
 import com.fitsionary.momspt.presentation.analysis.view.AnalysisActivity
-import com.fitsionary.momspt.presentation.analysis.view.AnalysisResultActivity
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.daily.viewmodel.DailyViewModel
 import com.fitsionary.momspt.presentation.main.view.MainActivity
@@ -30,23 +28,7 @@ class DailyFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button1.setOnClickListener {
-            val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-            val intentUri: Uri = Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
-                .appendQueryParameter(
-                    "file",
-                    "https://d29r6pfiojlanv.cloudfront.net/fbx_output.glb"
-                )
-                .appendQueryParameter("mode", "ar_preferred")
-                .build()
-            sceneViewerIntent.data = intentUri
-            sceneViewerIntent.setPackage("com.google.ar.core")
-            startActivity(sceneViewerIntent)
-        }
-        binding.button2.setOnClickListener {
-            startActivity(Intent(currentActivity, AnalysisResultActivity::class.java))
-        }
-        binding.button3.setOnClickListener {
+        binding.btnTestAnalysis.setOnClickListener {
             startActivity(Intent(currentActivity, AnalysisActivity::class.java))
         }
     }
