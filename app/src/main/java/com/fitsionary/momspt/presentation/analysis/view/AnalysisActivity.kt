@@ -1,16 +1,14 @@
 package com.fitsionary.momspt.presentation.analysis.view
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.media.MediaScannerConnection
 import android.opengl.GLSurfaceView
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.daasuu.camerarecorder.CameraRecorder
 import com.daasuu.camerarecorder.CameraRecorderBuilder
@@ -18,11 +16,16 @@ import com.daasuu.camerarecorder.LensFacing
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.ActivityAnalysisBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel
+import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.COUNT_DOWN_TIMER_END
+import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.COUNT_UP_TIMER_END
+import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.RESULT_URL
+import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.START_ANALYSIS_RESULT_ACTIVITY
 import com.fitsionary.momspt.presentation.base.BaseActivity
+import com.fitsionary.momspt.util.DateUtil
 import com.fitsionary.momspt.util.rx.ui
+import com.tbruyelle.rxpermissions3.RxPermissions
 import io.reactivex.rxjava3.kotlin.addTo
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AnalysisActivity :
@@ -32,115 +35,171 @@ class AnalysisActivity :
     }
     private var cameraRecorder: CameraRecorder? = null
     private var sampleGLView: GLSurfaceView? = null
-    lateinit var path: String
+    lateinit var parentFile: File
+    lateinit var defaultFileName: String
+    lateinit var videoPath: String
+    lateinit var rxPermissions: RxPermissions
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding.vm = viewModel
 
-        binding.btnStart.setOnClickListener {
-            path = getVideoFilePath()
-            viewModel.countDownTimerStart()
-            binding.tvCountDownTimer.visibility = View.VISIBLE
-            binding.btnStart.visibility = View.GONE
-            binding.btnStop.visibility = View.VISIBLE
-        }
-        binding.btnUpload.setOnClickListener {
-            val file = File(path)
-            viewModel.sendVideo(file)
-            binding.btnUpload.visibility = View.GONE
-        }
-        binding.btnTestUpload.setOnClickListener {
-            val test = getAndroidMoviesFolder().absolutePath
-                .toString() + "/202107_29-230444cameraRecorder.mp4"
-            viewModel.sendVideo(File(test))
-        }
+        rxPermissions = RxPermissions(this)
+        rxPermissions
+            .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            .subscribe { granted ->
+                if (granted) {
+                    parentFile = getParentFile(this)!!
 
-        viewModel.isLoading
-            .observeOn(ui())
-            .subscribe { if (it) showLoading() else hideLoading() }
-            .addTo(compositeDisposable)
+                    binding.btnStart.setOnClickListener {
+                        defaultFileName = makeFileName()
+                        videoPath = getVideoFilePath()
+                        viewModel.countDownTimerStart()
+                        binding.tvCountDownTimer.visibility = View.VISIBLE
+                        binding.btnStart.visibility = View.INVISIBLE
+                    }
 
-        viewModel.timerCountDownEnd.observe(this, {
-            it.getContentIfNotHandled()?.let {
-                binding.tvCountDownTimer.visibility = View.INVISIBLE
-                binding.tvIntroduce.visibility = View.GONE
-                binding.tvCountUpTimer.visibility = View.VISIBLE
-                viewModel.countUpTimerStart()
-                cameraRecorder?.start(path)
+                    binding.btnUpload.setOnClickListener {
+                        val file = File(videoPath)
+                        viewModel.sendVideo(file)
+                        binding.btnUpload.visibility = View.INVISIBLE
+                    }
+
+                    binding.btnTestUpload.setOnClickListener {
+                        val test = "/storage/emulated/0/Movies/test.mp4"
+                        viewModel.sendVideo(File(test))
+                    }
+
+                    binding.btnTestResult.setOnClickListener {
+                        defaultFileName = "test"
+                        downloadResult("https://github.com/Haemin-Park/test/raw/main/standing.glb")
+                    }
+
+                    viewModel.isLoading
+                        .observeOn(ui())
+                        .subscribe { if (it) showLoading() else hideLoading() }
+                        .addTo(compositeDisposable)
+
+                    viewModel.event.observe(this, {
+                        it.getContentIfNotHandled()?.let { event ->
+                            when (event.first) {
+                                COUNT_DOWN_TIMER_END -> {
+                                    isRecording(true)
+                                    viewModel.countUpTimerStart()
+                                    cameraRecorder?.start(videoPath)
+                                }
+                                COUNT_UP_TIMER_END -> {
+                                    isRecording(false)
+                                    cameraRecorder?.stop()
+                                    exportMp4(this, videoPath)
+                                }
+                                RESULT_URL -> {
+                                    downloadResult(event.second)
+                                }
+                                START_ANALYSIS_RESULT_ACTIVITY -> {
+                                    startAnalysisResultActivity(event.second)
+                                }
+                            }
+                        }
+                    })
+                } else {
+                    showToast("접근 권한이 부여되지 않으면 서비스를 이용하실 수 없습니다.")
+                }
             }
-        })
-
-        viewModel.timerCountUpEnd.observe(this, {
-            it.getContentIfNotHandled()?.let {
-                cameraRecorder?.stop()
-                exportMp4ToGallery(this, path)
-                binding.tvCountUpTimer.visibility = View.GONE
-                binding.btnStart.visibility = View.VISIBLE
-                binding.btnStop.visibility = View.GONE
-                binding.btnUpload.visibility = View.VISIBLE
-                Toast.makeText(this, "$path 영상 저장이 완료되었습니다.", Toast.LENGTH_LONG).show()
-            }
-        })
-
-        viewModel.resultUrl.observe(this, {
-            it.getContentIfNotHandled()?.let { url ->
-                val sceneViewerIntent = Intent(Intent.ACTION_VIEW)
-                val intentUri: Uri =
-                    Uri.parse("https://arvr.google.com/scene-viewer/1.0").buildUpon()
-                        .appendQueryParameter("file", url)
-                        .appendQueryParameter("mode", "ar_preferred")
-                        .build()
-                sceneViewerIntent.data = intentUri
-                sceneViewerIntent.setPackage("com.google.ar.core")
-                startActivity(sceneViewerIntent)
-            }
-        })
     }
 
     override fun onResume() {
         super.onResume()
-        sampleGLView = GLSurfaceView(applicationContext)
-        binding.wrapView.addView(sampleGLView)
+        if (rxPermissions.isGranted(Manifest.permission.CAMERA)) {
+            sampleGLView = GLSurfaceView(applicationContext)
+            binding.wrapView.addView(sampleGLView)
 
-        cameraRecorder = CameraRecorderBuilder(this, sampleGLView)
-            .lensFacing(LensFacing.FRONT)
-            .build()
+            cameraRecorder = CameraRecorderBuilder(this, sampleGLView)
+                .lensFacing(LensFacing.FRONT)
+                .build()
+        }
     }
 
     override fun onPause() {
         super.onPause()
+        if (rxPermissions.isGranted(Manifest.permission.CAMERA)) {
+            cameraRecorder?.stop()
+            cameraRecorder?.release()
+            cameraRecorder = null
 
-        cameraRecorder?.stop()
-        cameraRecorder?.release()
-        cameraRecorder = null
-
-        binding.wrapView.removeView(sampleGLView)
-        sampleGLView = null
+            binding.wrapView.removeView(sampleGLView)
+            sampleGLView = null
+        }
     }
 
-    private fun exportMp4ToGallery(context: Context, filePath: String) {
+    private fun exportMp4(context: Context, filePath: String) {
         val values = ContentValues(2)
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-        values.put(MediaStore.Video.Media.DATA, filePath)
+        values.put(MediaStore.Video.Media.DATE_ADDED, filePath)
         context.contentResolver.insert(
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
             values
         )
-        context.sendBroadcast(
-            Intent(
-                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                Uri.parse("file://$filePath")
+        MediaScannerConnection.scanFile(
+            context, arrayOf(File(filePath).toString()),
+            null, null
+        )
+        if (File(filePath).exists()) {
+            showToast("영상 촬영이 완료되었습니다.")
+        }
+    }
+
+    private fun makeFileName() = DateUtil.getDateFormat()
+
+    private fun getVideoFilePath(): String {
+        return parentFile.absolutePath + "/" + defaultFileName + ".mp4"
+    }
+
+    private fun downloadResult(url: String) {
+        val resultFileName = "$defaultFileName.glb"
+        val resultFilePath = parentFile.absolutePath + "/" + resultFileName
+
+        val file = File(resultFilePath)
+        if (!file.exists()) {
+            viewModel.downloadResult(url, resultFileName, parentFile)
+        } else {
+            startAnalysisResultActivity(resultFilePath)
+            finish()
+        }
+    }
+
+    private fun startAnalysisResultActivity(path: String) {
+        startActivity(
+            Intent(this@AnalysisActivity, AnalysisResultActivity::class.java).putExtra(
+                PATH,
+                path
             )
         )
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun getVideoFilePath(): String {
-        return getAndroidMoviesFolder().absolutePath
-            .toString() + "/" + SimpleDateFormat("yyyyMM_dd-HHmmss").format(Date()) + "cameraRecorder.mp4"
+    private fun getParentFile(context: Context): File? {
+        return context.externalCacheDir!!
     }
 
-    private fun getAndroidMoviesFolder(): File {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
+    private fun isRecording(status: Boolean) {
+        if (status) {
+            binding.ivRecord.visibility = View.VISIBLE
+            binding.tvCountDownTimer.visibility = View.INVISIBLE
+            binding.cardIntroduce.visibility = View.INVISIBLE
+            binding.tvCountUpTimer.visibility = View.VISIBLE
+
+        } else {
+            binding.ivRecord.visibility = View.INVISIBLE
+            binding.tvCountUpTimer.visibility = View.INVISIBLE
+            binding.cardIntroduce.visibility = View.VISIBLE
+            binding.btnStart.visibility = View.VISIBLE
+            binding.btnUpload.visibility = View.VISIBLE
+        }
+    }
+
+    companion object {
+        private val TAG = AnalysisActivity::class.simpleName
+        const val PATH = "PATH"
     }
 }

@@ -9,6 +9,11 @@ import com.fitsionary.momspt.presentation.base.BaseViewModel
 import com.fitsionary.momspt.util.Event
 import com.fitsionary.momspt.util.FormDataUtil
 import com.fitsionary.momspt.util.rx.applyNetworkScheduler
+import com.liulishuo.okdownload.DownloadListener
+import com.liulishuo.okdownload.DownloadTask
+import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo
+import com.liulishuo.okdownload.core.cause.EndCause
+import com.liulishuo.okdownload.core.cause.ResumeFailedCause
 import java.io.File
 import java.util.*
 
@@ -16,21 +21,15 @@ class AnalysisViewModel : BaseViewModel() {
 
     private val _timerCountDown = MutableLiveData<Int>()
     private val _timerCountUp = MutableLiveData<Int>()
-    private val _timerCountDownEnd = MutableLiveData<Event<Boolean>>()
-    private val _timerCountUpEnd = MutableLiveData<Event<Boolean>>()
-    private val _resultUrl = MutableLiveData<Event<String>>()
+    private val _event = MutableLiveData<Event<Pair<String, String>>>()
     private lateinit var timer: Timer
 
     val timerCountDown: LiveData<Int>
         get() = _timerCountDown
     val timerCountUp: LiveData<Int>
         get() = _timerCountUp
-    val timerCountDownEnd: LiveData<Event<Boolean>>
-        get() = _timerCountDownEnd
-    val timerCountUpEnd: LiveData<Event<Boolean>>
-        get() = _timerCountUpEnd
-    val resultUrl: LiveData<Event<String>>
-        get() = _resultUrl
+    val event: LiveData<Event<Pair<String, String>>>
+        get() = _event
 
     fun countDownTimerStart() {
         _timerCountDown.value = 5
@@ -39,7 +38,7 @@ class AnalysisViewModel : BaseViewModel() {
             override fun run() {
                 if (_timerCountDown.value!! == 0) {
                     timer.cancel()
-                    _timerCountDownEnd.postValue(Event(true))
+                    _event.postValue(Event(Pair(COUNT_DOWN_TIMER_END, "SUCCESS")))
                 }
                 _timerCountDown.postValue(_timerCountDown.value!! - 1)
             }
@@ -53,7 +52,7 @@ class AnalysisViewModel : BaseViewModel() {
             override fun run() {
                 if (_timerCountUp.value!! == 10) {
                     timer.cancel()
-                    _timerCountUpEnd.postValue(Event(true))
+                    _event.postValue(Event(Pair(COUNT_UP_TIMER_END, "SUCCESS")))
                 }
                 _timerCountUp.postValue(_timerCountUp.value!! + 1)
             }
@@ -62,14 +61,14 @@ class AnalysisViewModel : BaseViewModel() {
 
     fun sendVideo(file: File) {
         addDisposable(
-            NetworkService.api.sendVideo(
+            NetworkService.api2.sendVideo(
                 FormDataUtil.getVideoBody("file", file)
             ).applyNetworkScheduler()
                 .doOnSubscribe { isLoading.onNext(true) }
                 .doAfterTerminate { isLoading.onNext(false) }
                 .subscribe({
                     Log.d(TAG, it.toString())
-                    _resultUrl.value = Event(BASE_URL2 + it)
+                    _event.value = Event(Pair(RESULT_URL, BASE_URL2 + it))
 
                 }, {
                     Log.i(TAG, it.message!!)
@@ -77,7 +76,86 @@ class AnalysisViewModel : BaseViewModel() {
         )
     }
 
+    fun downloadResult(url: String, fileName: String, parentFile: File) {
+        val task = DownloadTask.Builder(url, parentFile)
+            .setFilename(fileName)
+            .build()
+
+        val listener: DownloadListener = object : DownloadListener {
+            override fun taskStart(task: DownloadTask) {
+                isLoading.onNext(true)
+            }
+
+            override fun connectTrialStart(
+                task: DownloadTask,
+                requestHeaderFields: MutableMap<String, MutableList<String>>
+            ) {
+            }
+
+            override fun connectTrialEnd(
+                task: DownloadTask,
+                responseCode: Int,
+                responseHeaderFields: MutableMap<String, MutableList<String>>
+            ) {
+            }
+
+            override fun downloadFromBeginning(
+                task: DownloadTask,
+                info: BreakpointInfo,
+                cause: ResumeFailedCause
+            ) {
+            }
+
+            override fun downloadFromBreakpoint(task: DownloadTask, info: BreakpointInfo) {
+            }
+
+            override fun connectStart(
+                task: DownloadTask,
+                blockIndex: Int,
+                requestHeaderFields: MutableMap<String, MutableList<String>>
+            ) {
+            }
+
+            override fun connectEnd(
+                task: DownloadTask,
+                blockIndex: Int,
+                responseCode: Int,
+                responseHeaderFields: MutableMap<String, MutableList<String>>
+            ) {
+            }
+
+            override fun fetchStart(task: DownloadTask, blockIndex: Int, contentLength: Long) {
+            }
+
+            override fun fetchProgress(
+                task: DownloadTask,
+                blockIndex: Int,
+                increaseBytes: Long
+            ) {
+            }
+
+            override fun fetchEnd(task: DownloadTask, blockIndex: Int, contentLength: Long) {
+            }
+
+            override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
+                isLoading.onNext(false)
+                _event.value =
+                    Event(
+                        Pair(
+                            START_ANALYSIS_RESULT_ACTIVITY,
+                            parentFile.absolutePath + "/" + fileName
+                        )
+                    )
+            }
+        }
+        task.enqueue(listener)
+    }
+
     companion object {
         private val TAG = AnalysisViewModel::class.simpleName
+        const val COUNT_DOWN_TIMER_END = "COUNT_DOWN_TIMER_END"
+        const val COUNT_UP_TIMER_END = "COUNT_UP_TIMER_END"
+        const val RESULT_URL = "RESULT_URL"
+        const val START_ANALYSIS_RESULT_ACTIVITY = "START_ANALYSIS_RESULT_ACTIVITY"
     }
 }

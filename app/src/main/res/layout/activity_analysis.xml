@@ -19,31 +19,50 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/tv_introduce"
-            style="@style/bold_30sp"
+        <ImageView
+            android:id="@+id/iv_record"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_rec"
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_introduce"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#99000000"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="녹화버튼을 클릭 후 5초 후에 녹화가 진행됩니다.\n 10초 동안 천천히 한바퀴를 돌아주세요."
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/tv_count_down_timer"
+            android:layout_marginTop="50dp"
+            app:cardBackgroundColor="#99000000"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/bold_18sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="녹화버튼을 클릭 후 5초 후에 녹화가 진행됩니다.\n 10초 동안 천천히 한바퀴를 돌아주세요."
+                android:textColor="@color/white" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_count_up_timer"
             style="@style/bold_100sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#99000000"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:padding="10dp"
             android:text="@{String.valueOf(vm.timerCountUp)}"
-            android:textColor="@color/white"
+            android:textColor="#99000000"
             android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -66,13 +85,25 @@
 
         <Button
             android:id="@+id/btn_test_upload"
-            style="@style/bold_20sp"
+            style="@style/medium_14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="테스트 영상 전송"
+            android:layout_marginStart="10dp"
+            android:text="데모 영상"
             android:textColor="@color/white"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/btn_test_result"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/btn_test_result"
+            style="@style/medium_14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="데모 결과"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
             android:id="@+id/btn_upload"
@@ -82,27 +113,18 @@
             android:text="영상 전송"
             android:textColor="@color/white"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <ImageButton
             android:id="@+id/btn_start"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginBottom="40dp"
-            android:background="@drawable/ic_baseline_fiber_manual_record_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <ImageButton
-            android:id="@+id/btn_stop"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginBottom="40dp"
-            android:background="@drawable/ic_baseline_stop_circle_24"
-            android:clickable="false"
-            android:visibility="gone"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_record"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
