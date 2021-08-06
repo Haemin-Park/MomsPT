@@ -9,7 +9,7 @@ import com.fitsionary.momspt.R
 fun setImageFromImageUrl(imageView: ImageView, imageUrl: String) {
     Glide.with(imageView.context)
         .load(imageUrl)
-        .placeholder(R.drawable.ic_baseline_image_24)
+        .placeholder(R.drawable.placeholder)
         .into(imageView)
 }
 
@@ -17,6 +17,6 @@ fun setImageFromImageUrl(imageView: ImageView, imageUrl: String) {
 fun setImageFromResource(imageView: ImageView, resource: Int) {
     Glide.with(imageView.context)
         .load(resource)
-        .placeholder(R.drawable.ic_baseline_image_24)
+        .placeholder(R.drawable.placeholder)
         .into(imageView)
 }
