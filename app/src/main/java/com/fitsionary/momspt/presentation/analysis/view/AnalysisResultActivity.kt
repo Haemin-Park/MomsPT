@@ -1,132 +1,155 @@
 package com.fitsionary.momspt.presentation.analysis.view
 
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.MotionEvent
-import android.view.View
+import android.util.Log
+import android.view.Choreographer
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.ActivityAnalysisResultBinding
+import com.fitsionary.momspt.presentation.analysis.view.AnalysisActivity.Companion.PATH
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisResultViewModel
 import com.fitsionary.momspt.presentation.base.BaseActivity
-import com.google.ar.core.Anchor
-import com.google.ar.core.exceptions.CameraNotAvailableException
-import com.google.ar.sceneform.AnchorNode
-import com.google.ar.sceneform.HitTestResult
-import com.google.ar.sceneform.assets.RenderableSource
-import com.google.ar.sceneform.rendering.ModelRenderable
-import com.google.ar.sceneform.ux.FootprintSelectionVisualizer
-import com.google.ar.sceneform.ux.TransformableNode
-import com.google.ar.sceneform.ux.TransformationSystem
-import kotlinx.android.synthetic.main.activity_analysis_result.*
-import java.util.concurrent.CompletionException
+import com.google.android.filament.Engine
+import com.google.android.filament.Fence
+import com.google.android.filament.Skybox
+import com.google.android.filament.utils.*
+import org.apache.commons.io.FileUtils
+import java.io.File
+import java.nio.Buffer
+import java.nio.ByteBuffer
 
-
-open class AnalysisResultActivity
-    : BaseActivity<ActivityAnalysisResultBinding, AnalysisResultViewModel>(R.layout.activity_analysis_result) {
+class AnalysisResultActivity
+    :
+    BaseActivity<ActivityAnalysisResultBinding, AnalysisResultViewModel>(R.layout.activity_analysis_result) {
     override val viewModel: AnalysisResultViewModel by lazy {
         ViewModelProvider(this).get(AnalysisResultViewModel::class.java)
     }
-    private var remoteModelUrl =
-        "https://poly.googleusercontent.com/downloads/0BnDT3T1wTE/85QOHCZOvov/Mesh_Beagle.gltf"
 
+    companion object {
+        init {
+            Utils.init()
+        }
+
+        private val kDefaultObjectPosition = Float3(0.0f, 0.0f, -300.0f)
+        private val TAG = AnalysisResultActivity::class.simpleName
+    }
+
+    private lateinit var choreographer: Choreographer
+    private val frameScheduler = FrameCallback()
+    private lateinit var modelViewer: ModelViewer
+    private var loadStartTime = 0L
+    private var loadStartFence: Fence? = null
+
+    private lateinit var engine: Engine
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        renderRemoteObject()
-    }
 
-    private fun renderRemoteObject() {
+        choreographer = Choreographer.getInstance()
 
-        skuProgressBar.visibility = View.VISIBLE
-        ModelRenderable.builder()
-            .setSource(
-                this, RenderableSource.Builder().setSource(
-                    this,
-                    Uri.parse(remoteModelUrl),
-                    RenderableSource.SourceType.GLTF2
-                ).setScale(0.01f)
-                    .setRecenterMode(RenderableSource.RecenterMode.CENTER)
-                    .build()
+        engine = Engine.create()
+        val cameraManipulator = Manipulator.Builder()
+            .targetPosition(
+                kDefaultObjectPosition.x,
+                kDefaultObjectPosition.y,
+                kDefaultObjectPosition.z
             )
-            .setRegistryId(remoteModelUrl)
-            .build()
-            .thenAccept { modelRenderable: ModelRenderable ->
-                skuProgressBar.visibility = View.GONE
-                addNodeToScene(modelRenderable)
-            }
-            .exceptionally { throwable: Throwable? ->
-                var message: String?
-                message = if (throwable is CompletionException) {
-                    skuProgressBar.setVisibility(View.GONE)
-                    "Internet is not working"
-                } else {
-                    skuProgressBar.setVisibility(View.GONE)
-                    "Can't load Model"
-                }
-                val mainHandler = Handler(Looper.getMainLooper())
-                val finalMessage: String = message
-                val myRunnable = Runnable {
-                    AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage(finalMessage + "")
-                        .setPositiveButton("Retry") { dialogInterface: DialogInterface, _: Int ->
-                            renderRemoteObject()
-                            dialogInterface.dismiss()
-                        }
-                        .setNegativeButton("Cancel") { dialogInterface, _ -> dialogInterface.dismiss() }
-                        .show()
-                }
-                mainHandler.post(myRunnable)
-                null
-            }
-    }
+            .viewport(binding.surface.width, binding.surface.height)
+            .build(Manipulator.Mode.ORBIT)
+        modelViewer = ModelViewer(binding.surface, engine, cameraManipulator)
 
-    override fun onPause() {
-        super.onPause()
-        sceneView.pause()
-    }
+        binding.surface.setOnTouchListener(modelViewer)
 
-    private fun addNodeToScene(model: ModelRenderable) {
-        if (sceneView != null) {
-            val transformationSystem = makeTransformationSystem()
-            val dragTransformableNode = DragTransformableNode(1f, transformationSystem)
-            dragTransformableNode.renderable = model
-            sceneView.scene.addChild(dragTransformableNode)
-            dragTransformableNode.select()
-            sceneView.scene
-                .addOnPeekTouchListener { hitTestResult: HitTestResult?, motionEvent: MotionEvent? ->
-                    transformationSystem.onTouch(
-                        hitTestResult,
-                        motionEvent
-                    )
-                }
+        val path = intent.getStringExtra(PATH)
+        if (path != null) {
+            val byte = FileUtils.readFileToByteArray(File(path))
+            val buffer = ByteBuffer.wrap(byte)
+
+            createModel(buffer)
+            createIndirectLight()
+        } else {
+            showToast("모델을 로드할 수 없습니다.")
+        }
+
+        modelViewer.view.apply {
+            dynamicResolutionOptions = dynamicResolutionOptions.apply {
+                enabled = true
+            }
+            ambientOcclusionOptions = ambientOcclusionOptions.apply {
+                enabled = true
+            }
+            bloomOptions = bloomOptions.apply {
+                enabled = true
+            }
         }
     }
 
-    private fun makeTransformationSystem(): TransformationSystem {
-        val footprintSelectionVisualizer = FootprintSelectionVisualizer()
-        return TransformationSystem(resources.displayMetrics, footprintSelectionVisualizer)
+    private fun createModel(buffer: Buffer) {
+        modelViewer.loadModelGlb(buffer)
+        modelViewer.transformToUnitCube(kDefaultObjectPosition)
+    }
+
+    private fun createIndirectLight() {
+        val scene = modelViewer.scene
+        val ibl = "default_env"
+        readCompressedAsset("env/$ibl/${ibl}_ibl.ktx").let {
+            scene.indirectLight = KtxLoader.createIndirectLight(engine, it)
+            scene.indirectLight!!.intensity = 50_00.0f
+        }
+        scene.skybox = Skybox.Builder().build(engine)
+        scene.skybox!!.setColor(0.0f, 0.0f, 0.0f, 0.0f)
+    }
+
+    private fun readCompressedAsset(assetName: String): ByteBuffer {
+        val input = assets.open(assetName)
+        val bytes = ByteArray(input.available())
+        input.read(bytes)
+        return ByteBuffer.wrap(bytes)
     }
 
     override fun onResume() {
         super.onResume()
-        try {
-            sceneView.resume()
-        } catch (e: CameraNotAvailableException) {
-            e.printStackTrace()
-        }
+        choreographer.postFrameCallback(frameScheduler)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        choreographer.removeFrameCallback(frameScheduler)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        try {
-            sceneView.destroy()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        choreographer.removeFrameCallback(frameScheduler)
+        modelViewer.destroyModel()
+
+    }
+
+    inner class FrameCallback : Choreographer.FrameCallback {
+        private val startTime = System.nanoTime()
+        override fun doFrame(frameTimeNanos: Long) {
+            choreographer.postFrameCallback(this)
+
+            loadStartFence?.let {
+                if (it.wait(Fence.Mode.FLUSH, 0) == Fence.FenceStatus.CONDITION_SATISFIED) {
+                    val end = System.nanoTime()
+                    val total = (end - loadStartTime) / 1_000_000
+                    Log.i(TAG, "The Filament backend took $total ms to load the model geometry.")
+                    modelViewer.engine.destroyFence(it)
+                    loadStartFence = null
+                }
+            }
+
+            modelViewer.animator?.apply {
+                if (animationCount > 0) {
+                    val elapsedTimeSeconds = (frameTimeNanos - startTime).toDouble() / 1_000_000_000
+                    applyAnimation(0, elapsedTimeSeconds.toFloat())
+                }
+                updateBoneMatrices()
+            }
+
+            modelViewer.render(frameTimeNanos)
         }
     }
 }
