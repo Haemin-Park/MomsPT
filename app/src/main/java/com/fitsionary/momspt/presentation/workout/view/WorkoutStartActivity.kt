@@ -164,21 +164,6 @@ open class WorkoutStartActivity :
             }
         }
         PermissionHelper.checkAndRequestCameraPermissions(this)
-
-        viewModel.event.observe(this, {
-            it.getContentIfNotHandled()?.let { event ->
-                when (event) {
-                    WORKOUT_FINISH -> {
-                        isEnd = true
-                        val intent =
-                            Intent(this@WorkoutStartActivity, WorkoutResultActivity::class.java)
-                        intent.putExtra(RESULT_CUMULATIVE_SCORE, viewModel.cumulativeScore.value)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
-        })
     }
 
     override fun onResume() {
@@ -389,6 +374,14 @@ open class WorkoutStartActivity :
                     // buffering (plays when data available)
                     // or ended (plays when seek away from end)
                     viewModel.countDownTimerStop()
+                    if(state == Player.STATE_ENDED){
+                        isEnd = true
+                        val intent =
+                            Intent(this@WorkoutStartActivity, WorkoutResultActivity::class.java)
+                        intent.putExtra(RESULT_CUMULATIVE_SCORE, viewModel.cumulativeScore.value)
+                        startActivity(intent)
+                        finish()
+                    }
                 } else {
                     // player paused in any state
                     viewModel.countDownTimerStop()
