@@ -7,7 +7,7 @@
 
         <variable
             name="WorkoutItem"
-            type="com.fitsionary.momspt.data.api.response.WorkoutItem" />
+            type="com.fitsionary.momspt.data.model.WorkoutModel" />
 
         <variable
             name="Listener"
@@ -37,12 +37,11 @@
                 app:strokeWidth="1dp">
 
                 <ImageView
-                    android:id="@+id/iv_camp_item"
+                    image_url="@{WorkoutItem.thumbnail}"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/sample" />
+                    android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -70,17 +69,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@{String.valueOf(WorkoutItem.time)}"
+                    android:text="@{String.valueOf(WorkoutItem.playtime) + `분`}"
                     android:textColor="@color/dark_gray"
-                    tool:text="13" />
-
-                <TextView
-                    style="@style/medium_14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="분"
-                    android:textColor="@color/dark_gray" />
+                    tool:text="13분" />
 
                 <TextView
                     style="@style/medium_14sp"
@@ -94,17 +85,9 @@
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(WorkoutItem.kcal)}"
+                    android:text="@{String.valueOf(WorkoutItem.calorie) + `kcal`}"
                     android:textColor="@color/dark_gray"
-                    tool:text="47" />
-
-                <TextView
-                    style="@style/medium_14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="kcal"
-                    android:textColor="@color/dark_gray" />
+                    tool:text="47kcal" />
             </LinearLayout>
         </LinearLayout>
 
@@ -114,7 +97,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/custom_checkbox"
             android:button="@null"
-            android:checked="@{WorkoutItem.finish}"
+            android:checked="true"
             android:clickable="false"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"

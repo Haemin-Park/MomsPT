@@ -7,12 +7,14 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.BR
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.data.api.response.WorkoutItem
+import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
+import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentWorkoutBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.base.BaseRecyclerView
 import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutViewModel
+import com.fitsionary.momspt.util.DateUtil
 import com.fitsionary.momspt.util.listener.OnItemClickListener
 
 class WorkoutFragment :
@@ -29,7 +31,7 @@ class WorkoutFragment :
             currentActivity = activity as MainActivity
     }
 
-    private val routineAdapter = object : BaseRecyclerView<FragmentWorkoutBinding, WorkoutItem>(
+    private val routineAdapter = object : BaseRecyclerView<FragmentWorkoutBinding, WorkoutModel>(
         layoutResId = R.layout.item_workout_fragment_workout,
         bindingVariableItemId = BR.WorkoutItem,
         bindingVariableListenerId = BR.Listener
@@ -42,8 +44,22 @@ class WorkoutFragment :
             rvWorkout.adapter = routineAdapter
         }
 
-        routineAdapter.onItemClickListener = object : OnItemClickListener<WorkoutItem> {
-            override fun onClick(item: WorkoutItem) {
+        viewModel.getTodayComment("fit")
+
+        viewModel.comment.observe(viewLifecycleOwner, {
+            binding.commentItem = it
+        })
+
+
+        viewModel.getTodayWorkoutList(
+            TodayWorkoutListRequest(
+                DateUtil.getRequestDateFormat(),
+                "fit"
+            )
+        )
+
+        routineAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
+            override fun onClick(item: WorkoutModel) {
                 val intent = Intent(currentActivity, WorkoutStartActivity::class.java)
                 startActivity(intent)
             }

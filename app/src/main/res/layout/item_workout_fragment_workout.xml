@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="WorkoutItem"
-            type="com.fitsionary.momspt.data.api.response.WorkoutItem" />
+            type="com.fitsionary.momspt.data.model.WorkoutModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="110dp"
+        android:clipToPadding="false"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp">
 
-        <ImageView
-            android:id="@+id/iv_plan_thumbnail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/sample" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="10dp"
+            app:strokeColor="@color/gray"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                image_url="@{WorkoutItem.thumbnail}"
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/sample" />
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_weight="3"
             android:orientation="vertical">
 
@@ -49,17 +64,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@{String.valueOf(WorkoutItem.time)}"
+                    android:text="@{String.valueOf(WorkoutItem.playtime) + `분`}"
                     android:textColor="@color/dark_gray"
-                    tools:text="13" />
-
-                <TextView
-                    style="@style/medium_14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="분"
-                    android:textColor="@color/dark_gray" />
+                    tools:text="13분" />
 
                 <TextView
                     style="@style/medium_14sp"
@@ -73,17 +80,9 @@
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(WorkoutItem.kcal)}"
+                    android:text="@{String.valueOf(WorkoutItem.calorie) + `kcal`}"
                     android:textColor="@color/dark_gray"
-                    tools:text="47" />
-
-                <TextView
-                    style="@style/medium_14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="kcal"
-                    android:textColor="@color/dark_gray" />
+                    tools:text="47kcal" />
             </LinearLayout>
         </LinearLayout>
 

@@ -6,6 +6,10 @@
         <variable
             name="vm"
             type="com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutViewModel" />
+
+        <variable
+            name="CommentItem"
+            type="com.fitsionary.momspt.data.api.response.TodayCommentResponse" />
     </data>
 
     <LinearLayout
@@ -21,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="D+27"
+            android:text="@{`D+` + String.valueOf(CommentItem.d_day)}"
             android:textColor="@color/pink" />
 
         <TextView
             style="@style/medium_14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="근력 회복 운동을 집중적으로 해야하는 시기에요."
+            android:text="@{CommentItem.comment}"
             android:textColor="@color/dark_gray" />
 
         <TextView
