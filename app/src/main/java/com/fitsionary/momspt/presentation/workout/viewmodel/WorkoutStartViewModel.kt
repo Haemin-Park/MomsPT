@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.fitsionary.momspt.data.api.request.PoseRequest
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseViewModel
+import com.fitsionary.momspt.util.Event
 import com.fitsionary.momspt.util.TimeUtil
 import com.fitsionary.momspt.util.rx.applyNetworkScheduler
 import java.util.*
@@ -16,6 +17,7 @@ class WorkoutStartViewModel : BaseViewModel() {
     private val _timerCountDown = MutableLiveData<Long>()
     private val _timerMinutes = MutableLiveData<Long>()
     private val _timerSeconds = MutableLiveData<Long>()
+    private val _event = MutableLiveData<Event<String>>()
     private lateinit var timer: Timer
 
     val score: LiveData<Int>
@@ -28,6 +30,8 @@ class WorkoutStartViewModel : BaseViewModel() {
         get() = _timerMinutes
     val timerSeconds: LiveData<Long>
         get() = _timerSeconds
+    val event: LiveData<Event<String>>
+        get() = _event
 
     init {
         _cumulativeScore.value = 0
@@ -43,6 +47,7 @@ class WorkoutStartViewModel : BaseViewModel() {
             override fun run() {
                 if (_timerCountDown.value!! == 0L) {
                     timer.cancel()
+                    _event.value = Event(WORKOUT_FINISH)
                 }
                 _timerCountDown.postValue(_timerCountDown.value!! - 500)
                 val timerFormat = TimeUtil.makeTimerFormat(_timerCountDown.value!!)
@@ -73,5 +78,6 @@ class WorkoutStartViewModel : BaseViewModel() {
 
     companion object {
         private val TAG = WorkoutStartViewModel::class.simpleName
+        const val WORKOUT_FINISH = "WORKOUT_FINISH"
     }
 }

@@ -11,13 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
+import com.fitsionary.momspt.S3_URL
 import com.fitsionary.momspt.data.api.request.Pose
 import com.fitsionary.momspt.data.api.request.Position
 import com.fitsionary.momspt.data.enum.PoseEnum
 import com.fitsionary.momspt.databinding.ActivityWorkoutStartBinding
 import com.fitsionary.momspt.presentation.base.BaseActivity
 import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
+import com.fitsionary.momspt.presentation.workout.view.WorkoutResultActivity.Companion.RESULT_CUMULATIVE_SCORE
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutStartViewModel
+import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutStartViewModel.Companion.WORKOUT_FINISH
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -44,6 +47,7 @@ open class WorkoutStartActivity :
 
     companion object {
         private const val TAG = "MainActivity"
+        const val WORKOUT_NAME = "WORKOUT_NAME"
 
         private const val OUTPUT_LANDMARKS_STREAM_NAME = "pose_landmarks"
 
@@ -106,7 +110,7 @@ open class WorkoutStartActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mediaUrl = getString(R.string.ex_video_4)
+        mediaUrl = S3_URL + "/" + intent.getStringExtra(WORKOUT_NAME) + ".mp4"
         binding.vm = viewModel
         viewModel.timerCountDown.observe(this, {
 //            if (this::poseLandmarks.isInitialized) {
@@ -152,6 +156,21 @@ open class WorkoutStartActivity :
             }
         }
         PermissionHelper.checkAndRequestCameraPermissions(this)
+
+        viewModel.event.observe(this, {
+            it.getContentIfNotHandled()?.let { event ->
+                when (event) {
+                    WORKOUT_FINISH -> {
+                        isEnd = true
+                        val intent =
+                            Intent(this@WorkoutStartActivity, WorkoutResultActivity::class.java)
+                        intent.putExtra(RESULT_CUMULATIVE_SCORE, viewModel.cumulativeScore.value)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
+        })
     }
 
     override fun onResume() {
@@ -361,16 +380,7 @@ open class WorkoutStartActivity :
                     // might be idle (plays after prepare()),
                     // buffering (plays when data available)
                     // or ended (plays when seek away from end)
-                    if (state == Player.STATE_ENDED) {
-                        isEnd = true
-                        val intent =
-                            Intent(this@WorkoutStartActivity, WorkoutResultActivity::class.java)
-                        intent.putExtra("result_cumulative_score", viewModel.cumulativeScore.value)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        viewModel.countDownTimerStop()
-                    }
+                    viewModel.countDownTimerStop()
                 } else {
                     // player paused in any state
                     viewModel.countDownTimerStop()
