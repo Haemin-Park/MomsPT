@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">MomsPT</string>
     <string name="daily_recommended_workout">오늘의 추천 운동</string>
-    <string name="ex_video_1">http://3.37.163.248:8080/streaming/video_6s.mp4</string>
-    <string name="ex_video_2">http://d29r6pfiojlanv.cloudfront.net/hipbridge.mp4</string>
-    <string name="ex_video_3">http://d29r6pfiojlanv.cloudfront.net/uparmleg.mp4</string>
-    <string name="ex_video_4">http://d29r6pfiojlanv.cloudfront.net/tabata.mp4</string>
-    <string name="ex_video_5">https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4</string>
+    <string name="ex_video_1">https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4</string>
 </resources>
