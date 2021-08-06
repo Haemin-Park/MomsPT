@@ -47,15 +47,31 @@
         <activity
             android:name=".presentation.analysis.view.AnalysisActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MomsPT" />
+            android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
         <activity
             android:name=".presentation.analysis.view.AnalysisResultActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.MomsPT" />
 
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />
-
+        <meta-data
+            android:name="cameraFacingFront"
+            android:value="True" />
+        <meta-data
+            android:name="binaryGraphName"
+            android:value="pose_tracking_gpu.binarypb" />
+        <meta-data
+            android:name="inputVideoStreamName"
+            android:value="input_video" />
+        <meta-data
+            android:name="outputVideoStreamName"
+            android:value="output_video" />
+        <meta-data
+            android:name="flipFramesVertically"
+            android:value="True" />
+        <meta-data
+            android:name="converterNumBuffers"
+            android:value="2" />
     </application>
 </manifest>
