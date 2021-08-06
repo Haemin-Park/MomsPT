@@ -6,8 +6,12 @@
     <data>
 
         <variable
-            name="WorkoutItem"
+            name="LargeWorkoutItem"
             type="com.fitsionary.momspt.data.model.WorkoutModel" />
+
+        <variable
+            name="LargeWorkoutItemListener"
+            type="com.fitsionary.momspt.util.listener.OnItemClickListener" />
     </data>
 
     <LinearLayout
@@ -15,6 +19,7 @@
         android:layout_height="110dp"
         android:clipToPadding="false"
         android:gravity="center_vertical"
+        android:onClick="@{()->LargeWorkoutItemListener.onClick(LargeWorkoutItem)}"
         android:orientation="horizontal"
         android:paddingTop="5dp"
         android:paddingRight="10dp"
@@ -29,7 +34,7 @@
             app:strokeWidth="1dp">
 
             <ImageView
-                image_url="@{WorkoutItem.thumbnail}"
+                image_url="@{LargeWorkoutItem.thumbnail}"
                 android:layout_width="130dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
@@ -50,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="@{WorkoutItem.name}"
+                android:text="@{LargeWorkoutItem.name}"
                 tools:text="선명하고 탄탄한 복근 만들기" />
 
             <LinearLayout
@@ -64,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@{String.valueOf(WorkoutItem.playtime) + `분`}"
+                    android:text="@{String.valueOf(LargeWorkoutItem.playtime) + `분`}"
                     android:textColor="@color/dark_gray"
                     tools:text="13분" />
 
@@ -80,7 +85,7 @@
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(WorkoutItem.calorie) + `kcal`}"
+                    android:text="@{String.valueOf(LargeWorkoutItem.calorie) + `kcal`}"
                     android:textColor="@color/dark_gray"
                     tools:text="47kcal" />
             </LinearLayout>
@@ -91,7 +96,7 @@
             android:layout_height="30dp"
             android:background="@drawable/custom_checkbox"
             android:button="@null"
-            android:checked="@{WorkoutItem.finish}"
+            android:checked="@{LargeWorkoutItem.finish}"
             android:clickable="false"
             tools:checked="true" />
     </LinearLayout>

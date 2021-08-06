@@ -6,11 +6,11 @@
     <data>
 
         <variable
-            name="WorkoutItem"
+            name="MediumWorkoutItem"
             type="com.fitsionary.momspt.data.model.WorkoutModel" />
 
         <variable
-            name="Listener"
+            name="MediumWorkoutItemListener"
             type="com.fitsionary.momspt.util.listener.OnItemClickListener" />
     </data>
 
@@ -19,7 +19,7 @@
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:onClick="@{()->Listener.onClick(WorkoutItem)}">
+        android:onClick="@{()->MediumWorkoutItemListener.onClick(MediumWorkoutItem)}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 app:strokeWidth="1dp">
 
                 <ImageView
-                    image_url="@{WorkoutItem.thumbnail}"
+                    image_url="@{MediumWorkoutItem.thumbnail}"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -52,7 +52,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:singleLine="true"
-                android:text="@{WorkoutItem.name}"
+                android:text="@{MediumWorkoutItem.name}"
                 android:textColor="@color/black"
                 tool:text="선명하고 탄탄한 복근 만들기" />
 
@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@{String.valueOf(WorkoutItem.playtime) + `분`}"
+                    android:text="@{String.valueOf(MediumWorkoutItem.playtime) + `분`}"
                     android:textColor="@color/dark_gray"
                     tool:text="13분" />
 
@@ -85,7 +85,7 @@
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(WorkoutItem.calorie) + `kcal`}"
+                    android:text="@{String.valueOf(MediumWorkoutItem.calorie) + `kcal`}"
                     android:textColor="@color/dark_gray"
                     tool:text="47kcal" />
             </LinearLayout>
