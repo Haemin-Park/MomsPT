@@ -7,4 +7,6 @@ import java.util.*
 object DateUtil {
     @SuppressLint("SimpleDateFormat")
     fun getDateFormat(): String = SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Date())
+    @SuppressLint("SimpleDateFormat")
+    fun getRequestDateFormat(): String = SimpleDateFormat("yyyy-MM-dd").format(Date())
 }
