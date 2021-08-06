@@ -34,9 +34,9 @@ class HomeFragment :
     }
 
     private val routineAdapter = object : BaseRecyclerView<FragmentHomeBinding, WorkoutModel>(
-        layoutResId = R.layout.item_home_fragment_workout,
-        bindingVariableItemId = BR.WorkoutItem,
-        bindingVariableListenerId = BR.Listener
+        layoutResId = R.layout.item_workout_medium,
+        bindingVariableItemId = BR.MediumWorkoutItem,
+        bindingVariableListenerId = BR.MediumWorkoutItemListener
     ) {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

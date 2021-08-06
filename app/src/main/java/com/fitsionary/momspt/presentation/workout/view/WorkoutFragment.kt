@@ -32,9 +32,9 @@ class WorkoutFragment :
     }
 
     private val routineAdapter = object : BaseRecyclerView<FragmentWorkoutBinding, WorkoutModel>(
-        layoutResId = R.layout.item_workout_fragment_workout,
-        bindingVariableItemId = BR.WorkoutItem,
-        bindingVariableListenerId = BR.Listener
+        layoutResId = R.layout.item_workout_large,
+        bindingVariableItemId = BR.LargeWorkoutItem,
+        bindingVariableListenerId = BR.LargeWorkoutItemListener,
     ) {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,7 +50,6 @@ class WorkoutFragment :
             binding.commentItem = it
         })
 
-
         viewModel.getTodayWorkoutList(
             TodayWorkoutListRequest(
                 DateUtil.getRequestDateFormat(),
@@ -60,8 +59,11 @@ class WorkoutFragment :
 
         routineAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {
-                val intent = Intent(currentActivity, WorkoutStartActivity::class.java)
-                startActivity(intent)
+                startActivity(
+                    Intent(currentActivity, WorkoutStartActivity::class.java).putExtra(
+                        WorkoutStartActivity.WORKOUT_NAME, item.name
+                    )
+                )
             }
         }
     }
