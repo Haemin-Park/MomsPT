@@ -17,7 +17,6 @@ class WorkoutStartViewModel : BaseViewModel() {
     private val _timerCountDown = MutableLiveData<Long>()
     private val _timerMinutes = MutableLiveData<Long>()
     private val _timerSeconds = MutableLiveData<Long>()
-    private val _event = MutableLiveData<Event<String>>()
     private lateinit var timer: Timer
 
     val score: LiveData<Int>
@@ -30,8 +29,6 @@ class WorkoutStartViewModel : BaseViewModel() {
         get() = _timerMinutes
     val timerSeconds: LiveData<Long>
         get() = _timerSeconds
-    val event: LiveData<Event<String>>
-        get() = _event
 
     init {
         _cumulativeScore.value = 0
@@ -47,9 +44,8 @@ class WorkoutStartViewModel : BaseViewModel() {
             override fun run() {
                 if (_timerCountDown.value!! == 0L) {
                     timer.cancel()
-                    _event.value = Event(WORKOUT_FINISH)
                 }
-                _timerCountDown.postValue(_timerCountDown.value!! - 500)
+                _timerCountDown.postValue(_timerCountDown.value!! - 1000)
                 val timerFormat = TimeUtil.makeTimerFormat(_timerCountDown.value!!)
                 _timerMinutes.postValue(timerFormat.first!!)
                 _timerSeconds.postValue(timerFormat.second!!)
