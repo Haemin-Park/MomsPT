@@ -64,9 +64,9 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
 
     // ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.14.1'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.14.1'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.14.2'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.14.2'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.14.2'
 
     // ViewModel
     def lifecycle_version = "2.3.1"
@@ -89,6 +89,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
 
     // Okhttp3
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
@@ -104,10 +105,21 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.38'
     kapt 'com.google.dagger:dagger-compiler:2.38'
 
-    // ARCore
-    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.17.1"
-    implementation 'com.google.ar.sceneform:assets:1.17.1'
-
     // CameraRecorder
     implementation 'com.github.MasayukiSuda:CameraRecorder-android:v0.1.5'
+
+    // RxPermission
+    implementation 'com.github.tbruyelle:rxpermissions:0.12'
+
+    // OkDownload
+    implementation "com.liulishuo.okdownload:okdownload:1.0.3"
+    implementation "com.liulishuo.okdownload:okhttp:1.0.3"
+
+    // Commons-io
+    implementation 'commons-io:commons-io:2.5'
+
+    // Filament
+    implementation 'com.google.android.filament:filament-android:1.9.9'
+    implementation 'com.google.android.filament:filament-utils-android:1.9.9'
+    implementation 'com.google.android.filament:gltfio-android:1.9.9'
 }
