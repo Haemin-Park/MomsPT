@@ -3,12 +3,8 @@ package com.fitsionary.momspt.presentation.workout.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fitsionary.momspt.data.api.request.PoseRequest
-import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseViewModel
-import com.fitsionary.momspt.util.Event
 import com.fitsionary.momspt.util.TimeUtil
-import com.fitsionary.momspt.util.rx.applyNetworkScheduler
 import java.util.*
 
 class WorkoutStartViewModel : BaseViewModel() {
@@ -46,9 +42,9 @@ class WorkoutStartViewModel : BaseViewModel() {
                     timer.cancel()
                 }
                 _timerCountDown.postValue(_timerCountDown.value!! - 1000)
-                val timerFormat = TimeUtil.makeTimerFormat(_timerCountDown.value!!)
-                _timerMinutes.postValue(timerFormat.first!!)
-                _timerSeconds.postValue(timerFormat.second!!)
+                val timerFormat = TimeUtil.makeTimerFormat(_timerCountDown.value ?: 0)
+                _timerMinutes.postValue(timerFormat.first ?: 0)
+                _timerSeconds.postValue(timerFormat.second ?: 0)
             }
         }, 1000, 1000)
     }
@@ -57,23 +53,13 @@ class WorkoutStartViewModel : BaseViewModel() {
         if (::timer.isInitialized) timer.cancel()
     }
 
-    fun sendPoseList(poseRequest: PoseRequest) {
-        addDisposable(
-            NetworkService.api
-                .sendPose(poseRequest)
-                .applyNetworkScheduler()
-                .subscribe({
-                    Log.i(TAG, it.toString())
-                    _score.value = it.score
-                    _cumulativeScore.value?.plus(it.score)
-                }, {
-                    Log.i(TAG, it.message!!)
-                })
-        )
+    fun setScore(score: Int) {
+        Log.i(TAG, score.toString())
+        _score.postValue(score)
+        _cumulativeScore.postValue(_cumulativeScore.value?.plus(score))
     }
 
     companion object {
         private val TAG = WorkoutStartViewModel::class.simpleName
-        const val WORKOUT_FINISH = "WORKOUT_FINISH"
     }
 }
