@@ -21,7 +21,7 @@ import com.fitsionary.momspt.presentation.base.BaseActivity
 import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
 import com.fitsionary.momspt.presentation.workout.view.WorkoutResultActivity.Companion.RESULT_CUMULATIVE_SCORE
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutStartViewModel
-import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutStartViewModel.Companion.WORKOUT_FINISH
+import com.fitsionary.momspt.util.ScoringAlgorithm
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -34,9 +34,10 @@ import com.google.mediapipe.framework.PacketGetter
 import com.google.mediapipe.glutil.EglManager
 import com.google.protobuf.InvalidProtocolBufferException
 import org.json.JSONObject
+import kotlin.math.floor
 import kotlin.properties.Delegates
 
-open class WorkoutStartActivity :
+class WorkoutStartActivity :
     BaseActivity<ActivityWorkoutStartBinding, WorkoutStartViewModel>(R.layout.activity_workout_start) {
     override val viewModel: WorkoutStartViewModel by lazy {
         ViewModelProvider(this).get(WorkoutStartViewModel::class.java)
@@ -53,6 +54,26 @@ open class WorkoutStartActivity :
         private val TAG = WorkoutStartActivity::class.java.simpleName
         const val WORKOUT_NAME = "WORKOUT_NAME"
         const val JSON_NAME = "tabata.json"
+
+        val Poses = listOf(
+            "PoseLandmark.NOSE",
+            "PoseLandmark.LEFT_EYE",
+            "PoseLandmark.RIGHT_EYE",
+            "PoseLandmark.LEFT_EAR",
+            "PoseLandmark.RIGHT_EAR",
+            "PoseLandmark.LEFT_SHOULDER",
+            "PoseLandmark.RIGHT_SHOULDER",
+            "PoseLandmark.LEFT_ELBOW",
+            "PoseLandmark.RIGHT_ELBOW",
+            "PoseLandmark.LEFT_WRIST",
+            "PoseLandmark.RIGHT_WRIST",
+            "PoseLandmark.LEFT_HIP",
+            "PoseLandmark.RIGHT_HIP",
+            "PoseLandmark.LEFT_KNEE",
+            "PoseLandmark.RIGHT_KNEE",
+            "PoseLandmark.LEFT_ANKLE",
+            "PoseLandmark.RIGHT_ANKLE"
+        )
 
         private const val OUTPUT_LANDMARKS_STREAM_NAME = "pose_landmarks"
 
@@ -120,15 +141,6 @@ open class WorkoutStartActivity :
         //mediaUrl = getString(R.string.ex_video_1)
 
         binding.vm = viewModel
-        viewModel.timerCountDown.observe(this, {
-//            if (this::poseLandmarks.isInitialized) {
-//                val poseRequest = PoseRequest(
-//                    "TestVideo", viewHeight, viewWidth,
-//                    viewModel.timerCountDown.value!!, getPoseList(poseLandmarks)
-//                )
-//                viewModel.sendPoseList(poseRequest)
-//            }
-        })
 
         previewDisplayView = SurfaceView(this)
         setupPreviewDisplayView()
@@ -144,6 +156,7 @@ open class WorkoutStartActivity :
             applicationInfo.metaData.getString("inputVideoStreamName"),
             applicationInfo.metaData.getString("outputVideoStreamName")
         )
+        val scoreAlgorithm = ScoringAlgorithm(landmarksList)
         processor!!
             .videoSurfaceOutput
             .setFlipY(
@@ -155,10 +168,29 @@ open class WorkoutStartActivity :
         processor!!.addPacketCallback(
             OUTPUT_LANDMARKS_STREAM_NAME
         ) { packet: Packet ->
-            Log.v(TAG, "Received pose landmarks packet.")
             try {
                 val landmarksRaw = PacketGetter.getProtoBytes(packet)
                 poseLandmarks = NormalizedLandmarkList.parseFrom(landmarksRaw)
+                var idx = 0
+                val keyPoints = ArrayList<Landmark>()
+                for ((landmarkIndex, landmark) in poseLandmarks.landmarkList.withIndex()) {
+                    if (Poses.any { it == "PoseLandmark." + PoseEnum.values()[landmarkIndex].name }) {
+                        keyPoints.add(
+                            Landmark(
+                                "PoseLandmark." + PoseEnum.values()[landmarkIndex].name,
+                                landmark.x.toDouble(), landmark.y.toDouble(), landmark.z.toDouble(),
+                                landmark.visibility.toDouble()
+                            )
+                        )
+                        idx++
+                    }
+                }
+                val resultScore = scoreAlgorithm.pushKeyPoints(keyPoints, viewWidth, viewHeight)
+
+                if (resultScore > 0) {
+                    viewModel.setScore(floor(resultScore).toInt())
+                }
+
             } catch (exception: InvalidProtocolBufferException) {
                 Log.e(TAG, "Failed to get proto.", exception)
             }
@@ -374,7 +406,7 @@ open class WorkoutStartActivity :
                     // buffering (plays when data available)
                     // or ended (plays when seek away from end)
                     viewModel.countDownTimerStop()
-                    if(state == Player.STATE_ENDED){
+                    if (state == Player.STATE_ENDED) {
                         isEnd = true
                         val intent =
                             Intent(this@WorkoutStartActivity, WorkoutResultActivity::class.java)
@@ -453,6 +485,9 @@ open class WorkoutStartActivity :
             }
             landmarksList.add(landmarkList)
         }
-        Log.i(TAG, landmarksList[0][0].part + " " + landmarksList[0][0].x + " " + landmarksList[1675][0].x)
+        Log.i(
+            TAG,
+            landmarksList[0][0].part + " " + landmarksList[0][0].x + " " + landmarksList[1675][0].x
+        )
     }
 }
