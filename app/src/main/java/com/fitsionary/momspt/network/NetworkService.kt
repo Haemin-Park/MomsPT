@@ -41,5 +41,5 @@ object NetworkService {
         .baseUrl(BASE_URL2)
         .build()
 
-    val api2: Api = retrofit.create(Api::class.java)
+    val api2: Api = retrofit2.create(Api::class.java)
 }
