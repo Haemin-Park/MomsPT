@@ -5,18 +5,13 @@ import android.graphics.SurfaceTexture
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
-import android.view.SurfaceHolder
-import android.view.SurfaceView
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.S3_URL
 import com.fitsionary.momspt.data.Landmark
-import com.fitsionary.momspt.data.api.request.Pose
-import com.fitsionary.momspt.data.api.request.Position
 import com.fitsionary.momspt.data.enum.PoseEnum
-import com.fitsionary.momspt.databinding.ActivityWorkoutStartBinding
+import com.fitsionary.momspt.databinding.ActivityWorkoutPlayBinding
 import com.fitsionary.momspt.presentation.base.BaseActivity
 import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
 import com.fitsionary.momspt.presentation.workout.view.WorkoutResultActivity.Companion.RESULT_CUMULATIVE_SCORE
@@ -37,8 +32,9 @@ import org.json.JSONObject
 import kotlin.math.floor
 import kotlin.properties.Delegates
 
-class WorkoutStartActivity :
-    BaseActivity<ActivityWorkoutStartBinding, WorkoutStartViewModel>(R.layout.activity_workout_start) {
+
+class WorkoutPlayActivity :
+    BaseActivity<ActivityWorkoutPlayBinding, WorkoutStartViewModel>(R.layout.activity_workout_play) {
     override val viewModel: WorkoutStartViewModel by lazy {
         ViewModelProvider(this).get(WorkoutStartViewModel::class.java)
     }
@@ -47,13 +43,13 @@ class WorkoutStartActivity :
     private lateinit var playerControlDialogFragment: PlayerControlDialogFragment
     var isFirst = true
     var isEnd = false
+    private var playWhenReady = false
 
     private lateinit var mediaUrl: String
 
     companion object {
-        private val TAG = WorkoutStartActivity::class.java.simpleName
+        private val TAG = WorkoutPlayActivity::class.java.simpleName
         const val WORKOUT_NAME = "WORKOUT_NAME"
-        const val JSON_NAME = "tabata.json"
 
         val Poses = listOf(
             "PoseLandmark.NOSE",
@@ -108,7 +104,7 @@ class WorkoutStartActivity :
 
     // Sends camera-preview frames into a MediaPipe graph for processing, and displays the processed
     // frames onto a {@link Surface}.
-    protected var processor: FrameProcessor? = null
+    var processor: FrameProcessor? = null
 
     // Handles camera access via the {@link CameraX} Jetpack support library.
     private var cameraHelper: CameraXPreviewHelper? = null
@@ -131,14 +127,16 @@ class WorkoutStartActivity :
     private var playbackPosition: Long = 0
     private var viewHeight by Delegates.notNull<Int>()
     private var viewWidth by Delegates.notNull<Int>()
+    private var parentHeight by Delegates.notNull<Int>()
+    private var parentWidth by Delegates.notNull<Int>()
     private lateinit var poseLandmarks: NormalizedLandmarkList
+    private lateinit var workoutName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        workoutName = intent.getStringExtra(WORKOUT_NAME)!!
         readJson()
-
-        mediaUrl = S3_URL + "/" + intent.getStringExtra(WORKOUT_NAME) + ".mp4"
-        //mediaUrl = getString(R.string.ex_video_1)
+        mediaUrl = "$S3_URL/$workoutName.mp4"
 
         binding.vm = viewModel
 
@@ -169,28 +167,32 @@ class WorkoutStartActivity :
             OUTPUT_LANDMARKS_STREAM_NAME
         ) { packet: Packet ->
             try {
-                val landmarksRaw = PacketGetter.getProtoBytes(packet)
-                poseLandmarks = NormalizedLandmarkList.parseFrom(landmarksRaw)
-                var idx = 0
-                val keyPoints = ArrayList<Landmark>()
-                for ((landmarkIndex, landmark) in poseLandmarks.landmarkList.withIndex()) {
-                    if (Poses.any { it == "PoseLandmark." + PoseEnum.values()[landmarkIndex].name }) {
-                        keyPoints.add(
-                            Landmark(
-                                "PoseLandmark." + PoseEnum.values()[landmarkIndex].name,
-                                landmark.x.toDouble(), landmark.y.toDouble(), landmark.z.toDouble(),
-                                landmark.visibility.toDouble()
+                if (playWhenReady) {
+                    val landmarksRaw = PacketGetter.getProtoBytes(packet)
+                    poseLandmarks = NormalizedLandmarkList.parseFrom(landmarksRaw)
+                    var idx = 0
+                    val keyPoints = ArrayList<Landmark>()
+                    for ((landmarkIndex, landmark) in poseLandmarks.landmarkList.withIndex()) {
+                        if (Poses.any { it == "PoseLandmark." + PoseEnum.values()[landmarkIndex].name }) {
+                            keyPoints.add(
+                                Landmark(
+                                    "PoseLandmark." + PoseEnum.values()[landmarkIndex].name,
+                                    landmark.x.toDouble(),
+                                    landmark.y.toDouble(),
+                                    landmark.z.toDouble(),
+                                    landmark.visibility.toDouble()
+                                )
                             )
-                        )
-                        idx++
+                            idx++
+                        }
+                    }
+                    val resultScore =
+                        scoreAlgorithm.pushKeyPoints(keyPoints, parentWidth, parentHeight)
+
+                    if (resultScore > 0) {
+                        viewModel.setScore(floor(resultScore).toInt())
                     }
                 }
-                val resultScore = scoreAlgorithm.pushKeyPoints(keyPoints, viewWidth, viewHeight)
-
-                if (resultScore > 0) {
-                    viewModel.setScore(floor(resultScore).toInt())
-                }
-
             } catch (exception: InvalidProtocolBufferException) {
                 Log.e(TAG, "Failed to get proto.", exception)
             }
@@ -285,7 +287,13 @@ class WorkoutStartActivity :
         return Size(width, height)
     }
 
-    protected fun onPreviewDisplaySurfaceChanged(
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        parentWidth = binding.previewDisplayLayout.width
+        parentHeight = binding.previewDisplayLayout.height
+    }
+
+    fun onPreviewDisplaySurfaceChanged(
         width: Int, height: Int
     ) {
         // (Re-)Compute the ideal size of the camera-preview display (the area that the
@@ -363,22 +371,25 @@ class WorkoutStartActivity :
             seekTo(currentWindow, playbackPosition)
             prepare()
         }
+        playWhenReady = true
 
         binding.playerView.apply {
             controllerAutoShow = false
             useController = false
             videoSurfaceView?.setOnClickListener {
                 playerControlDialogFragment =
-                    PlayerControlDialogFragment.newInstance(player!!.playWhenReady)
+                    PlayerControlDialogFragment.newInstance(playWhenReady)
                 playerControlDialogFragment.setOnClickedListener {
                     if (!isEnd) {
-                        if (player!!.playWhenReady) {
+                        if (playWhenReady) {
                             player!!.playWhenReady = false
+                            playWhenReady = false
                             viewModel.countDownTimerStop()
                             playerControlDialogFragment.setState(isPlaying = false)
 
                         } else {
                             player!!.playWhenReady = true
+                            playWhenReady = true
                             viewModel.countDownTimerStart()
                             playerControlDialogFragment.setState(isPlaying = true)
                         }
@@ -394,14 +405,14 @@ class WorkoutStartActivity :
         player?.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
                 super.onPlaybackStateChanged(state)
-                if (player!!.playWhenReady && state == Player.STATE_READY) {
+                if (playWhenReady && state == Player.STATE_READY) {
                     // media actually playing
                     if (isFirst) {
                         viewModel.countDownTimerSet(player!!.contentDuration)
                         isFirst = false
                     }
                     viewModel.countDownTimerStart()
-                } else if (player!!.playWhenReady) {
+                } else if (playWhenReady) {
                     // might be idle (plays after prepare()),
                     // buffering (plays when data available)
                     // or ended (plays when seek away from end)
@@ -409,7 +420,7 @@ class WorkoutStartActivity :
                     if (state == Player.STATE_ENDED) {
                         isEnd = true
                         val intent =
-                            Intent(this@WorkoutStartActivity, WorkoutResultActivity::class.java)
+                            Intent(this@WorkoutPlayActivity, WorkoutResultActivity::class.java)
                         intent.putExtra(RESULT_CUMULATIVE_SCORE, viewModel.cumulativeScore.value)
                         startActivity(intent)
                         finish()
@@ -425,6 +436,7 @@ class WorkoutStartActivity :
     private fun releasePlayer() {
         if (player != null) {
             player!!.playWhenReady = false
+            playWhenReady = false
             playbackPosition = player!!.currentPosition
             currentWindow = player!!.currentWindowIndex
             player!!.release()
@@ -444,27 +456,11 @@ class WorkoutStartActivity :
         return poseLandmarkStr
     }
 
-    private fun getPoseList(poseLandmarks: NormalizedLandmarkList): List<Pose> {
-        val poseList = mutableListOf<Pose>()
-        poseList.clear()
-
-        for ((landmarkIndex, landmark) in poseLandmarks.landmarkList.withIndex()) {
-            poseList.add(
-                Pose(
-                    "PoseLandmark." + PoseEnum.values()[landmarkIndex].name,
-                    Position(landmark.x, landmark.y, landmark.z),
-                    landmark.visibility
-                )
-            )
-        }
-        return poseList
-    }
-
     private fun readJson() {
         landmarksList.clear()
 
         val assetManager = resources.assets
-        val inputStream = assetManager.open(JSON_NAME)
+        val inputStream = assetManager.open(workoutName + ".json")
         val jsonString = inputStream.bufferedReader().use { it.readText() }
         val jObject = JSONObject(jsonString)
         val jArray = jObject.getJSONArray("posedata")
@@ -485,9 +481,5 @@ class WorkoutStartActivity :
             }
             landmarksList.add(landmarkList)
         }
-        Log.i(
-            TAG,
-            landmarksList[0][0].part + " " + landmarksList[0][0].x + " " + landmarksList[1675][0].x
-        )
     }
 }

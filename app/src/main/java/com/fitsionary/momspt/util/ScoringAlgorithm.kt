@@ -2,11 +2,13 @@ package com.fitsionary.momspt.util
 
 import android.util.Log
 import com.fitsionary.momspt.data.Landmark
+import kotlin.math.abs
 
 class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
 
     private var count = 0
     private val FRAME_CUT = 10
+    var targetKeyPoints = ArrayList<Double>()
 
     private val dtwTarget = ArrayList<ArrayList<Double>>()
     private val dtwResource = ArrayList<ArrayList<Double>>()
@@ -22,20 +24,22 @@ class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
         cameraHeight: Int
     ): Double {
         Log.i(TAG, "PUSH KEY POINTS!!")
-        val targetKeyPoints = keyPoints2Vec(keyPoints, cameraWidth, cameraHeight)
+        Log.i(TAG, "$cameraWidth $cameraHeight")
+        targetKeyPoints = keyPoints2Vec(keyPoints, cameraWidth, cameraHeight)
         var result = 0.0
         dtwTarget.add(targetKeyPoints)
         count++
         if (count % FRAME_CUT == 0) {
             //target과 비교할 프레임만큼 Resource도 만들어놓기
             for (i in count - FRAME_CUT until count) {
-                val resourceKeypoints = keyPoints2Vec(landmarksList[i], 480, 480)
+                val resourceKeypoints = keyPoints2Vec(landmarksList[i], 720, 404)
                 dtwResource.add(resourceKeypoints)
             }
             result = dtw(dtwTarget, dtwResource)
             dtwTarget.clear()
             dtwResource.clear()
-            return 1 / result * 10
+            result = -1 * 500 / FRAME_CUT * result + 100
+            return if (result > 0) result else 0.0
         }
         return (-1).toDouble()
     }
@@ -52,7 +56,7 @@ class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
         var minX = Double.POSITIVE_INFINITY
         var minY = Double.POSITIVE_INFINITY
         var scaler = Double.NEGATIVE_INFINITY
-
+        Log.i(TAG, cameraHeight.toString() + " " + cameraWidth)
         //1. 벡터 배열로 만들기, scale을 위한 변수 계산하기.
         for (i in 0 until keyPoints.size) {
             val xValue: Double = keyPoints[i].x * cameraWidth
@@ -170,7 +174,10 @@ class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
         }
         absV1 = Math.sqrt(absV1)
         absV2 = Math.sqrt(absV2)
-        return 1 - v1Dotv2 / (absV1 * absV2)
+
+        val check = v1Dotv2 / (absV1 * absV2)
+        Log.i(TAG, "COSINE : $check")
+        return abs(1 - check)
     }
 
     companion object {
