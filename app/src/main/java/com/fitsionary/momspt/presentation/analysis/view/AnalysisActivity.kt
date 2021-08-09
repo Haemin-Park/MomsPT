@@ -36,9 +36,9 @@ class AnalysisActivity :
     private var cameraRecorder: CameraRecorder? = null
     private var sampleGLView: GLSurfaceView? = null
     lateinit var parentFile: File
-    lateinit var defaultFileName: String
-    lateinit var videoPath: String
-    lateinit var rxPermissions: RxPermissions
+    private lateinit var defaultFileName: String
+    private lateinit var videoPath: String
+    private lateinit var rxPermissions: RxPermissions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,11 @@ class AnalysisActivity :
 
         rxPermissions = RxPermissions(this)
         rxPermissions
-            .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            .request(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA
+            )
             .subscribe { granted ->
                 if (granted) {
                     parentFile = getParentFile(this)!!
@@ -64,16 +68,6 @@ class AnalysisActivity :
                         val file = File(videoPath)
                         viewModel.sendVideo(file)
                         binding.btnUpload.visibility = View.INVISIBLE
-                    }
-
-                    binding.btnTestUpload.setOnClickListener {
-                        val test = "/storage/emulated/0/Movies/test.mp4"
-                        viewModel.sendVideo(File(test))
-                    }
-
-                    binding.btnTestResult.setOnClickListener {
-                        defaultFileName = "test"
-                        downloadResult("https://github.com/Haemin-Park/test/raw/main/standing.glb")
                     }
 
                     viewModel.isLoading
@@ -136,7 +130,7 @@ class AnalysisActivity :
     private fun exportMp4(context: Context, filePath: String) {
         val values = ContentValues(2)
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-        values.put(MediaStore.Video.Media.DATE_ADDED, filePath)
+        values.put(MediaStore.Video.Media.DATA, filePath)
         context.contentResolver.insert(
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
             values
