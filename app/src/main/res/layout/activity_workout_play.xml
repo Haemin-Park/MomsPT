@@ -11,6 +11,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_workout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -84,7 +85,29 @@
 
         </FrameLayout>
 
+        <TextView
+            android:id="@+id/tv_cumulative_score"
+            style="@style/medium_20sp"
+            score_gradient="@{vm.cumulativeScore}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:shadowColor="@color/gray"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:text="@{String.valueOf(vm.cumulativeScore)+'점'}"
+            android:textColor="@color/main_pink"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tool:text="10점" />
+
         <androidx.cardview.widget.CardView
+            android:id="@+id/card_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -95,52 +118,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_score"
+                style="@style/bold_30sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:text="@{String.valueOf(vm.score)+'점'}"
+                android:textColor="@color/white"
+                tool:text="10점" />
 
-                <TextView
-                    style="@style/bold_20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="누적 "
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:id="@+id/tv_cumulative_score"
-                    style="@style/bold_20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(vm.cumulativeScore)}"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    style="@style/bold_20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="점 / "
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:id="@+id/tv_score"
-                    style="@style/bold_30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(vm.score)}"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    style="@style/bold_30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="점"
-                    android:textColor="@color/white" />
-            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:id="@+id/tv_score_comment"
+            style="@style/bold_40sp"
+            score_comment="@{vm.score}"
+            score_gradient="@{vm.score}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:shadowColor="@color/gray"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_score"
+            tool:text="Perfect!" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

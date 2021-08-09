@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.ActivityWorkoutResultBinding
 import com.fitsionary.momspt.presentation.base.BaseActivity
+import com.fitsionary.momspt.presentation.binding.setScoreGradient
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutResultViewModel
 
 class WorkoutResultActivity
@@ -19,7 +20,7 @@ class WorkoutResultActivity
 
         val resultCumulativeScore = intent.getIntExtra(RESULT_CUMULATIVE_SCORE, 0)
         binding.tvResultCumulativeScore.text = "${resultCumulativeScore}점"
-
+        setScoreGradient(binding.tvResultCumulativeScore, resultCumulativeScore)
         binding.btnClose.setOnClickListener {
             finish()
         }
