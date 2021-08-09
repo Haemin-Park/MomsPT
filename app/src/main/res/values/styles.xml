@@ -43,6 +43,13 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="bold_40sp">
+        <item name="android:fontFamily">@font/noto_sans_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <style name="bold_30sp">
         <item name="android:fontFamily">@font/noto_sans_bold</item>
         <item name="android:textColor">@color/black</item>

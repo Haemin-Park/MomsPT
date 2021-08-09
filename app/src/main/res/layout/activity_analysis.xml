@@ -75,35 +75,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{String.valueOf(vm.timerCountDown)}"
-            android:textColor="@color/pink"
+            android:textColor="@color/main_pink"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="5" />
-
-        <Button
-            android:id="@+id/btn_test_upload"
-            style="@style/medium_14sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="데모 영상"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/btn_test_result"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <Button
-            android:id="@+id/btn_test_result"
-            style="@style/medium_14sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="데모 결과"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
             android:id="@+id/btn_upload"
