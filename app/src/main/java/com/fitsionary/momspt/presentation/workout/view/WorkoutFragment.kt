@@ -60,8 +60,8 @@ class WorkoutFragment :
         routineAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {
                 startActivity(
-                    Intent(currentActivity, WorkoutStartActivity::class.java).putExtra(
-                        WorkoutStartActivity.WORKOUT_NAME, item.name
+                    Intent(currentActivity, WorkoutPlayActivity::class.java).putExtra(
+                        WorkoutPlayActivity.WORKOUT_NAME, item.name
                     )
                 )
             }

@@ -1,6 +1,10 @@
 package com.fitsionary.momspt.presentation.main.view
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
@@ -11,6 +15,7 @@ import com.fitsionary.momspt.presentation.home.view.HomeFragment
 import com.fitsionary.momspt.presentation.main.viewmodel.MainViewModel
 import com.fitsionary.momspt.presentation.mypage.view.MyPageFragment
 import com.fitsionary.momspt.presentation.workout.view.WorkoutFragment
+
 
 class MainActivity :
     BaseActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
