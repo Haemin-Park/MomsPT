@@ -28,6 +28,9 @@
         android:theme="@style/Theme.MomsPT"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".presentation.workout.view.WorkoutDetailActivity"
+            android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
+        <activity
             android:name=".presentation.main.view.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -37,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.workout.view.WorkoutStartActivity"
+            android:name=".presentation.workout.view.WorkoutPlayActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
         <activity
@@ -74,4 +77,5 @@
             android:name="converterNumBuffers"
             android:value="2" />
     </application>
+
 </manifest>

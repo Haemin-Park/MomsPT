@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="WorkoutItem"
+            type="com.fitsionary.momspt.data.model.WorkoutModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusableInTouchMode="true">
+
+        <ImageView
+            android:id="@+id/iv_workout_detail"
+            image_url="@{WorkoutItem.thumbnail}"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/black"
+            android:src="@drawable/sample"
+            android:tintMode="multiply"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#595959" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_workout"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="150dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/gray"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_workout_detail_name"
+                    style="@style/bold_20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@{WorkoutItem.name}"
+                    android:textColor="@color/black"
+                    tools:text="선명하고 탄탄한 복근 만들기" />
+
+                <TextView
+                    android:id="@+id/tv_workout_detail_type"
+                    style="@style/medium_14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@{WorkoutItem.type}"
+                    android:textColor="@color/dark_gray"
+                    tools:text="코어 운동, 힙 운동" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_info_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/card_workout">
+
+            <ImageView
+                android:id="@+id/iv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_access_time_24"
+                app:tint="@color/main_pink" />
+
+            <TextView
+                style="@style/medium_18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:singleLine="true"
+                android:text="@{WorkoutItem.playtime + `분`}"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/iv_time"
+                app:layout_constraintLeft_toRightOf="@id/iv_time"
+                app:layout_constraintStart_toEndOf="@id/iv_time"
+                tools:text="13분" />
+
+            <ImageView
+                android:id="@+id/iv_calorie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/iv_time"
+                app:srcCompat="@drawable/ic_baseline_local_fire_department_24"
+                app:tint="@color/main_pink" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/medium_18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@{WorkoutItem.calorie + `kcal`}"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/iv_calorie"
+                app:layout_constraintLeft_toRightOf="@id/iv_calorie"
+                app:layout_constraintStart_toEndOf="@id/iv_calorie"
+                tools:text="47kcal" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/light_gray"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_info_container" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_play_workout"
+            style="@style/medium_18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/round_background"
+            android:backgroundTint="@color/main_pink"
+            android:padding="20dp"
+            android:text="운동하기"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_divider">
+
+            <TextView
+                style="@style/bold_16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="운동 정보" />
+
+            <TextView
+                android:id="@+id/tv_explain"
+                style="@style/medium_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{WorkoutItem.explanation}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_info_container"
+                tools:text="코어 트레이닝을 대표하는 운동 중 하나이다. 허리를 지나치게 들어올리는 동작은 부상으로 이어질 수 있습니다." />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/light_gray" />
+
+            <TextView
+                style="@style/bold_16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="기대 효과" />
+
+            <TextView
+                style="@style/medium_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{WorkoutItem.effect}"
+                tools:text="통증 완화, 골반 안정화, 코어 강화, 자세 개선, 운동 능력 향상, 힙업" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -7,7 +7,7 @@ import com.fitsionary.momspt.presentation.base.BaseViewModel
 import com.fitsionary.momspt.util.TimeUtil
 import java.util.*
 
-class WorkoutStartViewModel : BaseViewModel() {
+class WorkoutPlayViewModel : BaseViewModel() {
     private val _score = MutableLiveData<Int>()
     private val _cumulativeScore = MutableLiveData<Int>()
     private val _timerCountDown = MutableLiveData<Long>()
@@ -60,6 +60,6 @@ class WorkoutStartViewModel : BaseViewModel() {
     }
 
     companion object {
-        private val TAG = WorkoutStartViewModel::class.simpleName
+        private val TAG = WorkoutPlayViewModel::class.simpleName
     }
 }

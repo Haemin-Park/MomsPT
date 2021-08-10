@@ -13,9 +13,10 @@ import com.fitsionary.momspt.data.Landmark
 import com.fitsionary.momspt.data.enum.PoseEnum
 import com.fitsionary.momspt.databinding.ActivityWorkoutPlayBinding
 import com.fitsionary.momspt.presentation.base.BaseActivity
+import com.fitsionary.momspt.presentation.home.view.HomeFragment.Companion.WORKOUT_NAME
 import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
 import com.fitsionary.momspt.presentation.workout.view.WorkoutResultActivity.Companion.RESULT_CUMULATIVE_SCORE
-import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutStartViewModel
+import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutPlayViewModel
 import com.fitsionary.momspt.util.ScoringAlgorithm
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -29,18 +30,21 @@ import com.google.mediapipe.framework.PacketGetter
 import com.google.mediapipe.glutil.EglManager
 import com.google.protobuf.InvalidProtocolBufferException
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.floor
 import kotlin.properties.Delegates
 
 
 class WorkoutPlayActivity :
-    BaseActivity<ActivityWorkoutPlayBinding, WorkoutStartViewModel>(R.layout.activity_workout_play) {
-    override val viewModel: WorkoutStartViewModel by lazy {
-        ViewModelProvider(this).get(WorkoutStartViewModel::class.java)
+    BaseActivity<ActivityWorkoutPlayBinding, WorkoutPlayViewModel>(R.layout.activity_workout_play) {
+    override val viewModel: WorkoutPlayViewModel by lazy {
+        ViewModelProvider(this).get(WorkoutPlayViewModel::class.java)
     }
     val landmarksList = ArrayList<ArrayList<Landmark>>()
 
     private lateinit var playerControlDialogFragment: PlayerControlDialogFragment
+    var isReady = false
     var isFirst = true
     var isEnd = false
     private var playWhenReady = false
@@ -49,7 +53,6 @@ class WorkoutPlayActivity :
 
     companion object {
         private val TAG = WorkoutPlayActivity::class.java.simpleName
-        const val WORKOUT_NAME = "WORKOUT_NAME"
 
         val Poses = listOf(
             "PoseLandmark.NOSE",
@@ -230,6 +233,12 @@ class WorkoutPlayActivity :
         if (Util.SDK_INT >= 24) {
             initializePlayer()
         }
+
+        if (!isReady) {
+            if (PermissionHelper.cameraPermissionsGranted(this)) {
+                startCamera()
+            }
+        }
     }
 
     override fun onPause() {
@@ -278,6 +287,7 @@ class WorkoutPlayActivity :
                 false
             )
         ) CameraHelper.CameraFacing.FRONT else CameraHelper.CameraFacing.BACK
+
         cameraHelper!!.startCamera(
             this, cameraFacing,  /*unusedSurfaceTexture=*/null, cameraTargetResolution()
         )
@@ -340,6 +350,7 @@ class WorkoutPlayActivity :
                     .addCallback(
                         object : SurfaceHolder.Callback {
                             override fun surfaceCreated(holder: SurfaceHolder) {
+                                isReady = true
                                 processor?.videoSurfaceOutput!!.setSurface(holder.surface)
                             }
 

@@ -14,8 +14,8 @@ import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.base.BaseRecyclerView
 import com.fitsionary.momspt.presentation.home.viewmodel.HomeViewModel
 import com.fitsionary.momspt.presentation.main.view.MainActivity
+import com.fitsionary.momspt.presentation.workout.view.WorkoutDetailActivity
 import com.fitsionary.momspt.presentation.workout.view.WorkoutPlayActivity
-import com.fitsionary.momspt.presentation.workout.view.WorkoutPlayActivity.Companion.WORKOUT_NAME
 import com.fitsionary.momspt.util.DateUtil
 import com.fitsionary.momspt.util.listener.OnItemClickListener
 
@@ -63,11 +63,15 @@ class HomeFragment :
         routineAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {
                 startActivity(
-                    Intent(currentActivity, WorkoutPlayActivity::class.java).putExtra(
-                        WORKOUT_NAME, item.name
+                    Intent(currentActivity, WorkoutDetailActivity::class.java).putExtra(
+                        WORKOUT_NAME, item
                     )
                 )
             }
         }
+    }
+
+    companion object {
+        const val WORKOUT_NAME = "WORKOUT_NAME"
     }
 }
