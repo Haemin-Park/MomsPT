@@ -61,6 +61,7 @@ class AnalysisActivity :
                         videoPath = getVideoFilePath()
                         viewModel.countDownTimerStart()
                         binding.tvCountDownTimer.visibility = View.VISIBLE
+                        binding.btnUpload.visibility = View.INVISIBLE
                         binding.btnStart.visibility = View.INVISIBLE
                     }
 
