@@ -13,18 +13,18 @@ fun setScoreGradient(textView: TextView, score: Int) {
 
     when (score) {
         in 0..59 -> {
-            textView.setTextColor(textView.resources.getColor(R.color.materialBlue))
+            textView.setTextColor(textView.resources.getColor(R.color.gradient_blue))
             textView.paint.shader = null
         }
         in 60..89 -> {
-            textView.setTextColor(textView.resources.getColor(R.color.materialPink))
+            textView.setTextColor(textView.resources.getColor(R.color.gradient_pink))
             textView.paint.shader = null
         }
         else -> {
             val textShader = LinearGradient(
                 0f, 0f, width, textView.textSize, intArrayOf(
-                    textView.resources.getColor(R.color.materialPink),
-                    textView.resources.getColor(R.color.materialBlue),
+                    textView.resources.getColor(R.color.gradient_pink),
+                    textView.resources.getColor(R.color.gradient_blue),
                 ), null, Shader.TileMode.CLAMP
             )
             textView.paint.shader = textShader
