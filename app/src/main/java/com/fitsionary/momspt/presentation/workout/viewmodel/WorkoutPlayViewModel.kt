@@ -1,32 +1,33 @@
 package com.fitsionary.momspt.presentation.workout.viewmodel
 
-import android.util.Log
+import android.text.format.DateUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.fitsionary.momspt.presentation.base.BaseViewModel
-import com.fitsionary.momspt.util.TimeUtil
 import java.util.*
 
 class WorkoutPlayViewModel : BaseViewModel() {
     private val _score = MutableLiveData<Int>()
-    private val _cumulativeScore = MutableLiveData<Int>()
-    private val _timerCountDown = MutableLiveData<Long>()
-    private val _timerMinutes = MutableLiveData<Long>()
-    private val _timerSeconds = MutableLiveData<Long>()
-    private lateinit var timer: Timer
-
     val score: LiveData<Int>
         get() = _score
+
+    private val _cumulativeScore = MutableLiveData<Int>()
     val cumulativeScore: LiveData<Int>
         get() = _cumulativeScore
-    val timerCountDown: LiveData<Long>
+
+    private lateinit var timer: Timer
+
+    private val _timerCountDown = MutableLiveData<Long>()
+    private val timerCountDown: LiveData<Long>
         get() = _timerCountDown
-    val timerMinutes: LiveData<Long>
-        get() = _timerMinutes
-    val timerSeconds: LiveData<Long>
-        get() = _timerSeconds
+
+    val formattedTimer = Transformations.map(timerCountDown) { time ->
+        DateUtils.formatElapsedTime(time / 1000)
+    }
 
     init {
+        _score.value = 0
         _cumulativeScore.value = 0
     }
 
@@ -38,13 +39,10 @@ class WorkoutPlayViewModel : BaseViewModel() {
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                if (_timerCountDown.value!! == 0L) {
+                if (_timerCountDown.value == 0L) {
                     timer.cancel()
                 }
-                _timerCountDown.postValue(_timerCountDown.value!! - 1000)
-                val timerFormat = TimeUtil.makeTimerFormat(_timerCountDown.value ?: 0)
-                _timerMinutes.postValue(timerFormat.first ?: 0)
-                _timerSeconds.postValue(timerFormat.second ?: 0)
+                _timerCountDown.postValue(_timerCountDown.value?.minus(1000))
             }
         }, 1000, 1000)
     }
@@ -54,7 +52,6 @@ class WorkoutPlayViewModel : BaseViewModel() {
     }
 
     fun setScore(score: Int) {
-        Log.i(TAG, score.toString())
         _score.postValue(score)
         _cumulativeScore.postValue(_cumulativeScore.value?.plus(score))
     }

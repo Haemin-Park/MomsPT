@@ -35,35 +35,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <TextView
+                style="@style/bold_30sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <TextView
-                    style="@style/bold_30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(vm.timerMinutes)}"
-                    android:textColor="@color/white"
-                    tool:text="0" />
-
-                <TextView
-                    style="@style/bold_30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=":"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    style="@style/bold_30sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(vm.timerSeconds)}"
-                    android:textColor="@color/white"
-                    tool:text="0" />
-            </LinearLayout>
+                android:padding="10dp"
+                android:text="@{vm.formattedTimer}"
+                android:textColor="@color/white"
+                tool:text="0" />
         </androidx.cardview.widget.CardView>
 
         <FrameLayout
@@ -100,7 +79,7 @@
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="3"
-            android:text="@{String.valueOf(vm.cumulativeScore)+'점'}"
+            android:text="@{@string/score_format(vm.cumulativeScore)}"
             android:textColor="@color/main_pink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -124,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="@{String.valueOf(vm.score)+'점'}"
+                android:text="@{@string/score_format(vm.score)}"
                 android:textColor="@color/white"
                 tool:text="10점" />
 
