@@ -14,10 +14,10 @@ import com.fitsionary.momspt.util.rx.applyNetworkScheduler
 
 class WorkoutViewModel : BaseViewModel() {
     private val _comment = MutableLiveData<TodayCommentResponse>()
-    private val _workoutList = MutableLiveData<List<WorkoutModel>>()
-
     val comment: LiveData<TodayCommentResponse>
         get() = _comment
+
+    private val _workoutList = MutableLiveData<List<WorkoutModel>>()
     val workoutList: LiveData<List<WorkoutModel>>
         get() = _workoutList
 

@@ -18,16 +18,17 @@ import java.io.File
 import java.util.*
 
 class AnalysisViewModel : BaseViewModel() {
-
-    private val _timerCountDown = MutableLiveData<Int>()
-    private val _timerCountUp = MutableLiveData<Int>()
-    private val _event = MutableLiveData<Event<Pair<String, String>>>()
     private lateinit var timer: Timer
 
+    private val _timerCountDown = MutableLiveData<Int>()
     val timerCountDown: LiveData<Int>
         get() = _timerCountDown
+
+    private val _timerCountUp = MutableLiveData<Int>()
     val timerCountUp: LiveData<Int>
         get() = _timerCountUp
+
+    private val _event = MutableLiveData<Event<Pair<String, String>>>()
     val event: LiveData<Event<Pair<String, String>>>
         get() = _event
 
