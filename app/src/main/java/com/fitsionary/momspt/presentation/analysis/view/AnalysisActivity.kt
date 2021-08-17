@@ -8,7 +8,6 @@ import android.media.MediaScannerConnection
 import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.daasuu.camerarecorder.CameraRecorder
 import com.daasuu.camerarecorder.CameraRecorderBuilder
@@ -35,7 +34,7 @@ class AnalysisActivity :
     }
     private var cameraRecorder: CameraRecorder? = null
     private var sampleGLView: GLSurfaceView? = null
-    lateinit var parentFile: File
+    private lateinit var parentFile: File
     private lateinit var defaultFileName: String
     private lateinit var videoPath: String
     private lateinit var rxPermissions: RxPermissions
@@ -60,15 +59,11 @@ class AnalysisActivity :
                         defaultFileName = makeFileName()
                         videoPath = getVideoFilePath()
                         viewModel.countDownTimerStart()
-                        binding.tvCountDownTimer.visibility = View.VISIBLE
-                        binding.btnUpload.visibility = View.INVISIBLE
-                        binding.btnStart.visibility = View.INVISIBLE
                     }
 
                     binding.btnUpload.setOnClickListener {
                         val file = File(videoPath)
                         viewModel.sendVideo(file)
-                        binding.btnUpload.visibility = View.INVISIBLE
                     }
 
                     viewModel.isLoading
@@ -80,14 +75,12 @@ class AnalysisActivity :
                         it.getContentIfNotHandled()?.let { event ->
                             when (event.first) {
                                 COUNT_DOWN_TIMER_END -> {
-                                    isRecording(true)
                                     viewModel.countUpTimerStart()
                                     cameraRecorder?.start(videoPath)
                                 }
                                 COUNT_UP_TIMER_END -> {
-                                    isRecording(false)
                                     cameraRecorder?.stop()
-                                    exportMp4(this, videoPath)
+                                    exportVideo(this, videoPath)
                                 }
                                 RESULT_URL -> {
                                     downloadResult(event.second)
@@ -128,7 +121,7 @@ class AnalysisActivity :
         }
     }
 
-    private fun exportMp4(context: Context, filePath: String) {
+    private fun exportVideo(context: Context, filePath: String) {
         val values = ContentValues(2)
         values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
         values.put(MediaStore.Video.Media.DATA, filePath)
@@ -148,12 +141,12 @@ class AnalysisActivity :
     private fun makeFileName() = DateUtil.getDateFormat()
 
     private fun getVideoFilePath(): String {
-        return parentFile.absolutePath + "/" + defaultFileName + ".mp4"
+        return parentFile.absolutePath + "/$defaultFileName.mp4"
     }
 
     private fun downloadResult(url: String) {
         val resultFileName = "$defaultFileName.glb"
-        val resultFilePath = parentFile.absolutePath + "/" + resultFileName
+        val resultFilePath = parentFile.absolutePath + "/$resultFileName"
 
         val file = File(resultFilePath)
         if (!file.exists()) {
@@ -166,31 +159,12 @@ class AnalysisActivity :
 
     private fun startAnalysisResultActivity(path: String) {
         startActivity(
-            Intent(this@AnalysisActivity, AnalysisResultActivity::class.java).putExtra(
-                PATH,
-                path
-            )
+            Intent(this@AnalysisActivity, AnalysisResultActivity::class.java).putExtra(PATH, path)
         )
     }
 
     private fun getParentFile(context: Context): File? {
         return context.externalCacheDir!!
-    }
-
-    private fun isRecording(status: Boolean) {
-        if (status) {
-            binding.ivRecord.visibility = View.VISIBLE
-            binding.tvCountDownTimer.visibility = View.INVISIBLE
-            binding.cardIntroduce.visibility = View.INVISIBLE
-            binding.tvCountUpTimer.visibility = View.VISIBLE
-
-        } else {
-            binding.ivRecord.visibility = View.INVISIBLE
-            binding.tvCountUpTimer.visibility = View.INVISIBLE
-            binding.cardIntroduce.visibility = View.VISIBLE
-            binding.btnStart.visibility = View.VISIBLE
-            binding.btnUpload.visibility = View.VISIBLE
-        }
     }
 
     companion object {
