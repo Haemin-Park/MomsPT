@@ -22,11 +22,11 @@ import java.util.*
 class AnalysisViewModel : BaseViewModel() {
     private lateinit var timer: Timer
 
-    private val _timerCountDown = MutableLiveData<Int>()
+    private val _timerCountDown = MutableLiveData(COUNT_DOWN_TIME)
     val timerCountDown: LiveData<Int>
         get() = _timerCountDown
 
-    private val _timerCountUp = MutableLiveData<Int>()
+    private val _timerCountUp = MutableLiveData(0)
     val timerCountUp: LiveData<Int>
         get() = _timerCountUp
 
@@ -55,34 +55,32 @@ class AnalysisViewModel : BaseViewModel() {
         get() = _event
 
     fun countDownTimerStart() {
-        status.value = IS_RECORD_BTN_CLICKED
-        _timerCountDown.value = 5
+        setCurrentStatus(IS_RECORD_BTN_CLICKED, false)
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                if (_timerCountDown.value!! == 0) {
+                if (_timerCountDown.value == 0) {
                     timer.cancel()
-                    _event.postValue(Event(Pair(COUNT_DOWN_TIMER_END, "SUCCESS")))
+                    _event.postValue(Event(Pair(COUNT_DOWN_TIMER_END, SUCCESS)))
                 }
-                _timerCountDown.postValue(_timerCountDown.value!! - 1)
+                _timerCountDown.postValue(_timerCountDown.value?.minus(1))
             }
-        }, 1000, 1000)
+        }, DEFAULT_DELAY, DEFAULT_PERIOD)
     }
 
     fun countUpTimerStart() {
-        status.value = IS_RECORDING
-        _timerCountUp.value = 0
+        setCurrentStatus(IS_RECORDING, false)
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                if (_timerCountUp.value!! == 10) {
+                if (_timerCountUp.value == COUNT_UP_TIME) {
                     timer.cancel()
-                    status.postValue(IS_RECORDED)
-                    _event.postValue(Event(Pair(COUNT_UP_TIMER_END, "SUCCESS")))
+                    setCurrentStatus(IS_RECORDED, true)
+                    _event.postValue(Event(Pair(COUNT_UP_TIMER_END, SUCCESS)))
                 }
-                _timerCountUp.postValue(_timerCountUp.value!! + 1)
+                _timerCountUp.postValue(_timerCountUp.value?.plus(1))
             }
-        }, 1000, 1000)
+        }, DEFAULT_DELAY, DEFAULT_PERIOD)
     }
 
     fun sendVideo(file: File) {
@@ -94,7 +92,7 @@ class AnalysisViewModel : BaseViewModel() {
                 .doAfterTerminate { isLoading.onNext(false) }
                 .subscribe({
                     Log.d(TAG, it.toString())
-                    status.value = NONE
+                    setCurrentStatus(NONE, false)
                     _event.value = Event(Pair(RESULT_URL, BASE_URL2 + it))
 
                 }, {
@@ -170,7 +168,7 @@ class AnalysisViewModel : BaseViewModel() {
                     Event(
                         Pair(
                             START_ANALYSIS_RESULT_ACTIVITY,
-                            parentFile.absolutePath + "/" + fileName
+                            parentFile.absolutePath + "/$fileName"
                         )
                     )
             }
@@ -178,12 +176,27 @@ class AnalysisViewModel : BaseViewModel() {
         task.enqueue(listener)
     }
 
+    private fun setCurrentStatus(currentStatus: String, isBackgroundThread: Boolean) {
+        if (!isBackgroundThread)
+            status.value = currentStatus
+        else
+            status.postValue(currentStatus)
+    }
+
     companion object {
         private val TAG = AnalysisViewModel::class.simpleName
+
+        const val COUNT_DOWN_TIME = 5
+        const val COUNT_UP_TIME = 10
+        const val DEFAULT_DELAY = 1000L
+        const val DEFAULT_PERIOD = 1000L
+
+        // event
         const val COUNT_DOWN_TIMER_END = "COUNT_DOWN_TIMER_END"
         const val COUNT_UP_TIMER_END = "COUNT_UP_TIMER_END"
         const val RESULT_URL = "RESULT_URL"
         const val START_ANALYSIS_RESULT_ACTIVITY = "START_ANALYSIS_RESULT_ACTIVITY"
+        const val SUCCESS = "SUCCESS"
 
         // status
         const val NONE = "NONE"
