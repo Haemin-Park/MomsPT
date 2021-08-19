@@ -6,7 +6,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.fitsionary.momspt.util.listener.OnItemClickListener
 
-abstract class BaseRecyclerView<B : ViewDataBinding, T : Any>(
+abstract class BaseRecyclerViewAdapter<B : ViewDataBinding, T : Any>(
     @LayoutRes private val layoutResId: Int,
     private val bindingVariableItemId: Int? = null,
     private val bindingVariableListenerId: Int? = null

@@ -11,11 +11,10 @@ import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentHomeBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
-import com.fitsionary.momspt.presentation.base.BaseRecyclerView
+import com.fitsionary.momspt.presentation.base.BaseRecyclerViewAdapter
 import com.fitsionary.momspt.presentation.home.viewmodel.HomeViewModel
 import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.fitsionary.momspt.presentation.workout.view.WorkoutDetailActivity
-import com.fitsionary.momspt.presentation.workout.view.WorkoutPlayActivity
 import com.fitsionary.momspt.util.DateUtil
 import com.fitsionary.momspt.util.listener.OnItemClickListener
 
@@ -33,11 +32,12 @@ class HomeFragment :
             currentActivity = activity as MainActivity
     }
 
-    private val routineAdapter = object : BaseRecyclerView<FragmentHomeBinding, WorkoutModel>(
-        layoutResId = R.layout.item_workout_medium,
-        bindingVariableItemId = BR.MediumWorkoutItem,
-        bindingVariableListenerId = BR.MediumWorkoutItemListener
-    ) {}
+    private val routineAdapter =
+        object : BaseRecyclerViewAdapter<FragmentHomeBinding, WorkoutModel>(
+            layoutResId = R.layout.item_workout_medium,
+            bindingVariableItemId = BR.MediumWorkoutItem,
+            bindingVariableListenerId = BR.MediumWorkoutItemListener
+        ) {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
