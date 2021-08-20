@@ -5,10 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fitsionary.momspt.presentation.base.BaseRecyclerViewAdapter
 
 @Suppress("UNCHECKED_CAST")
-@BindingAdapter("replaceAll")
-fun RecyclerView.replaceAll(list: List<Any>?) {
-    (this.adapter as? BaseRecyclerViewAdapter<*, Any>)?.run {
-        replaceAll(list)
-        notifyDataSetChanged()
-    }
+@BindingAdapter("bindItems")
+fun RecyclerView.bindItems(list: List<Any>?) {
+    (this.adapter as? BaseRecyclerViewAdapter<*, Any>)?.submitList(list)
 }
