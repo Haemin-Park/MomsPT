@@ -7,6 +7,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.BR
 import com.fitsionary.momspt.R
+import com.fitsionary.momspt.TEST_USER_NAME
 import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentHomeBinding
@@ -47,16 +48,12 @@ class HomeFragment :
             rvRecommendWorkout.adapter = routineAdapter
         }
 
-        viewModel.getTodayComment("fit")
-
-        viewModel.comment.observe(viewLifecycleOwner, {
-            binding.commentItem = it
-        })
+        viewModel.getTodayComment(TEST_USER_NAME)
 
         viewModel.getTodayWorkoutList(
             TodayWorkoutListRequest(
                 DateUtil.getRequestDateFormat(),
-                "fit"
+                TEST_USER_NAME
             )
         )
 

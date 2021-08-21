@@ -3,14 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="vm"
             type="com.fitsionary.momspt.presentation.home.viewmodel.HomeViewModel" />
-
-        <variable
-            name="CommentItem"
-            type="com.fitsionary.momspt.data.api.response.TodayCommentResponse" />
     </data>
 
     <LinearLayout
@@ -21,19 +16,18 @@
         android:paddingStart="16dp">
 
         <TextView
-            android:id="@+id/aaaa"
             style="@style/bold_60sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:textColor="@color/main_pink"
-            android:text="@{`D+` + String.valueOf(CommentItem.d_day)}" />
+            android:text="@{`D+` + String.valueOf(vm.comment.d_day)}"
+            android:textColor="@color/main_pink" />
 
         <TextView
             style="@style/medium_14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{CommentItem.comment}"
+            android:text="@{vm.comment.comment}"
             android:textColor="@color/dark_gray" />
 
         <TextView

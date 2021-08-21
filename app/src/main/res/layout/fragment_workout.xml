@@ -6,10 +6,6 @@
         <variable
             name="vm"
             type="com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutViewModel" />
-
-        <variable
-            name="CommentItem"
-            type="com.fitsionary.momspt.data.api.response.TodayCommentResponse" />
     </data>
 
     <LinearLayout
@@ -25,14 +21,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@{`D+` + String.valueOf(CommentItem.d_day)}"
+            android:text="@{`D+` + String.valueOf(vm.comment.d_day)}"
             android:textColor="@color/main_pink" />
 
         <TextView
             style="@style/medium_14sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{CommentItem.comment}"
+            android:text="@{vm.comment.comment}"
             android:textColor="@color/dark_gray" />
 
         <TextView
