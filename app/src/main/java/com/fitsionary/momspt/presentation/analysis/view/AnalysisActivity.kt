@@ -1,13 +1,9 @@
 package com.fitsionary.momspt.presentation.analysis.view
 
 import android.Manifest
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.media.MediaScannerConnection
 import android.opengl.GLSurfaceView
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.lifecycle.ViewModelProvider
 import com.daasuu.camerarecorder.CameraRecorder
 import com.daasuu.camerarecorder.CameraRecorderBuilder
@@ -17,10 +13,8 @@ import com.fitsionary.momspt.databinding.ActivityAnalysisBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.COUNT_DOWN_TIMER_END
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.COUNT_UP_TIMER_END
-import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.RESULT_URL
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.START_ANALYSIS_RESULT_ACTIVITY
 import com.fitsionary.momspt.presentation.base.BaseActivity
-import com.fitsionary.momspt.util.DateUtil
 import com.fitsionary.momspt.util.rx.ui
 import com.tbruyelle.rxpermissions3.RxPermissions
 import io.reactivex.rxjava3.kotlin.addTo
@@ -34,9 +28,6 @@ class AnalysisActivity :
     }
     private var cameraRecorder: CameraRecorder? = null
     private var sampleGLView: GLSurfaceView? = null
-    private lateinit var parentFile: File
-    private lateinit var defaultFileName: String
-    private lateinit var videoPath: String
     private lateinit var rxPermissions: RxPermissions
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,17 +44,12 @@ class AnalysisActivity :
             )
             .subscribe { granted ->
                 if (granted) {
-                    parentFile = getParentFile(this)!!
-
                     binding.btnStart.setOnClickListener {
-                        defaultFileName = makeFileName()
-                        videoPath = getVideoFilePath()
-                        viewModel.countDownTimerStart()
+                        viewModel.recordStart()
                     }
 
                     binding.btnUpload.setOnClickListener {
-                        val file = File(videoPath)
-                        viewModel.sendVideo(file)
+                        viewModel.videoUpload()
                     }
 
                     viewModel.isLoading
@@ -75,15 +61,13 @@ class AnalysisActivity :
                         it.getContentIfNotHandled()?.let { event ->
                             when (event.first) {
                                 COUNT_DOWN_TIMER_END -> {
-                                    viewModel.countUpTimerStart()
-                                    cameraRecorder?.start(videoPath)
+                                    cameraRecorder?.start(event.second)
                                 }
                                 COUNT_UP_TIMER_END -> {
                                     cameraRecorder?.stop()
-                                    exportVideo(this, videoPath)
-                                }
-                                RESULT_URL -> {
-                                    downloadResult(event.second)
+                                    if (File(event.second).exists()) {
+                                        showToast("영상촬영이 완료되었습니다.")
+                                    }
                                 }
                                 START_ANALYSIS_RESULT_ACTIVITY -> {
                                     startAnalysisResultActivity(event.second)
@@ -121,50 +105,10 @@ class AnalysisActivity :
         }
     }
 
-    private fun exportVideo(context: Context, filePath: String) {
-        val values = ContentValues(2)
-        values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
-        values.put(MediaStore.Video.Media.DATA, filePath)
-        context.contentResolver.insert(
-            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-            values
-        )
-        MediaScannerConnection.scanFile(
-            context, arrayOf(File(filePath).toString()),
-            null, null
-        )
-        if (File(filePath).exists()) {
-            showToast("영상 촬영이 완료되었습니다.")
-        }
-    }
-
-    private fun makeFileName() = DateUtil.getDateFormat()
-
-    private fun getVideoFilePath(): String {
-        return parentFile.absolutePath + "/$defaultFileName.mp4"
-    }
-
-    private fun downloadResult(url: String) {
-        val resultFileName = "$defaultFileName.glb"
-        val resultFilePath = parentFile.absolutePath + "/$resultFileName"
-
-        val file = File(resultFilePath)
-        if (!file.exists()) {
-            viewModel.downloadResult(url, resultFileName, parentFile)
-        } else {
-            startAnalysisResultActivity(resultFilePath)
-            finish()
-        }
-    }
-
     private fun startAnalysisResultActivity(path: String) {
         startActivity(
             Intent(this@AnalysisActivity, AnalysisResultActivity::class.java).putExtra(PATH, path)
         )
-    }
-
-    private fun getParentFile(context: Context): File? {
-        return context.externalCacheDir!!
     }
 
     companion object {

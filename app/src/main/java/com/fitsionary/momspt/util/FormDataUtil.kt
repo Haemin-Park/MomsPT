@@ -7,6 +7,8 @@ import java.io.File
 
 object FormDataUtil {
 
+    const val FILE = "file"
+
     fun getBody(key: String, value: Any): MultipartBody.Part {
         return MultipartBody.Part.createFormData(key, value.toString())
     }
