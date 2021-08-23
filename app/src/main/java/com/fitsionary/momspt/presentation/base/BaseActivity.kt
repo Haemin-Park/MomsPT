@@ -6,11 +6,12 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModel
 import com.fitsionary.momspt.presentation.loading.view.LoadingDialogFragment
 import com.fitsionary.momspt.presentation.loading.view.LoadingDialogFragment.Companion.LOADING_DIALOG_FRAGMENT_TAG
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
-abstract class BaseActivity<B : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutResId: Int) :
+abstract class BaseActivity<B : ViewDataBinding, VM : ViewModel>(@LayoutRes private val layoutResId: Int) :
     AppCompatActivity() {
     protected lateinit var binding: B
     protected abstract val viewModel: VM
