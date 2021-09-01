@@ -6,7 +6,7 @@
         android:title="홈"
         app:showAsAction="always" />
     <item
-        android:id="@+id/main_trainig"
+        android:id="@+id/main_workout"
         android:title="운동"
         app:showAsAction="always" />
     <item
