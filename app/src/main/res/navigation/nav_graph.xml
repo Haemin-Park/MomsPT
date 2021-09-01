@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/main_home">
+    <fragment
+        android:id="@+id/main_home"
+        android:name="com.fitsionary.momspt.presentation.home.view.HomeFragment"
+        android:label="" />
+    <fragment
+        android:id="@+id/main_workout"
+        android:name="com.fitsionary.momspt.presentation.workout.view.WorkoutFragment"
+        android:label="운동" />
+    <fragment
+        android:id="@+id/main_daily"
+        android:name="com.fitsionary.momspt.presentation.daily.view.DailyFragment"
+        android:label="데일리" />
+    <fragment
+        android:id="@+id/main_mypage"
+        android:name="com.fitsionary.momspt.presentation.mypage.view.MyPageFragment"
+        android:label="마이페이지" />
+</navigation>

@@ -1,20 +1,17 @@
 package com.fitsionary.momspt.presentation.main.view
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.ActivityMainBinding
 import com.fitsionary.momspt.presentation.base.BaseActivity
-import com.fitsionary.momspt.presentation.daily.view.DailyFragment
-import com.fitsionary.momspt.presentation.home.view.HomeFragment
 import com.fitsionary.momspt.presentation.main.viewmodel.MainViewModel
-import com.fitsionary.momspt.presentation.mypage.view.MyPageFragment
-import com.fitsionary.momspt.presentation.workout.view.WorkoutFragment
 
 
 class MainActivity :
@@ -26,20 +23,23 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.bottomNavigationMain.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.main_home -> bottomNavigationReplaceFragment(HomeFragment())
-                R.id.main_trainig -> bottomNavigationReplaceFragment(WorkoutFragment())
-                R.id.main_daily -> bottomNavigationReplaceFragment(DailyFragment())
-                R.id.main_mypage -> bottomNavigationReplaceFragment(MyPageFragment())
-                else -> false
+        val navController = this.findNavController(R.id.nav_host_fragment)
+        binding.bottomNavigationMain.setupWithNavController(navController)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.main_home,
+                R.id.main_workout,
+                R.id.main_daily,
+                R.id.main_mypage
+            )
+        )
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, bundle: Bundle? ->
+            if (nd.id == nc.graph.startDestination) {
+                binding.ivLogo.visibility = View.VISIBLE
+            } else {
+                binding.ivLogo.visibility = View.INVISIBLE
             }
         }
-        binding.bottomNavigationMain.selectedItemId = R.id.main_home
-    }
-
-    private fun bottomNavigationReplaceFragment(fragment: Fragment): Boolean {
-        supportFragmentManager.beginTransaction().replace(binding.frameMain.id, fragment).commit()
-        return true
     }
 }
