@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@{`D+` + String.valueOf(vm.comment.d_day)}"
-            android:textColor="@color/main_pink" />
+            android:textColor="@color/pink" />
 
         <TextView
             style="@style/medium_14sp"

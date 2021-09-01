@@ -80,7 +80,7 @@
             android:shadowDy="2"
             android:shadowRadius="3"
             android:text="@{@string/score_format(vm.cumulativeScore)}"
-            android:textColor="@color/main_pink"
+            android:textColor="@color/pink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             tool:text="10점" />
