@@ -4,12 +4,11 @@ import android.app.Application
 import android.content.ContentValues
 import android.media.MediaScannerConnection
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.fitsionary.momspt.BASE_URL2
+import com.fitsionary.momspt.util.BASE_URL2
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
 import com.fitsionary.momspt.util.DateUtil
@@ -22,6 +21,7 @@ import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo
 import com.liulishuo.okdownload.core.cause.EndCause
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause
+import timber.log.Timber
 import java.io.File
 import java.util.*
 
@@ -115,12 +115,7 @@ class AnalysisViewModel(application: Application) : BaseAndroidViewModel(applica
             downloadResult(url, resultFileName, parentFile)
         } else {
             _event.value =
-                Event(
-                    Pair(
-                        START_ANALYSIS_RESULT_ACTIVITY,
-                        resultFilePath
-                    )
-                )
+                Event(Pair(START_ANALYSIS_RESULT_ACTIVITY, resultFilePath))
         }
     }
 
@@ -135,7 +130,7 @@ class AnalysisViewModel(application: Application) : BaseAndroidViewModel(applica
                     setCurrentStatus(NONE, false)
                     downloadResult(BASE_URL2 + it)
                 }, {
-                    Log.i(TAG, it.message!!)
+                    Timber.e(it.message!!)
                 })
         )
     }
@@ -248,8 +243,6 @@ class AnalysisViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     companion object {
-        private val TAG = AnalysisViewModel::class.simpleName
-
         // record constant
         private const val COUNT_DOWN_TIME = 5
         private const val COUNT_UP_TIME = 10
