@@ -9,11 +9,12 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import com.fitsionary.momspt.presentation.loading.view.LoadingDialogFragment
 import com.fitsionary.momspt.presentation.loading.view.LoadingDialogFragment.Companion.LOADING_DIALOG_FRAGMENT_TAG
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
-abstract class BaseFragment<B : ViewDataBinding, VM : BaseViewModel>(@LayoutRes private val layoutResId: Int) :
+abstract class BaseFragment<B : ViewDataBinding, VM : ViewModel>(@LayoutRes private val layoutResId: Int) :
     Fragment() {
     protected lateinit var binding: B
     protected abstract val viewModel: VM
