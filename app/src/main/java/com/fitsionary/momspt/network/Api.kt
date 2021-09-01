@@ -3,6 +3,7 @@ package com.fitsionary.momspt.network
 import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.api.response.TodayCommentResponse
 import com.fitsionary.momspt.data.api.response.TodayWorkoutListResponse
+import com.fitsionary.momspt.data.api.response.WorkoutPoseLandmarkResponse
 import io.reactivex.rxjava3.core.Single
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -19,4 +20,7 @@ interface Api {
     fun sendVideo(
         @Part file: MultipartBody.Part
     ): Single<String>
+
+    @GET("")
+    fun getWorkoutPoseLandmark(): Single<WorkoutPoseLandmarkResponse>
 }

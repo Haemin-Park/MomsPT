@@ -1,7 +1,7 @@
 package com.fitsionary.momspt.network
 
-import com.fitsionary.momspt.BASE_URL1
-import com.fitsionary.momspt.BASE_URL2
+import com.fitsionary.momspt.util.BASE_URL1
+import com.fitsionary.momspt.util.BASE_URL2
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

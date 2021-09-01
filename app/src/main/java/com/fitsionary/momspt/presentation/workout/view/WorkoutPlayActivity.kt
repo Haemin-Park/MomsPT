@@ -8,10 +8,11 @@ import android.util.Size
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.S3_URL
-import com.fitsionary.momspt.data.Landmark
+import com.fitsionary.momspt.util.S3_URL
+import com.fitsionary.momspt.data.api.response.Landmark
 import com.fitsionary.momspt.data.enum.PoseEnum
 import com.fitsionary.momspt.databinding.ActivityWorkoutPlayBinding
+import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
 import com.fitsionary.momspt.presentation.base.BaseActivity
 import com.fitsionary.momspt.presentation.home.view.HomeFragment.Companion.WORKOUT_NAME
 import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
@@ -21,7 +22,6 @@ import com.fitsionary.momspt.util.ScoringAlgorithm
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.util.Util
 import com.google.mediapipe.components.*
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList
 import com.google.mediapipe.framework.AndroidAssetUtil
@@ -29,11 +29,9 @@ import com.google.mediapipe.framework.Packet
 import com.google.mediapipe.framework.PacketGetter
 import com.google.mediapipe.glutil.EglManager
 import com.google.protobuf.InvalidProtocolBufferException
-import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.floor
-import kotlin.properties.Delegates
 
 
 class WorkoutPlayActivity :
@@ -41,10 +39,13 @@ class WorkoutPlayActivity :
     override val viewModel: WorkoutPlayViewModel by lazy {
         ViewModelProvider(this).get(WorkoutPlayViewModel::class.java)
     }
-    val landmarksList = ArrayList<ArrayList<Landmark>>()
+
+    /**
+     * TODO: Room에서 데이터 읽어오기
+     */
+    private val workoutLandmarks = WorkoutLandmarkDomainModel(listOf())
 
     private lateinit var playerControlDialogFragment: PlayerControlDialogFragment
-    var isReady = false
     var isFirst = true
     var isEnd = false
     private var playWhenReady = false
@@ -128,17 +129,17 @@ class WorkoutPlayActivity :
     private var player: SimpleExoPlayer? = null
     private var currentWindow = 0
     private var playbackPosition: Long = 0
-    private var viewHeight by Delegates.notNull<Int>()
-    private var viewWidth by Delegates.notNull<Int>()
-    private var parentHeight by Delegates.notNull<Int>()
-    private var parentWidth by Delegates.notNull<Int>()
+
+    // DTW에 이용할 카메라 가로, 세로 크기
+    private var parentHeight = 0
+    private var parentWidth = 0
+
     private lateinit var poseLandmarks: NormalizedLandmarkList
     private lateinit var workoutName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         workoutName = intent.getStringExtra(WORKOUT_NAME)!!
-        readJson()
         mediaUrl = "$S3_URL/$workoutName.mp4"
 
         binding.vm = viewModel
@@ -157,7 +158,8 @@ class WorkoutPlayActivity :
             applicationInfo.metaData.getString("inputVideoStreamName"),
             applicationInfo.metaData.getString("outputVideoStreamName")
         )
-        val scoreAlgorithm = ScoringAlgorithm(landmarksList)
+
+        val scoreAlgorithm = ScoringAlgorithm(workoutLandmarks)
         processor!!
             .videoSurfaceOutput
             .setFlipY(
@@ -205,7 +207,7 @@ class WorkoutPlayActivity :
 
     override fun onResume() {
         super.onResume()
-        if (Util.SDK_INT < 24 || player == null) {
+        if (player == null) {
             initializePlayer()
         }
 
@@ -230,22 +232,11 @@ class WorkoutPlayActivity :
 
     override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT >= 24) {
-            initializePlayer()
-        }
-
-        if (!isReady) {
-            if (PermissionHelper.cameraPermissionsGranted(this)) {
-                startCamera()
-            }
-        }
+        initializePlayer()
     }
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT < 24) {
-            releasePlayer()
-        }
 
         converter?.close()
         viewModel.countDownTimerStop()
@@ -256,9 +247,7 @@ class WorkoutPlayActivity :
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT >= 24) {
-            releasePlayer()
-        }
+        releasePlayer()
     }
 
     override fun onRequestPermissionsResult(
@@ -281,15 +270,13 @@ class WorkoutPlayActivity :
 
     private fun startCamera() {
         cameraHelper = CameraXPreviewHelper()
-        cameraHelper!!.setOnCameraStartedListener { surfaceTexture -> onCameraStarted(surfaceTexture) }
-        val cameraFacing: CameraHelper.CameraFacing = if (applicationInfo.metaData.getBoolean(
-                "cameraFacingFront",
-                false
-            )
-        ) CameraHelper.CameraFacing.FRONT else CameraHelper.CameraFacing.BACK
+        cameraHelper!!.setOnCameraStartedListener { surfaceTexture ->
+            onCameraStarted(surfaceTexture)
+        }
+        val cameraFacing: CameraHelper.CameraFacing = CameraHelper.CameraFacing.FRONT
 
         cameraHelper!!.startCamera(
-            this, cameraFacing,  /*unusedSurfaceTexture=*/null, cameraTargetResolution()
+            this, cameraFacing, null, cameraTargetResolution()
         )
     }
 
@@ -311,46 +298,26 @@ class WorkoutPlayActivity :
         // based on the size of the SurfaceView that contains the display.
         val viewSize: Size = computeViewSize(width, height)
         val displaySize: Size = cameraHelper!!.computeDisplaySizeFromViewSize(viewSize)
-        val isCameraRotated: Boolean = cameraHelper!!.isCameraRotated
-
         converter!!.setRotation(1)
         // Connect the converter to the camera-preview frames as its input (via
         // previewFrameTexture), and configure the output width and height as the computed
         // display size.
         converter!!.setSurfaceTextureAndAttachToGLContext(
-            previewFrameTexture,
-            if (isCameraRotated) {
-                displaySize.height
-            } else {
-                displaySize.width
-            },
-            if (isCameraRotated) {
-                displaySize.width
-            } else {
-                displaySize.height
-            }
+            previewFrameTexture, displaySize.height, displaySize.width
         )
-        if (isCameraRotated) {
-            viewHeight = displaySize.height
-            viewWidth = displaySize.width
-        } else {
-            viewHeight = displaySize.width
-            viewWidth = displaySize.height
-        }
     }
 
     private fun setupPreviewDisplayView() {
         runOnUiThread {
             run {
                 previewDisplayView!!.visibility = View.GONE
-                val viewGroup = findViewById<ViewGroup>(R.id.preview_display_layout)
+                val viewGroup = binding.previewDisplayLayout
                 viewGroup.addView(previewDisplayView)
                 previewDisplayView!!
                     .holder
                     .addCallback(
                         object : SurfaceHolder.Callback {
                             override fun surfaceCreated(holder: SurfaceHolder) {
-                                isReady = true
                                 processor?.videoSurfaceOutput!!.setSurface(holder.surface)
                             }
 
@@ -369,7 +336,6 @@ class WorkoutPlayActivity :
                         })
             }
         }
-
     }
 
     private fun initializePlayer() {
@@ -452,45 +418,6 @@ class WorkoutPlayActivity :
             currentWindow = player!!.currentWindowIndex
             player!!.release()
             player = null
-        }
-    }
-
-    private fun getPoseLandmarksDebugString(poseLandmarks: NormalizedLandmarkList): String {
-        var poseLandmarkStr = """
-              Pose landmarks: ${poseLandmarks.landmarkCount}
-
-              """.trimIndent()
-        for ((landmarkIndex, landmark) in poseLandmarks.landmarkList.withIndex()) {
-            poseLandmarkStr += """	Landmark [$landmarkIndex]: (${landmark.x}, ${landmark.y}, ${landmark.z})
-"""
-        }
-        return poseLandmarkStr
-    }
-
-    private fun readJson() {
-        landmarksList.clear()
-
-        val assetManager = resources.assets
-        val inputStream = assetManager.open(workoutName + ".json")
-        val jsonString = inputStream.bufferedReader().use { it.readText() }
-        val jObject = JSONObject(jsonString)
-        val jArray = jObject.getJSONArray("posedata")
-
-        for (i in 0 until jArray.length()) {
-            val obj = jArray.getJSONObject(i)
-            val landmarks = obj.getJSONArray("landmarks")
-            val landmarkList = ArrayList<Landmark>()
-            landmarkList.clear()
-            for (j in 0 until landmarks.length()) {
-                val landmark = landmarks.getJSONObject(j)
-                val part = landmark.getString("part")
-                val x = landmark.getDouble("x")
-                val y = landmark.getDouble("y")
-                val z = landmark.getDouble("z")
-                val visibility = landmark.getDouble("visibility")
-                landmarkList.add(Landmark(part, x, y, z, visibility))
-            }
-            landmarksList.add(landmarkList)
         }
     }
 }

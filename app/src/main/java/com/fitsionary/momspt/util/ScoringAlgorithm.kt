@@ -1,54 +1,54 @@
 package com.fitsionary.momspt.util
 
-import android.util.Log
-import com.fitsionary.momspt.data.Landmark
+import com.fitsionary.momspt.data.api.response.Landmark
+import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
+import timber.log.Timber
 import kotlin.math.abs
 
-class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
+class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
 
+    val landmarksList = workoutLandmarks.poseData
     private var count = 0
-    private val FRAME_CUT = 10
     var targetKeyPoints = ArrayList<Double>()
 
-    private val dtwTarget = ArrayList<ArrayList<Double>>()
-    private val dtwResource = ArrayList<ArrayList<Double>>()
+    private val DTWTarget = ArrayList<ArrayList<Double>>()
+    private val DTWResource = ArrayList<ArrayList<Double>>()
 
-    /*
-    * 프레임 당 Keypoints 추출한 뒤 호출하는 코드이다.
-    * Android에서는 프레임마다 pushKeyPoints를 출력하면 된다.
-    * FRAME_CUT 만큼 잘라서 dtw를 적용하고 결과값을 낸다.
-    */
+    /**
+     * 프레임 당 키포인트 추출 후 호출하는 함수
+     * FRAME_CUT만큼 잘라서 DTW를 적용하고 결과값 반환
+     */
     fun pushKeyPoints(
         keyPoints: ArrayList<Landmark>,
         cameraWidth: Int,
         cameraHeight: Int
     ): Double {
-        Log.i(TAG, "PUSH KEY POINTS!!")
-        Log.i(TAG, "$cameraWidth $cameraHeight")
         targetKeyPoints = keyPoints2Vec(keyPoints, cameraWidth, cameraHeight)
-        var result = 0.0
-        dtwTarget.add(targetKeyPoints)
+        var result: Double
+        DTWTarget.add(targetKeyPoints)
         count++
         if (count % FRAME_CUT == 0) {
-            //target과 비교할 프레임만큼 Resource도 만들어놓기
+            /**
+             * target 과 비교할 프레임만큼 resource 만들기
+             */
             for (i in count - FRAME_CUT until count) {
-                val resourceKeypoints = keyPoints2Vec(landmarksList[i], 720, 404)
-                dtwResource.add(resourceKeypoints)
+                val resourceKeypoints = keyPoints2Vec(landmarksList[i].landmarks, 720, 404)
+                DTWResource.add(resourceKeypoints)
             }
-            result = dtw(dtwTarget, dtwResource)
-            dtwTarget.clear()
-            dtwResource.clear()
+            result = DTW(DTWTarget, DTWResource)
+            DTWTarget.clear()
+            DTWResource.clear()
             result = -1 * 500 / FRAME_CUT * result + 100
             return if (result > 0) result else 0.0
         }
         return (-1).toDouble()
     }
 
-    /*
-    * 키 포인트 벡터화
-    */
+    /**
+     * 키 포인트 벡터화
+     */
     private fun keyPoints2Vec(
-        keyPoints: ArrayList<Landmark>,
+        keyPoints: List<Landmark>,
         cameraWidth: Int,
         cameraHeight: Int
     ): ArrayList<Double> {
@@ -56,9 +56,11 @@ class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
         var minX = Double.POSITIVE_INFINITY
         var minY = Double.POSITIVE_INFINITY
         var scaler = Double.NEGATIVE_INFINITY
-        Log.i(TAG, cameraHeight.toString() + " " + cameraWidth)
-        //1. 벡터 배열로 만들기, scale을 위한 변수 계산하기.
-        for (i in 0 until keyPoints.size) {
+
+        /**
+         * 1. 벡터 배열로 만들기, scale 을 위한 변수 계산하기.
+         */
+        for (i in keyPoints.indices) {
             val xValue: Double = keyPoints[i].x * cameraWidth
             val yValue: Double = keyPoints[i].y * cameraHeight
             vector.add(xValue)
@@ -68,10 +70,14 @@ class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
             scaler = Math.max(scaler, Math.max(xValue, yValue))
         }
 
-        //2. scale & translate
+        /**
+         * 2. scale & translate
+         */
         vector = scaleAndTranslate(vector, minX / scaler, minY / scaler, scaler)
 
-        //3. L2 normalization
+        /**
+         * L2 normalization
+         */
         vector = l2Normalize(vector)
         return vector
     }
@@ -100,64 +106,63 @@ class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
         norm = Math.sqrt(norm)
         for (i in 0 until vector.size) {
             vector[i] = vector[i] / norm
-            //vector.set(i, vector.get(i)/norm)
         }
-//        for (x in vector) {
-//            x = x / norm
-//        }
         return vector
     }
 
-    /*
-    * dtw 알고리즘을 적용하는 코드이다. pose data를 10프레임씩 잘라서 dtw를 적용한다.
-    * 키포인트 17개의 데이터를 -> 하나의 vector로 표현. 그것을 ArrayList<Double>에 저장.
-    */
-    private fun dtw(
+    /**
+     * pose data를 FRAME_CUT씩 잘라서 DTW적용
+     * 키포인트 17개의 데이터를 하나의 vector로 표현 후 ArrayList<Double>에 저장
+     */
+    private fun DTW(
         resourcePoseSet: ArrayList<ArrayList<Double>>,
         targetPoseSet: ArrayList<ArrayList<Double>>
     ): Double {
-        val dtw = Array(resourcePoseSet.size) {
+        val DTW = Array(resourcePoseSet.size) {
             DoubleArray(
                 targetPoseSet.size
             )
         }
 
-        // dtw table 초기화
+        /**
+         * DTW table 초기화
+         */
         for (i in 0 until resourcePoseSet.size) {
             for (j in 0 until targetPoseSet.size) {
-                if (i == 0 && j == 0) dtw[i][j] = 0.0 else dtw[i][j] = Double.POSITIVE_INFINITY
+                if (i == 0 && j == 0) DTW[i][j] = 0.0 else DTW[i][j] = Double.POSITIVE_INFINITY
             }
         }
 
-        // dtw table first row and column 계산
+        /**
+         * DTW table first row and column 계산
+         */
         for (i in 1 until resourcePoseSet.size) {
-            dtw[i][0] = dtw[i - 1][0] + consineDistanceOfPose(resourcePoseSet[i], targetPoseSet[0])
+            DTW[i][0] = DTW[i - 1][0] + cosineDistanceOfPose(resourcePoseSet[i], targetPoseSet[0])
         }
         for (j in 1 until targetPoseSet.size) {
-            dtw[0][j] = dtw[0][j - 1] + consineDistanceOfPose(resourcePoseSet[0], targetPoseSet[j])
+            DTW[0][j] = DTW[0][j - 1] + cosineDistanceOfPose(resourcePoseSet[0], targetPoseSet[j])
         }
         for (i in 1 until resourcePoseSet.size) {
             for (j in 1 until targetPoseSet.size) {
-                val cost = consineDistanceOfPose(resourcePoseSet[i], targetPoseSet[j])
-                Log.i(TAG, "cost [$i][$j] : $cost")
-                dtw[i][j] = cost + Math.min(
-                    dtw[i - 1][j - 1], Math.min(
-                        dtw[i - 1][j],
-                        dtw[i][j - 1]
+                val cost = cosineDistanceOfPose(resourcePoseSet[i], targetPoseSet[j])
+                Timber.i("cost [$i][$j] : $cost")
+                DTW[i][j] = cost + Math.min(
+                    DTW[i - 1][j - 1], Math.min(
+                        DTW[i - 1][j],
+                        DTW[i][j - 1]
                     )
                 )
-                Log.i(
-                    TAG,
-                    "dtw[" + i.toString() + "][" + j.toString() + "] : " + dtw[i][j].toString()
+                Timber.i(
+                    "DTW[" + i.toString() + "][" + j.toString() + "] : " + DTW[i][j].toString()
                 )
 
             }
         }
-        //Dynamic time wrapping 구현.
-        return dtw[resourcePoseSet.size - 1][targetPoseSet.size - 1]
+
+        return DTW[resourcePoseSet.size - 1][targetPoseSet.size - 1]
     }
 
-    private fun consineDistanceOfPose(
+    private fun cosineDistanceOfPose(
         poseVecA: ArrayList<Double>,
         poseVecB: ArrayList<Double>
     ): Double {
@@ -165,7 +170,6 @@ class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
         var absV1 = 0.0
         var absV2 = 0.0
         for (i in 0 until poseVecA.size) {
-            //Log.i(TAG, poseVecA.size.toString() + poseVecB.size.toString())
             val valueA = poseVecA[i]
             val valueB = poseVecB[i]
             v1Dotv2 += valueA * valueB
@@ -176,11 +180,10 @@ class ScoringAlgorithm(val landmarksList: ArrayList<ArrayList<Landmark>>) {
         absV2 = Math.sqrt(absV2)
 
         val check = v1Dotv2 / (absV1 * absV2)
-        Log.i(TAG, "COSINE : $check")
         return abs(1 - check)
     }
 
     companion object {
-        private val TAG = ScoringAlgorithm::class.java.simpleName
+        private const val FRAME_CUT = 10
     }
 }

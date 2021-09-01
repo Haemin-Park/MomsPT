@@ -1,4 +1,4 @@
-package com.fitsionary.momspt.data
+package com.fitsionary.momspt.data.api.response
 
 data class Landmark(
     val part: String,
