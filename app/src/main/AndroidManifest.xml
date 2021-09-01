@@ -28,33 +28,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MomsPT"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".presentation.workout.view.WorkoutDetailActivity"
-            android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
-        <activity
-            android:name=".presentation.main.view.MainActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".splash.view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.workout.view.WorkoutDetailActivity" />
+        <activity
+            android:name=".presentation.main.view.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.workout.view.WorkoutPlayActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".presentation.workout.view.WorkoutResultActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".presentation.analysis.view.AnalysisActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.MomsPT_NO_ACTION_BAR" />
-        <activity
-            android:name=".presentation.analysis.view.AnalysisResultActivity"
-            android:theme="@style/Theme.MomsPT" />
+            android:screenOrientation="portrait" />
+        <activity android:name=".presentation.analysis.view.AnalysisResultActivity" />
 
         <meta-data
             android:name="com.google.ar.core"
