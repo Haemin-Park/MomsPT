@@ -2,9 +2,8 @@ package com.fitsionary.momspt.data.api.response
 
 
 import android.annotation.SuppressLint
-import kotlinx.android.parcel.Parcelize
 import android.os.Parcelable
-import com.fitsionary.momspt.S3_URL
+import kotlinx.android.parcel.Parcelize
 
 @SuppressLint("ParcelCreator")
 @Parcelize

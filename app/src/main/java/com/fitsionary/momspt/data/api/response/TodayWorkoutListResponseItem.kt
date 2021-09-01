@@ -4,7 +4,6 @@ package com.fitsionary.momspt.data.api.response
 import android.annotation.SuppressLint
 import kotlinx.android.parcel.Parcelize
 import android.os.Parcelable
-import com.fitsionary.momspt.S3_URL
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.util.TimeUtil
 

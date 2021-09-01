@@ -7,7 +7,6 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.BR
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.TEST_USER_NAME
 import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentHomeBinding
@@ -16,7 +15,7 @@ import com.fitsionary.momspt.presentation.base.BaseRecyclerViewAdapter
 import com.fitsionary.momspt.presentation.home.viewmodel.HomeViewModel
 import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.fitsionary.momspt.presentation.workout.view.WorkoutDetailActivity
-import com.fitsionary.momspt.util.DateUtil
+import com.fitsionary.momspt.util.TEST_USER_NAME
 import com.fitsionary.momspt.util.listener.OnItemClickListener
 
 
@@ -52,7 +51,8 @@ class HomeFragment :
 
         viewModel.getTodayWorkoutList(
             TodayWorkoutListRequest(
-                DateUtil.getRequestDateFormat(),
+                "2021-08-10",
+                //DateUtil.getRequestDateFormat(),
                 TEST_USER_NAME
             )
         )

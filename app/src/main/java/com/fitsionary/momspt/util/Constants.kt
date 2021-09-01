@@ -1,4 +1,4 @@
-package com.fitsionary.momspt
+package com.fitsionary.momspt.util
 
 const val TEST_USER_NAME = "fit"
 const val BASE_URL1 = "http://3.37.163.248"

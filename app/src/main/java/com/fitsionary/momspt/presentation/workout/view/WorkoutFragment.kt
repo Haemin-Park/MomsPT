@@ -7,7 +7,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.BR
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.TEST_USER_NAME
+import com.fitsionary.momspt.util.TEST_USER_NAME
 import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentWorkoutBinding
