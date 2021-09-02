@@ -3,18 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/main_home"
-        android:title="홈"
-        app:showAsAction="always" />
+        android:icon="@drawable/ic_home"
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/main_workout"
-        android:title="운동"
-        app:showAsAction="always" />
+        android:icon="@drawable/ic_workout"
+        android:title="@string/workout"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/main_daily"
-        android:title="데일리"
-        app:showAsAction="always" />
+        android:icon="@drawable/ic_daily"
+        android:title="@string/daily"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/main_mypage"
-        android:title="마이페이지"
-        app:showAsAction="always" />
+        android:icon="@drawable/ic_mypage"
+        android:title="@string/mypage"
+        app:showAsAction="ifRoom" />
 </menu>
