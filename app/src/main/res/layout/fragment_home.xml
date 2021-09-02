@@ -1,51 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.fitsionary.momspt.presentation.home.viewmodel.HomeViewModel" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingStart="16dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            style="@style/bold_60sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@{`D+` + String.valueOf(vm.comment.d_day)}"
-            android:textColor="@color/pink" />
-
-        <TextView
-            style="@style/medium_14sp"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{vm.comment.comment}"
-            android:textColor="@color/dark_gray" />
+            android:background="@color/white"
+            android:orientation="vertical">
 
-        <TextView
-            style="@style/bold_18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/noto_sans_bold"
-            android:text="@string/daily_recommended_workout" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_22dp"
+                android:layout_marginTop="@dimen/spacing_26dp"
+                android:layout_marginEnd="@dimen/spacing_22dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_recommend_workout"
-            bindItems="@{vm.workoutList}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <TextView
+                    style="@style/bold_22sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="근력 회복 운동을\n집중적으로\n해야하는 시기에요"
+                    android:textColor="@color/black"
+                    tools:text="근력 회복 운동을\n집중적으로\n해야하는 시기에요" />
 
-    </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    style="@style/medium_18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_background"
+                    android:text="@{@string/d_day_format(vm.comment.d_day)}"
+                    android:textColor="@color/pink"
+                    tools:text="D+18" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/bold_20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_22dp"
+                android:layout_marginTop="@dimen/spacing_50dp"
+                android:layout_marginEnd="@dimen/spacing_22dp"
+                android:layout_marginBottom="@dimen/spacing_18dp"
+                android:fontFamily="@font/noto_sans_bold"
+                android:text="@string/daily_recommended_workout" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recommend_workout"
+                bindItems="@{vm.workoutList}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingStart="@dimen/spacing_22dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                style="@style/bold_20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_22dp"
+                android:layout_marginTop="@dimen/spacing_50dp"
+                android:layout_marginEnd="@dimen/spacing_22dp"
+                android:layout_marginBottom="@dimen/spacing_18dp"
+                android:fontFamily="@font/noto_sans_bold"
+                android:text="@string/weekly_statistics" />
+        </LinearLayout>
+    </ScrollView>
 </layout>

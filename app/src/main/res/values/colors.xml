@@ -9,11 +9,12 @@
     <color name="gradient_blue">#4169E1</color>
     <color name="purple">#848dcb</color>
     <color name="gray">#9c9c9c</color>
-    <color name="dark_gray">#595757</color>
 
     <color name="pink">#ec5363</color>
     <color name="light_pink">#f796a1</color>
     <color name="light_gray">#fafafa</color>
+    <color name="medium_gray">#ccc</color>
+    <color name="dark_gray">#797979</color>
     <color name="blue">#2bb5fd</color>
     <color name="black">#444444</color>
     <color name="white">#FFFFFFFF</color>

@@ -16,8 +16,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_routine_item"
-        android:layout_width="210dp"
+        android:layout_width="@dimen/workout_medium_width"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_14dp"
         android:background="@color/white"
         android:onClick="@{()->MediumWorkoutItemListener.onClick(MediumWorkoutItem)}">
 
@@ -25,80 +26,74 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:orientation="vertical"
-            android:paddingTop="5dp">
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="@dimen/workout_medium_width"
+                android:layout_height="@dimen/workout_medium_height"
                 android:layout_gravity="center"
-                app:cardCornerRadius="10dp"
-                app:strokeColor="@color/gray"
-                app:strokeWidth="1dp">
+                app:cardCornerRadius="@dimen/workout_medium_radius"
+                app:strokeColor="@color/light_gray"
+                app:strokeWidth="@dimen/workout_medium_stroke_width">
 
                 <ImageView
                     image_url="@{MediumWorkoutItem.thumbnail}"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
+                    android:layout_width="@dimen/workout_medium_width"
+                    android:layout_height="@dimen/workout_medium_height"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop" />
             </androidx.cardview.widget.CardView>
 
             <TextView
-                style="@style/bold_16sp"
+                style="@style/medium_16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginTop="@dimen/spacing_12dp"
+                android:layout_marginEnd="@dimen/spacing_5dp"
                 android:singleLine="true"
                 android:text="@{MediumWorkoutItem.name}"
                 android:textColor="@color/black"
-                tool:text="선명하고 탄탄한 복근 만들기" />
+                tool:text="힙 브릿지 운동" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="@{String.valueOf(MediumWorkoutItem.playtime) + `분`}"
+                    android:text="@{@string/minutes_format(MediumWorkoutItem.playtime)}"
                     android:textColor="@color/dark_gray"
-                    tool:text="13분" />
+                    tool:text="2분" />
 
                 <TextView
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text=" · "
+                    android:text="@string/divide_dot"
                     android:textColor="@color/dark_gray" />
 
                 <TextView
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(MediumWorkoutItem.calorie) + `kcal`}"
+                    android:text="@{@string/calorie_format(MediumWorkoutItem.calorie)}"
                     android:textColor="@color/dark_gray"
-                    tool:text="47kcal" />
+                    tool:text="15kcal" />
             </LinearLayout>
         </LinearLayout>
 
         <CheckBox
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/custom_checkbox"
             android:button="@null"
             android:checked="true"
             android:clickable="false"
+            android:includeFontPadding="false"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tool:checked="true" />

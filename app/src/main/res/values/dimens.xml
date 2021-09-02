@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--width, height-->
+    <dimen name="workout_medium_width">178dp</dimen>
+    <dimen name="workout_medium_height">190dp</dimen>
+    <dimen name="workout_medium_stroke_width">1dp</dimen>
+
+    <!--spacing-->
+    <dimen name="spacing_2dp">2dp</dimen>
+    <dimen name="spacing_5dp">5dp</dimen>
+    <dimen name="spacing_6dp">6dp</dimen>
+    <dimen name="spacing_8dp">8dp</dimen>
+    <dimen name="spacing_12dp">12dp</dimen>
+    <dimen name="spacing_14dp">14dp</dimen>
+    <dimen name="spacing_16dp">16dp</dimen>
+    <dimen name="spacing_18dp">18dp</dimen>
+    <dimen name="spacing_22dp">22dp</dimen>
+    <dimen name="spacing_26dp">26dp</dimen>
+    <dimen name="spacing_50dp">50dp</dimen>
+
+    <!--radius-->
+    <dimen name="bottom_nav_corner_radius">20dp</dimen>
+    <dimen name="round_background_radius">12dp</dimen>
+    <dimen name="workout_medium_radius">22dp</dimen>
+
+    <!--elevation-->
+    <dimen name="elevation_8dp">8dp</dimen>
+</resources>

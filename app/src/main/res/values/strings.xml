@@ -1,6 +1,18 @@
 <resources>
-    <string name="app_name">MomsPT</string>
-    <string name="daily_recommended_workout">오늘의 추천 운동</string>
-    <string name="ex_video_1">https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4</string>
+    <!--format-->
+    <string name="d_day_format">D+%d</string>
     <string name="score_format">%d점</string>
+    <string name="minutes_format">%d분</string>
+    <string name="calorie_format">%d`kcal`</string>
+
+    <!--string-->
+    <string name="app_name">MomsPT</string>
+    <string name="home">홈</string>
+    <string name="workout">운동</string>
+    <string name="daily">데일리</string>
+    <string name="mypage">마이페이지</string>
+    <string name="daily_recommended_workout">오늘의 추천 운동</string>
+    <string name="weekly_statistics">주간 달성일</string>
+    <string name="divide_dot">·</string>
+
 </resources>
