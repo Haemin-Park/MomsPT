@@ -3,7 +3,7 @@
     <string name="d_day_format">D+%d</string>
     <string name="score_format">%d점</string>
     <string name="minutes_format">%d분</string>
-    <string name="calorie_format">%d`kcal`</string>
+    <string name="calorie_format">%dkcal</string>
 
     <!--string-->
     <string name="app_name">MomsPT</string>
@@ -13,6 +13,8 @@
     <string name="mypage">마이페이지</string>
     <string name="daily_recommended_workout">오늘의 추천 운동</string>
     <string name="weekly_statistics">주간 달성일</string>
-    <string name="divide_dot">·</string>
+    <string name="divide_dot">&#160;·&#160;</string>
+    <string name="workout_current_stage">지금 당신의\n위치는 어디인가요?</string>
+    <string name="recommend_workout">추천 운동</string>
 
 </resources>

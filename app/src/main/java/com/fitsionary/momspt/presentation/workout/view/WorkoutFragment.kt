@@ -51,7 +51,8 @@ class WorkoutFragment :
 
         viewModel.getTodayWorkoutList(
             TodayWorkoutListRequest(
-                DateUtil.getRequestDateFormat(),
+                "2021-08-10",
+                //DateUtil.getRequestDateFormat(),
                 TEST_USER_NAME
             )
         )

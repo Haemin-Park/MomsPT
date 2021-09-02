@@ -11,7 +11,8 @@
     <color name="gray">#9c9c9c</color>
 
     <color name="pink">#ec5363</color>
-    <color name="light_pink">#f796a1</color>
+    <color name="light_pink">#fff7f7</color>
+    <color name="medium_pink">#f796a1</color>
     <color name="light_gray">#fafafa</color>
     <color name="medium_gray">#ccc</color>
     <color name="dark_gray">#797979</color>
