@@ -12,8 +12,6 @@ import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.ActivityMainBinding
 import com.fitsionary.momspt.presentation.base.BaseActivity
 import com.fitsionary.momspt.presentation.main.viewmodel.MainViewModel
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.MaterialShapeDrawable
 
 
 class MainActivity :
@@ -24,15 +22,6 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val radius = resources.getDimension(R.dimen.bottom_nav_corner_radius)
-        val shapeDrawable: MaterialShapeDrawable =
-            binding.bottomNavigationMain.background as MaterialShapeDrawable
-        shapeDrawable.shapeAppearanceModel = shapeDrawable.shapeAppearanceModel
-            .toBuilder()
-            .setTopLeftCorner(CornerFamily.ROUNDED, radius)
-            .setTopRightCorner(CornerFamily.ROUNDED, radius)
-            .build()
 
         val navController = this.findNavController(R.id.nav_host_fragment)
         binding.bottomNavigationMain.setupWithNavController(navController)
