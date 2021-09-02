@@ -34,7 +34,7 @@
                 android:layout_gravity="center"
                 app:cardCornerRadius="@dimen/workout_medium_radius"
                 app:strokeColor="@color/light_gray"
-                app:strokeWidth="@dimen/workout_medium_stroke_width">
+                app:strokeWidth="@dimen/workout_stroke_width">
 
                 <ImageView
                     image_url="@{MediumWorkoutItem.thumbnail}"
@@ -87,8 +87,10 @@
         </LinearLayout>
 
         <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/workout_checkbox_width"
+            android:layout_height="@dimen/workout_checkbox_height"
+            android:layout_marginTop="@dimen/spacing_10dp"
+            android:layout_marginRight="@dimen/spacing_10dp"
             android:background="@drawable/custom_checkbox"
             android:button="@null"
             android:checked="true"
