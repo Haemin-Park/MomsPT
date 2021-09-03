@@ -12,6 +12,10 @@
     <dimen name="workout_large_width">90dp</dimen>
     <dimen name="workout_large_height">90dp</dimen>
     <dimen name="workout_ic_height">19dp</dimen>
+    <dimen name="workout_detail_img_height">220dp</dimen>
+    <dimen name="workout_detail_name_width">200dp</dimen>
+    <dimen name="workout_detail_box_height">94dp</dimen>
+    <dimen name="workout_detail_vertical_line_width">3dp</dimen>
 
     <!--spacing-->
     <dimen name="spacing_2dp">2dp</dimen>
@@ -28,13 +32,14 @@
     <dimen name="spacing_22dp">22dp</dimen>
     <dimen name="spacing_24dp">24dp</dimen>
     <dimen name="spacing_26dp">26dp</dimen>
+    <dimen name="spacing_35dp">35dp</dimen>
     <dimen name="spacing_40dp">40dp</dimen>
     <dimen name="spacing_50dp">50dp</dimen>
 
     <!--radius-->
     <dimen name="bottom_nav_corner_radius">20dp</dimen>
     <dimen name="round_background_radius">12dp</dimen>
-    <dimen name="workout_medium_radius">22dp</dimen>
+    <dimen name="workout_img_radius">22dp</dimen>
 
     <!--elevation-->
     <dimen name="elevation_1dp">1dp</dimen>
