@@ -48,6 +48,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_background"
+                    android:paddingLeft="@dimen/spacing_16dp"
+                    android:paddingTop="@dimen/spacing_8dp"
+                    android:paddingRight="@dimen/spacing_16dp"
+                    android:paddingBottom="@dimen/spacing_8dp"
                     android:text="@{@string/d_day_format(vm.comment.d_day)}"
                     android:textColor="@color/pink"
                     tools:text="D+18" />

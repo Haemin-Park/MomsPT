@@ -32,7 +32,7 @@
                 android:layout_width="@dimen/workout_medium_width"
                 android:layout_height="@dimen/workout_medium_height"
                 android:layout_gravity="center"
-                app:cardCornerRadius="@dimen/workout_medium_radius"
+                app:cardCornerRadius="@dimen/workout_img_radius"
                 app:strokeColor="@color/light_gray"
                 app:strokeWidth="@dimen/workout_stroke_width">
 

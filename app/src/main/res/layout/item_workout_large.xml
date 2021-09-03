@@ -17,10 +17,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_20dp"
         android:gravity="center_vertical"
         android:onClick="@{()->LargeWorkoutItemListener.onClick(LargeWorkoutItem)}"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/spacing_20dp"
         android:paddingLeft="@dimen/spacing_22dp"
         android:paddingRight="@dimen/spacing_22dp">
 
@@ -38,7 +38,7 @@
             android:layout_height="@dimen/workout_large_height"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/spacing_16dp"
-            app:cardCornerRadius="@dimen/workout_medium_radius"
+            app:cardCornerRadius="@dimen/workout_img_radius"
             app:strokeColor="@color/gray"
             app:strokeWidth="1dp">
 
@@ -70,49 +70,34 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="힙 브릿지 운동" />
 
-            <ImageView
-                android:id="@+id/iv_workout_large_time"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/workout_ic_height"
-                android:layout_marginTop="@dimen/spacing_6dp"
-                android:src="@drawable/ic_time"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_workout_large_name" />
-
             <TextView
                 android:id="@+id/tv_workout_large_time"
                 style="@style/medium_14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_6dp"
+                android:layout_marginTop="@dimen/spacing_6dp"
+                android:drawablePadding="@dimen/spacing_6dp"
                 android:singleLine="true"
                 android:text="@{@string/minutes_format(LargeWorkoutItem.playtime)}"
                 android:textColor="@color/dark_gray"
-                app:layout_constraintBottom_toBottomOf="@id/iv_workout_large_time"
-                app:layout_constraintStart_toEndOf="@+id/iv_workout_large_time"
+                app:drawableStartCompat="@drawable/ic_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_workout_large_name"
                 tools:text="13분" />
 
-            <ImageView
-                android:id="@+id/iv_workout_large_calorie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_16dp"
-                android:layout_marginTop="@dimen/spacing_6dp"
-                android:src="@drawable/ic_calorie"
-                app:layout_constraintStart_toEndOf="@id/tv_workout_large_time"
-                app:layout_constraintTop_toBottomOf="@id/tv_workout_large_name" />
 
             <TextView
                 style="@style/medium_14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_6dp"
+                android:layout_marginStart="@dimen/spacing_16dp"
+                android:layout_marginTop="@dimen/spacing_6dp"
+                android:drawablePadding="@dimen/spacing_6dp"
                 android:text="@{@string/calorie_format(LargeWorkoutItem.calorie)}"
                 android:textColor="@color/dark_gray"
-                app:layout_constraintBottom_toBottomOf="@id/iv_workout_large_calorie"
-                app:layout_constraintStart_toEndOf="@id/iv_workout_large_calorie"
-                tools:layout_editor_absoluteX="28dp"
-                tools:layout_editor_absoluteY="23dp"
+                app:drawableStartCompat="@drawable/ic_calorie"
+                app:layout_constraintStart_toEndOf="@id/tv_workout_large_time"
+                app:layout_constraintTop_toBottomOf="@id/tv_workout_large_name"
                 tools:text="47kcal" />
 
             <TextView
@@ -120,6 +105,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
+                android:paddingLeft="@dimen/spacing_16dp"
+                android:paddingTop="@dimen/spacing_8dp"
+                android:paddingRight="@dimen/spacing_16dp"
+                android:paddingBottom="@dimen/spacing_8dp"
                 android:text="A+"
                 android:textColor="@color/pink"
                 app:layout_constraintBottom_toBottomOf="parent"
