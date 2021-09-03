@@ -1,22 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/main_home">
     <fragment
         android:id="@+id/main_home"
         android:name="com.fitsionary.momspt.presentation.home.view.HomeFragment"
-        android:label="" />
+        android:label=""
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_main_home_to_workoutDetailFragment"
+            app:destination="@id/workoutDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/main_workout"
         android:name="com.fitsionary.momspt.presentation.workout.view.WorkoutFragment"
-        android:label="운동" />
+        android:label="운동"
+        tools:layout="@layout/fragment_workout">
+        <action
+            android:id="@+id/action_main_workout_to_workoutDetailFragment"
+            app:destination="@id/workoutDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/main_daily"
         android:name="com.fitsionary.momspt.presentation.daily.view.DailyFragment"
-        android:label="데일리" />
+        android:label="데일리"
+        tools:layout="@layout/fragment_daily" />
     <fragment
         android:id="@+id/main_mypage"
         android:name="com.fitsionary.momspt.presentation.mypage.view.MyPageFragment"
-        android:label="마이페이지" />
+        android:label="마이페이지"
+        tools:layout="@layout/fragment_mypage" />
+    <fragment
+        android:id="@+id/workoutDetailFragment"
+        android:name="com.fitsionary.momspt.presentation.workoutdetail.view.WorkoutDetailFragment"
+        android:label="운동 상세"
+        tools:layout="@layout/fragment_workout_detail">
+        <argument
+            android:name="workout"
+            app:argType="com.fitsionary.momspt.data.model.WorkoutModel" />
+    </fragment>
 </navigation>

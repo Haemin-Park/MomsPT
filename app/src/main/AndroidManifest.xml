@@ -35,7 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.workout.view.WorkoutDetailActivity" />
         <activity
             android:name=".presentation.main.view.MainActivity"
             android:screenOrientation="portrait" />

@@ -1,4 +1,4 @@
-package com.fitsionary.momspt.presentation.workout.viewmodel
+package com.fitsionary.momspt.presentation.workoutdetail.viewmodel
 
 import com.fitsionary.momspt.presentation.base.BaseViewModel
 
