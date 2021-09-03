@@ -5,53 +5,35 @@
     <item>
         <shape>
             <corners android:radius="@dimen/bottom_nav_corner_radius" />
-
             <padding android:top="1dp" />
-
             <solid android:color="#00CCCCCC" />
         </shape>
     </item>
     <item>
         <shape>
             <corners android:radius="@dimen/bottom_nav_corner_radius" />
-
-            <padding
-
-                android:top="1dp" />
-
+            <padding android:top="1dp" />
             <solid android:color="#10CCCCCC" />
         </shape>
     </item>
     <item>
         <shape>
             <corners android:radius="@dimen/bottom_nav_corner_radius" />
-
-            <padding
-
-                android:top="1dp" />
-
+            <padding android:top="1dp" />
             <solid android:color="#20d5d5d5" />
         </shape>
     </item>
     <item>
         <shape>
             <corners android:radius="@dimen/bottom_nav_corner_radius" />
-
-            <padding
-
-                android:top="1dp" />
-
+            <padding android:top="1dp" />
             <solid android:color="#30cbcbcb" />
         </shape>
     </item>
     <item>
         <shape>
             <corners android:radius="@dimen/bottom_nav_corner_radius" />
-
-            <padding
-
-                android:top="1dp" />
-
+            <padding android:top="1dp" />
             <solid android:color="#50bababa" />
         </shape>
     </item>
@@ -60,7 +42,6 @@
     <item>
         <shape>
             <solid android:color="@color/white" />
-
             <corners
                 android:topLeftRadius="@dimen/bottom_nav_corner_radius"
                 android:topRightRadius="@dimen/bottom_nav_corner_radius" />
