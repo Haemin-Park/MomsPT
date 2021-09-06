@@ -14,7 +14,7 @@
         tools:context=".presentation.main.view.MainActivity">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -33,7 +33,7 @@
         </androidx.appcompat.widget.Toolbar>
 
         <fragment
-            android:id="@+id/nav_host_fragment"
+            android:id="@+id/main_nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -42,7 +42,7 @@
             app:layout_constraintBottom_toTopOf="@id/bottom_navigation_main"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_weight="1"
-            app:navGraph="@navigation/nav_graph" />
+            app:navGraph="@navigation/main_nav_graph" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_main"
