@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/spacing_22dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_logo1" />
+
+        <com.fitsionary.momspt.presentation.custom.CustomSignInButton
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sign_in_button_height"
+            android:layout_marginBottom="@dimen/spacing_14dp"
+            app:bgColor="@color/yellow"
+            app:layout_constraintBottom_toTopOf="@+id/btn_naver_sign_in"
+            app:symbolImg="@drawable/ic_kakao_simbol"
+            app:text="@string/kakao_sign_in"
+            app:textColor="@color/black" />
+
+        <com.fitsionary.momspt.presentation.custom.CustomSignInButton
+            android:id="@+id/btn_naver_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sign_in_button_height"
+            app:bgColor="@color/green"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:symbolImg="@drawable/ic_naver_simbol"
+            app:text="@string/naver_sign_in"
+            app:textColor="@color/white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

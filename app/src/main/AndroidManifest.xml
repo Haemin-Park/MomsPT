@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MomsPT"
         android:usesCleartextTraffic="true">
-        <activity android:name=".splash.view.SplashActivity">
+        <activity android:name=".presentation.intro.view.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
