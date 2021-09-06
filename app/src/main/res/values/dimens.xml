@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--width, height-->
+    <dimen name="sign_in_button_height">60dp</dimen>
     <dimen name="workout_medium_width">178dp</dimen>
     <dimen name="workout_medium_height">190dp</dimen>
     <dimen name="workout_stroke_width">1dp</dimen>
@@ -37,6 +38,7 @@
     <dimen name="spacing_50dp">50dp</dimen>
 
     <!--radius-->
+    <dimen name="sign_in_button_background_radius">18dp</dimen>
     <dimen name="bottom_nav_corner_radius">20dp</dimen>
     <dimen name="round_background_radius">12dp</dimen>
     <dimen name="workout_img_radius">22dp</dimen>
