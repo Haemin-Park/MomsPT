@@ -2,6 +2,7 @@
 <resources>
     <!--width, height-->
     <dimen name="sign_in_button_height">60dp</dimen>
+    <dimen name="sign_up_edit_text_height">58dp</dimen>
     <dimen name="workout_medium_width">178dp</dimen>
     <dimen name="workout_medium_height">190dp</dimen>
     <dimen name="workout_stroke_width">1dp</dimen>
@@ -39,9 +40,13 @@
 
     <!--radius-->
     <dimen name="sign_in_button_background_radius">18dp</dimen>
+    <dimen name="sign_up_edit_text_background_radius">12dp</dimen>
     <dimen name="bottom_nav_corner_radius">20dp</dimen>
     <dimen name="round_background_radius">12dp</dimen>
     <dimen name="workout_img_radius">22dp</dimen>
+
+    <!-- stroke -->
+    <dimen name="sign_up_edit_text_background_stroke">1dp</dimen>
 
     <!--elevation-->
     <dimen name="elevation_1dp">1dp</dimen>

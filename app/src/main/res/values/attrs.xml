@@ -6,4 +6,10 @@
         <attr name="text" format="reference|string" />
         <attr name="textColor" format="reference|integer" />
     </declare-styleable>
+    <declare-styleable name="SignUpEditText">
+        <attr name="hintText" format="reference|string" />
+        <attr name="rightText" format="reference|string" />
+        <attr name="rightTextColor" format="reference|integer" />
+        <attr name="iconImg" format="reference|integer" />
+    </declare-styleable>
 </resources>

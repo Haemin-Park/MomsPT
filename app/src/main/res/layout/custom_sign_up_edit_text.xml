@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_custom_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_custom_sign_up"
+            style="@style/medium_16sp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sign_up_edit_text_height"
+            android:background="@drawable/sign_up_edit_text_background"
+            android:drawableLeft="@drawable/ic_daily"
+            android:drawablePadding="@dimen/spacing_14dp"
+            android:drawableTint="@color/black"
+            android:hint="출산일을 선택하세요."
+            android:paddingStart="@dimen/spacing_16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_custom_sign_up"
+            style="@style/medium_16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_14dp"
+            android:text="중복확인"
+            android:textColor="@color/pink"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
