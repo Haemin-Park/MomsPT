@@ -7,6 +7,7 @@
         <attr name="textColor" format="reference|integer" />
     </declare-styleable>
     <declare-styleable name="SignUpEditText">
+        <attr name="inputText" format="reference|string" />
         <attr name="hintText" format="reference|string" />
         <attr name="rightText" format="reference|string" />
         <attr name="rightTextColor" format="reference|integer" />
