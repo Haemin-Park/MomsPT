@@ -20,5 +20,14 @@
         android:id="@+id/signInFragment"
         android:name="com.fitsionary.momspt.presentation.signin.view.SignInFragment"
         android:label="SignInFragment"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.fitsionary.momspt.signup.view.SignUpFragment"
+        android:label=""
+        tools:layout="@layout/fragment_sign_up" />
 </navigation>
