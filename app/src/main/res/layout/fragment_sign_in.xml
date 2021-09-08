@@ -22,6 +22,7 @@
             app:srcCompat="@drawable/ic_logo1" />
 
         <com.fitsionary.momspt.presentation.custom.CustomSignInButton
+            android:id="@+id/btn_kakao_sign_in"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sign_in_button_height"
             android:layout_marginBottom="@dimen/spacing_14dp"
