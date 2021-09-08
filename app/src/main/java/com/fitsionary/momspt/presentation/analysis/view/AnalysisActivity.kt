@@ -112,7 +112,6 @@ class AnalysisActivity :
     }
 
     companion object {
-        private val TAG = AnalysisActivity::class.simpleName
         const val PATH = "PATH"
     }
 }

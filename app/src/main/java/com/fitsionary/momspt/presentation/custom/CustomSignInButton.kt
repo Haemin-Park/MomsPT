@@ -16,12 +16,12 @@ class CustomSignInButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    init {
-        val binding: CustomSignInButtonBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.custom_sign_in_button, this, true
-        )
+    private var binding: CustomSignInButtonBinding = DataBindingUtil.inflate(
+        LayoutInflater.from(context),
+        R.layout.custom_sign_in_button, this, true
+    )
 
+    init {
         context.withStyledAttributes(attrs, R.styleable.SignInButton) {
             binding.layoutCustomSignIn.backgroundTintList =
                 ColorStateList.valueOf(

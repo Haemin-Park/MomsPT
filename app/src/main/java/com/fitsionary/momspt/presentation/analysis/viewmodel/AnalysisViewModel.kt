@@ -8,9 +8,9 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.fitsionary.momspt.util.BASE_URL2
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
+import com.fitsionary.momspt.util.BASE_URL2
 import com.fitsionary.momspt.util.DateUtil
 import com.fitsionary.momspt.util.Event
 import com.fitsionary.momspt.util.FormDataUtil
@@ -26,6 +26,26 @@ import java.io.File
 import java.util.*
 
 class AnalysisViewModel(application: Application) : BaseAndroidViewModel(application) {
+    // record constant
+    private val COUNT_DOWN_TIME = 5
+    private val COUNT_UP_TIME = 10
+    private val DEFAULT_DELAY = 1000L
+    private val DEFAULT_PERIOD = 1000L
+
+    // status type
+    private val NONE = "NONE"
+    private val IS_RECORD_BTN_CLICKED = "IS_RECORD_BTN_CLICKED"
+    private val IS_RECORDING = "IS_RECORDING"
+    private val IS_RECORDED = "IS_RECORDED"
+
+
+    companion object {
+        // event type
+        val COUNT_DOWN_TIMER_END = "COUNT_DOWN_TIMER_END"
+        val COUNT_UP_TIMER_END = "COUNT_UP_TIMER_END"
+        val START_ANALYSIS_RESULT_ACTIVITY = "START_ANALYSIS_RESULT_ACTIVITY"
+    }
+
     private lateinit var timer: Timer
     private var status: MutableLiveData<String> = MutableLiveData(NONE)
 
@@ -240,24 +260,5 @@ class AnalysisViewModel(application: Application) : BaseAndroidViewModel(applica
 
     private fun getParentFile(application: Application): File {
         return application.externalCacheDir!!
-    }
-
-    companion object {
-        // record constant
-        private const val COUNT_DOWN_TIME = 5
-        private const val COUNT_UP_TIME = 10
-        private const val DEFAULT_DELAY = 1000L
-        private const val DEFAULT_PERIOD = 1000L
-
-        // event type
-        const val COUNT_DOWN_TIMER_END = "COUNT_DOWN_TIMER_END"
-        const val COUNT_UP_TIMER_END = "COUNT_UP_TIMER_END"
-        const val START_ANALYSIS_RESULT_ACTIVITY = "START_ANALYSIS_RESULT_ACTIVITY"
-
-        // status type
-        private const val NONE = "NONE"
-        private const val IS_RECORD_BTN_CLICKED = "IS_RECORD_BTN_CLICKED"
-        private const val IS_RECORDING = "IS_RECORDING"
-        private const val IS_RECORDED = "IS_RECORDED"
     }
 }
