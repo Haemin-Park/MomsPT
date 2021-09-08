@@ -27,7 +27,11 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.fitsionary.momspt.signup.view.SignUpFragment"
+        android:name="com.fitsionary.momspt.presentation.signup.view.SignUpFragment"
         android:label=""
-        tools:layout="@layout/fragment_sign_up" />
+        tools:layout="@layout/fragment_sign_up">
+        <argument
+            android:name="nickname"
+            app:argType="string" />
+    </fragment>
 </navigation>

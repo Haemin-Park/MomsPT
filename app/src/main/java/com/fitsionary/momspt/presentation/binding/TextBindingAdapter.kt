@@ -1,10 +1,21 @@
 package com.fitsionary.momspt.presentation.binding
 
+import android.annotation.SuppressLint
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import com.fitsionary.momspt.R
+
+@BindingAdapter("validationResultTextColor")
+fun setValidationResultTextColor(textView: TextView, success: Boolean) {
+    if (success) {
+        textView.setTextColor(ResourcesCompat.getColor(textView.resources, R.color.blue, null))
+    } else {
+        textView.setTextColor(ResourcesCompat.getColor(textView.resources, R.color.pink, null))
+    }
+}
 
 @BindingAdapter("score_gradient")
 fun setScoreGradient(textView: TextView, score: Int) {

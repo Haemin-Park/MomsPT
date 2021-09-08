@@ -12,6 +12,10 @@
     <string name="sign_up_text">맘스피티를 이용하기 위한\n추가 정보를 입력하세요</string>
     <string name="write_nickname">닉네임을 입력하세요.</string>
     <string name="duplicate_check">중복확인</string>
+    <string name="empty_nickname">* 닉네임을 입력해 주세요.</string>
+    <string name="wrong_format_nickname">* 한글, 영어, 숫자만 가능합니다.</string>
+    <string name="duplicate_nickname">* 중복된 닉네임입니다.</string>
+    <string name="validation_nickname">* 사용 가능한 닉네임입니다.</string>
     <string name="choice_birth_day">출산일을 선택하세요.</string>
     <string name="kg">kg</string>
     <string name="cm">cm</string>

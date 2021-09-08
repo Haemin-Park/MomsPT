@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.fitsionary.momspt.presentation.signup.viewmodel.SignUpViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,38 +29,54 @@
                 android:text="@string/sign_up_text" />
 
             <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
+                android:id="@+id/et_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
-                android:layout_marginBottom="@dimen/spacing_16dp"
                 app:hintText="@string/write_nickname"
+                app:inputText="@={vm.nickname}"
                 app:rightText="@string/duplicate_check"
                 app:rightTextColor="@color/pink" />
 
+            <TextView
+                style="@style/medium_14sp"
+                validationResultTextColor="@{vm.successValidation}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_5dp"
+                android:text="@{vm.validationResultText}"
+                android:textColor="@color/dark_gray"
+                android:visibility="@{vm.validationResultTextVisible}" />
+
             <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
-                android:layout_marginBottom="@dimen/spacing_16dp"
+                android:layout_marginTop="@dimen/spacing_16dp"
                 app:hintText="@string/choice_birth_day"
-                app:iconImg="@drawable/ic_daily" />
+                app:iconImg="@drawable/ic_daily"
+                app:inputText="@={vm.birthDay}" />
 
             <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
-                android:layout_marginBottom="@dimen/spacing_16dp"
+                android:layout_marginTop="@dimen/spacing_16dp"
                 app:hintText="@string/write_pre_weight"
+                app:inputText="@={vm.preWeight}"
                 app:rightText="@string/kg" />
 
             <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
-                android:layout_marginBottom="@dimen/spacing_16dp"
+                android:layout_marginTop="@dimen/spacing_16dp"
                 app:hintText="@string/write_current_weight"
+                app:inputText="@={vm.currentWeight}"
                 app:rightText="@string/kg" />
 
             <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
+                android:layout_marginTop="@dimen/spacing_16dp"
                 app:hintText="@string/write_current_height"
+                app:inputText="@={vm.currentHeight}"
                 app:rightText="@string/cm" />
         </LinearLayout>
 
@@ -83,7 +102,9 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
                 android:backgroundTint="@color/pink"
+                android:enabled="@{vm.signUpButtonEnable}"
                 android:text="다음"
+                android:onClick="@{() -> vm.signUp()}"
                 android:textColor="@color/white" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
