@@ -185,7 +185,7 @@
             android:paddingLeft="@dimen/spacing_22dp"
             android:paddingTop="@dimen/spacing_20dp"
             android:paddingRight="@dimen/spacing_22dp"
-            android:paddingBottom="@dimen/spacing_40dp"
+            android:paddingBottom="@dimen/spacing_20dp"
             app:layout_constraintBaseline_toBottomOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

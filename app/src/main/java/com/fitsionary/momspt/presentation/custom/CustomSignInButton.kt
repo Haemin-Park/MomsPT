@@ -19,9 +19,7 @@ class CustomSignInButton @JvmOverloads constructor(
     init {
         val binding: CustomSignInButtonBinding = DataBindingUtil.inflate(
             LayoutInflater.from(context),
-            R.layout.custom_sign_in_button,
-            this,
-            true
+            R.layout.custom_sign_in_button, this, true
         )
 
         context.withStyledAttributes(attrs, R.styleable.SignInButton) {
@@ -34,9 +32,7 @@ class CustomSignInButton @JvmOverloads constructor(
                 )
             binding.tvCustomSignIn.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 getDrawable(R.styleable.SignInButton_symbolImg),
-                null,
-                null,
-                null
+                null, null, null
             )
             binding.tvCustomSignIn.text = getString(R.styleable.SignInButton_text)
             binding.tvCustomSignIn.setTextColor(
