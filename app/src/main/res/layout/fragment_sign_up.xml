@@ -32,8 +32,10 @@
                 android:id="@+id/et_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
+                android:inputType="text"
                 app:hintText="@string/write_nickname"
                 app:inputText="@={vm.nickname}"
+                app:maxLen="5"
                 app:rightText="@string/duplicate_check"
                 app:rightTextColor="@color/pink" />
 
@@ -51,32 +53,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
                 android:layout_marginTop="@dimen/spacing_16dp"
+                android:inputType="number"
                 app:hintText="@string/choice_birth_day"
                 app:iconImg="@drawable/ic_daily"
-                app:inputText="@={vm.birthDay}" />
+                app:inputText="@={vm.birthDay}"
+                app:maxLen="10" />
 
             <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
                 android:layout_marginTop="@dimen/spacing_16dp"
+                android:inputType="number"
                 app:hintText="@string/write_pre_weight"
                 app:inputText="@={vm.preWeight}"
+                app:maxLen="3"
                 app:rightText="@string/kg" />
 
             <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
                 android:layout_marginTop="@dimen/spacing_16dp"
+                android:inputType="number"
                 app:hintText="@string/write_current_weight"
                 app:inputText="@={vm.currentWeight}"
+                app:maxLen="3"
                 app:rightText="@string/kg" />
 
             <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/sign_up_edit_text_height"
                 android:layout_marginTop="@dimen/spacing_16dp"
+                android:inputType="number"
                 app:hintText="@string/write_current_height"
                 app:inputText="@={vm.currentHeight}"
+                app:maxLen="3"
                 app:rightText="@string/cm" />
         </LinearLayout>
 
@@ -103,8 +113,8 @@
                 android:background="@drawable/round_background"
                 android:backgroundTint="@color/pink"
                 android:enabled="@{vm.signUpButtonEnable}"
-                android:text="다음"
                 android:onClick="@{() -> vm.signUp()}"
+                android:text="다음"
                 android:textColor="@color/white" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
