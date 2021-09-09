@@ -10,16 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_custom_sign_in"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/sign_up_edit_text_background">
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/et_custom_sign_up"
             style="@style/medium_16sp"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/sign_up_edit_text_height"
-            android:layout_marginEnd="@dimen/spacing_10dp"
-            android:background="@null"
+            android:background="@drawable/sign_up_edit_text_background"
             android:drawableStart="@drawable/ic_daily"
             android:drawablePadding="@dimen/spacing_14dp"
             android:drawableTint="@color/black"
