@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_dialog_background"
+        android:paddingStart="@dimen/spacing_25dp"
+        android:paddingTop="@dimen/spacing_35dp"
+        android:paddingEnd="@dimen/spacing_25dp"
+        android:paddingBottom="@dimen/spacing_25dp">
+
+        <ImageButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_cancle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pick_date"
+            style="@style/medium_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layout_picker_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_35dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_pick_date">
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/picker_year"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/custom_picker_height"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_number_picker_background"
+                app:np_dividerColor="@android:color/transparent"
+                app:np_formatter="@string/year_format"
+                app:np_max="2021"
+                app:np_min="2010"
+                app:np_selectedTextColor="@color/white"
+                app:np_selectedTextSize="18sp"
+                app:np_selectedTypeface="@font/noto_sans"
+                app:np_textColor="@color/medium_gray_aaaaaa"
+                app:np_textSize="18sp"
+                app:np_typeface="@font/noto_sans" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/picker_month"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/custom_picker_height"
+                android:layout_weight="1"
+                android:background="@drawable/custom_number_picker_background"
+                app:layout_constraintStart_toEndOf="@id/picker_year"
+                app:layout_constraintTop_toBottomOf="@id/tv_pick_date"
+                app:np_dividerColor="@android:color/transparent"
+                app:np_formatter="@string/month_format"
+                app:np_max="12"
+                app:np_min="1"
+                app:np_selectedTextColor="@color/white"
+                app:np_selectedTextSize="18sp"
+                app:np_selectedTypeface="@font/noto_sans"
+                app:np_textColor="@color/medium_gray_aaaaaa"
+                app:np_textSize="18sp"
+                app:np_typeface="@font/noto_sans" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/picker_day"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/custom_picker_height"
+                android:layout_marginStart="@dimen/spacing_10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_number_picker_background"
+                app:np_dividerColor="@android:color/transparent"
+                app:np_formatter="@string/day_format"
+                app:np_max="31"
+                app:np_min="1"
+                app:np_selectedTextColor="@color/white"
+                app:np_selectedTextSize="18sp"
+                app:np_selectedTypeface="@font/noto_sans"
+                app:np_textColor="@color/medium_gray_aaaaaa"
+                app:np_textSize="18sp"
+                app:np_typeface="@font/noto_sans" />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_choice"
+            style="@style/medium_18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_35dp"
+            android:background="@drawable/button_background"
+            android:text="@string/choice"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_picker_container" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

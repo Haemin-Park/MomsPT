@@ -3,6 +3,7 @@
     <!--width, height-->
     <dimen name="sign_in_button_height">60dp</dimen>
     <dimen name="sign_up_edit_text_height">58dp</dimen>
+    <dimen name="custom_picker_height">150dp</dimen>
     <dimen name="workout_medium_width">178dp</dimen>
     <dimen name="workout_medium_height">190dp</dimen>
     <dimen name="workout_stroke_width">1dp</dimen>
@@ -33,14 +34,18 @@
     <dimen name="spacing_20dp">20dp</dimen>
     <dimen name="spacing_22dp">22dp</dimen>
     <dimen name="spacing_24dp">24dp</dimen>
+    <dimen name="spacing_25dp">25dp</dimen>
     <dimen name="spacing_26dp">26dp</dimen>
     <dimen name="spacing_35dp">35dp</dimen>
     <dimen name="spacing_40dp">40dp</dimen>
     <dimen name="spacing_50dp">50dp</dimen>
 
     <!--radius-->
+    <dimen name="button_background_radius">18dp</dimen>
     <dimen name="sign_in_button_background_radius">18dp</dimen>
     <dimen name="sign_up_edit_text_background_radius">12dp</dimen>
+    <dimen name="custom_dialog_radius">30dp</dimen>
+    <dimen name="custom_picker_background_radius">18dp</dimen>
     <dimen name="bottom_nav_corner_radius">20dp</dimen>
     <dimen name="round_background_radius">12dp</dimen>
     <dimen name="workout_img_radius">22dp</dimen>

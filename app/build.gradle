@@ -136,4 +136,6 @@ dependencies {
 
     // kakao login
     implementation "com.kakao.sdk:v2-user:2.7.0"
+
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13'
 }
