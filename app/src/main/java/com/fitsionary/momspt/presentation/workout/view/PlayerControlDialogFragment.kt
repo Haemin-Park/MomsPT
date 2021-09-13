@@ -11,8 +11,8 @@ import com.fitsionary.momspt.presentation.base.BaseDialogFragment
 import com.fitsionary.momspt.presentation.workout.viewmodel.PlayerControlDialogViewModel
 
 class PlayerControlDialogFragment(isPlaying: Boolean) :
-    BaseDialogFragment<DialogFragmentPlayerControlBinding, PlayerControlDialogViewModel>(R.layout.dialog_fragment_player_control) {
-    override val viewModel: PlayerControlDialogViewModel by lazy {
+    BaseDialogFragment<DialogFragmentPlayerControlBinding>(R.layout.dialog_fragment_player_control) {
+    val viewModel: PlayerControlDialogViewModel by lazy {
         ViewModelProvider(this, PlayerControlDialogViewModel.ViewModelFactory(isPlaying)).get(
             PlayerControlDialogViewModel::class.java
         )
