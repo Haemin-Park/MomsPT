@@ -63,11 +63,13 @@
             <TextView
                 android:id="@+id/tv_workout_large_name"
                 style="@style/medium_16sp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{LargeWorkoutItem.name}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:singleLine="true"
+                app:layout_constraintEnd_toStartOf="@id/tv_workout_large_score"
                 tools:text="힙 브릿지 운동" />
 
             <TextView
@@ -101,6 +103,7 @@
                 tools:text="47kcal" />
 
             <TextView
+                android:id="@+id/tv_workout_large_score"
                 style="@style/medium_18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
