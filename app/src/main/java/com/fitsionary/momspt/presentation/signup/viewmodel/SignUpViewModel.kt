@@ -52,14 +52,14 @@ class SignUpViewModel(application: Application) : BaseAndroidViewModel(applicati
                                 nickname
                             )
                         ).subscribe({
-                            Timber.i(it.toString())
                             if (it.message == "Success") {
                                 validationResultText.postValue(NICKNAME_VALIDATION)
-                            } else {
-                                validationResultText.postValue(NICKNAME_DUPLICATE)
                             }
 
-                        }, {})
+                        }, {
+                            Timber.i(it.message)
+                            validationResultText.postValue(NICKNAME_DUPLICATE)
+                        })
                     )
                 } else {
                     validationResultText.value = NICKNAME_WRONG_FORMAT
