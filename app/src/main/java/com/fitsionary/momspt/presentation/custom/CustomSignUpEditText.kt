@@ -59,10 +59,6 @@ class CustomSignUpEditText @JvmOverloads constructor(
         binding.etCustomSignUp.setText(inputText)
     }
 
-    fun setEditTextClickListener(clickListener: OnClickListener) {
-        binding.etCustomSignUp.setOnClickListener(clickListener)
-    }
-
     fun setRightTextClickListener(clickListener: OnClickListener) {
         binding.tvCustomSignUp.setOnClickListener(clickListener)
     }
