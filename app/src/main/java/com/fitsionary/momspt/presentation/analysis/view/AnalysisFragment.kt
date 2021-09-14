@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.daasuu.camerarecorder.CameraRecorder
 import com.daasuu.camerarecorder.CameraRecorderBuilder
 import com.daasuu.camerarecorder.LensFacing
@@ -58,7 +59,11 @@ class AnalysisFragment :
                                 COUNT_UP_TIMER_END -> {
                                     cameraRecorder?.stop()
                                     if (File(event.second).exists()) {
-                                        showToast("영상촬영이 완료되었습니다.")
+                                        findNavController().navigate(
+                                            AnalysisFragmentDirections.actionAnalysisFragmentToRecordPreviewFragment(
+                                                event.second
+                                            )
+                                        )
                                     }
                                 }
                                 START_ANALYSIS_RESULT_ACTIVITY -> {

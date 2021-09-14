@@ -19,6 +19,7 @@
     <color name="light_pink">#fff7f7</color>
     <color name="dark_gray">#797979</color>
     <color name="medium_gray">#cccccc</color>
+    <color name="medium_gray_999999">#999999</color>
     <color name="medium_gray_aaaaaa">#aaaaaa</color>
     <color name="light_gray">#fafafa</color>
     <color name="light_gray_f3f3f3">#f3f3f3</color>

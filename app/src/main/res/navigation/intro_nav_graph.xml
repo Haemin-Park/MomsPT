@@ -41,5 +41,18 @@
         android:id="@+id/analysisFragment"
         android:name="com.fitsionary.momspt.presentation.analysis.view.AnalysisFragment"
         android:label="체형분석"
-        tools:layout="@layout/fragment_analysis" />
+        tools:layout="@layout/fragment_analysis">
+        <action
+            android:id="@+id/action_analysisFragment_to_recordPreviewFragment"
+            app:destination="@id/recordPreviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordPreviewFragment"
+        android:name="com.fitsionary.momspt.presentation.analysis.view.RecordPreviewFragment"
+        android:label="체형분석"
+        tools:layout="@layout/fragment_record_preview">
+        <argument
+            android:name="filePath"
+            app:argType="string" />
+    </fragment>
 </navigation>
