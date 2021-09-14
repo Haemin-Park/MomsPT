@@ -7,7 +7,7 @@ import android.view.Choreographer
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.ActivityAnalysisResultBinding
-import com.fitsionary.momspt.presentation.analysis.view.AnalysisActivity.Companion.PATH
+import com.fitsionary.momspt.presentation.analysis.view.AnalysisFragment.Companion.PATH
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisResultViewModel
 import com.fitsionary.momspt.presentation.base.BaseActivity
 import com.google.android.filament.Engine

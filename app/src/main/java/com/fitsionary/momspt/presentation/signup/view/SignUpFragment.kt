@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.FragmentSignUpBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.custom.CustomDatePickerDialog
 import com.fitsionary.momspt.presentation.signup.viewmodel.SignUpViewModel
-import timber.log.Timber
 
 
 class SignUpFragment :
@@ -51,6 +51,10 @@ class SignUpFragment :
         viewModel.nickname.observe(viewLifecycleOwner, {
             viewModel.validationResultText.value = ""
         })
+
+        binding.btnNext.setOnClickListener {
+            findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToAnalysisFragment())
+        }
     }
 
     private fun hideKeyboard(activity: Activity?) {
