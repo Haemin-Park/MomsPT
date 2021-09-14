@@ -120,13 +120,12 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
-                android:id="@+id/btn_play_workout"
+                android:id="@+id/btn_next"
                 style="@style/medium_18sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_background"
                 android:enabled="@{vm.signUpButtonEnable}"
-                android:onClick="@{() -> vm.signUp()}"
                 android:text="다음"
                 android:textColor="@color/white" />
         </LinearLayout>
