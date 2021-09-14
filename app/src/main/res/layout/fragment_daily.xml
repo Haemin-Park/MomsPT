@@ -7,14 +7,5 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_test_analysis"
-            style="@style/medium_18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_background"
-            android:text="체형분석"
-            android:textColor="@color/white" />
-
     </LinearLayout>
 </layout>
