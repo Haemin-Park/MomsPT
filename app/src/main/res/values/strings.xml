@@ -38,5 +38,6 @@
     <string name="congratulation">진심으로 축하해요</string>
     <string name="pick_date"><b>출산일을 선택</b>하세요!</string>
     <string name="choice">선택</string>
+    <string name="rec">REC</string>
 
 </resources>

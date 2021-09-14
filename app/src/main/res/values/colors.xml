@@ -11,14 +11,17 @@
     <color name="gray">#9c9c9c</color>
 
     <color name="black">#444444</color>
+    <color name="black_99000000">#99000000</color>
     <color name="white">#FFFFFF</color>
     <color name="pink">#ec5363</color>
+    <color name="pink_99ec5363">#99ec5363</color>
     <color name="medium_pink">#f796a1</color>
     <color name="light_pink">#fff7f7</color>
     <color name="dark_gray">#797979</color>
     <color name="medium_gray">#cccccc</color>
     <color name="medium_gray_aaaaaa">#aaaaaa</color>
     <color name="light_gray">#fafafa</color>
+    <color name="light_gray_f3f3f3">#f3f3f3</color>
     <color name="light_gray_f8f8f8">#f8f8f8</color>
     <color name="blue">#2bb5fd</color>
     <color name="yellow">#fee500</color>

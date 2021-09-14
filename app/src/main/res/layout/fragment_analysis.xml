@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/wrap_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/iv_record"
+            style="@style/medium_16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_22dp"
+            android:layout_marginEnd="@dimen/spacing_22dp"
+            android:background="@drawable/round_background"
+            android:backgroundTint="@color/light_gray_f3f3f3"
+            android:drawablePadding="@dimen/spacing_8dp"
+            android:paddingStart="@dimen/spacing_10dp"
+            android:paddingTop="@dimen/spacing_5dp"
+            android:paddingEnd="@dimen/spacing_10dp"
+            android:paddingBottom="@dimen/spacing_5dp"
+            android:text="@string/rec"
+            android:textColor="@color/black"
+            android:visibility="@{vm.timerCountUpTvVisible}"
+            app:drawableLeftCompat="@drawable/ic_circle"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_count_up_timer"
+            style="@style/bold_36sp"
+            android:layout_width="@dimen/circle_timer_diameter"
+            android:layout_height="@dimen/circle_timer_diameter"
+            android:layout_marginTop="@dimen/spacing_22dp"
+            android:background="@drawable/ic_circle"
+            android:backgroundTint="@color/black_99000000"
+            android:gravity="center"
+            android:text="@{String.valueOf(vm.timerCountUp)}"
+            android:textColor="@color/white"
+            android:visibility="@{vm.timerCountUpTvVisible}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="100" />
+
+        <TextView
+            android:id="@+id/tv_count_down_timer"
+            style="@style/bold_36sp"
+            android:layout_width="@dimen/circle_timer_diameter"
+            android:layout_height="@dimen/circle_timer_diameter"
+            android:background="@drawable/ic_circle"
+            android:backgroundTint="@color/pink_99ec5363"
+            android:gravity="center"
+            android:text="@{String.valueOf(vm.timerCountDown)}"
+            android:textColor="@color/white"
+            android:visibility="@{vm.timerCountDownTvVisible}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="100" />
+
+        <ImageButton
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_50dp"
+            android:background="@drawable/ic_record"
+            android:onClick="@{()->vm.recordStart()}"
+            android:visibility="@{vm.recordBtnVisible}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
