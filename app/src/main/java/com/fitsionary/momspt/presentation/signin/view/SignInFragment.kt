@@ -32,10 +32,10 @@ class SignInFragment :
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
-                Timber.e("로그인 실패", error)
+                Timber.e("로그인 실패 $error")
             } else if (token != null) {
                 Timber.i("로그인 성공 $token")
-                UserApiClient.instance.me { user, error ->
+                UserApiClient.instance.me { user, _ ->
                     if (user != null) {
                         val nickname = user.kakaoAccount?.profile?.nickname
                         findNavController().navigate(
@@ -49,7 +49,7 @@ class SignInFragment :
         }
 
         binding.btnKakaoSignIn.setOnClickListener {
-            currentActivity.applicationContext.apply {
+            currentActivity.apply {
                 if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                     UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
                 } else {
