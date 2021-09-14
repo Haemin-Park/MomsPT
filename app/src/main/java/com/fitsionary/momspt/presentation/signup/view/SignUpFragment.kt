@@ -25,8 +25,8 @@ class SignUpFragment :
 
         binding.vm = viewModel
 
-        val sageArgs: SignUpFragmentArgs by navArgs()
-        val nickname = sageArgs.nickname
+        val safeArgs: SignUpFragmentArgs by navArgs()
+        val nickname = safeArgs.nickname
         viewModel.nickname.value = nickname
 
         binding.etNickname.setRightTextClickListener {
