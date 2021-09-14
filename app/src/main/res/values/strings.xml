@@ -35,7 +35,8 @@
     <string name="workout_current_stage">지금 당신의\n위치는 어디인가요?</string>
     <string name="recommend_workout">추천 운동</string>
     <string name="play_workout">운동 하러가기</string>
-    <string name="pick_date">진심으로 축하해요🎉\n<b>출산일을 선택</b>하세요!</string>
+    <string name="congratulation">진심으로 축하해요</string>
+    <string name="pick_date"><b>출산일을 선택</b>하세요!</string>
     <string name="choice">선택</string>
 
 </resources>

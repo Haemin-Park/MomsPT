@@ -25,13 +25,24 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_congratulation"
+            style="@style/medium_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/spacing_5dp"
+            android:text="@string/congratulation"
+            app:drawableEndCompat="@drawable/ic_party_popper"
+            app:layout_constraintBottom_toTopOf="@id/tv_pick_date"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
             android:id="@+id/tv_pick_date"
             style="@style/medium_20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pick_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tv_congratulation" />
 
         <LinearLayout
             android:id="@+id/layout_picker_container"
