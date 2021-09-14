@@ -9,6 +9,6 @@ class MomsPTApplication : Application() {
         super.onCreate()
 
         Timber.plant(Timber.DebugTree())
-        KakaoSdk.init(this, "NATIVE_APP_KEY")
+        KakaoSdk.init(this, getString(R.string.kakao_native_app_key))
     }
 }
