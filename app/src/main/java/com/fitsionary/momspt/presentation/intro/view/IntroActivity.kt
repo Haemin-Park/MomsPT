@@ -32,14 +32,17 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(R.layou
         )
 
         navController.addOnDestinationChangedListener { _: NavController, nd: NavDestination, _: Bundle? ->
-            if (nd.id == R.id.splashFragment || nd.id == R.id.signInFragment) {
-                binding.toolbarIntro.visibility = View.GONE
-            } else {
-                binding.toolbarIntro.visibility = View.VISIBLE
-                binding.toolbarIntro.apply {
-                    contentInsetStartWithNavigation = 0
-                    setTitleMargin(0, 0, 0, 0)
-                    setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+            when (nd.id) {
+                R.id.splashFragment, R.id.signInFragment -> binding.toolbarIntro.visibility =
+                    View.GONE
+                R.id.analysisResultFragment -> binding.toolbarIntro.navigationIcon = null
+                else -> {
+                    binding.toolbarIntro.visibility = View.VISIBLE
+                    binding.toolbarIntro.apply {
+                        contentInsetStartWithNavigation = 0
+                        setTitleMargin(0, 0, 0, 0)
+                        setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+                    }
                 }
             }
         }
