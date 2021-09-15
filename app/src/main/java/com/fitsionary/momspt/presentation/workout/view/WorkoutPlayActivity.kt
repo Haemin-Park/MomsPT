@@ -22,6 +22,7 @@ import com.fitsionary.momspt.util.ScoringAlgorithm
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.util.Util
 import com.google.mediapipe.components.*
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList
 import com.google.mediapipe.framework.AndroidAssetUtil
@@ -207,7 +208,7 @@ class WorkoutPlayActivity :
 
     override fun onResume() {
         super.onResume()
-        if (player == null) {
+        if ((Util.SDK_INT < 24 || player == null)) {
             initializePlayer()
         }
 
@@ -232,12 +233,16 @@ class WorkoutPlayActivity :
 
     override fun onStart() {
         super.onStart()
-        initializePlayer()
+        if (Util.SDK_INT >= 24) {
+            initializePlayer()
+        }
     }
 
     override fun onPause() {
         super.onPause()
-
+        if (Util.SDK_INT < 24) {
+            releasePlayer()
+        }
         converter?.close()
         viewModel.countDownTimerStop()
 
@@ -247,7 +252,9 @@ class WorkoutPlayActivity :
 
     override fun onStop() {
         super.onStop()
-        releasePlayer()
+        if (Util.SDK_INT >= 24) {
+            releasePlayer()
+        }
     }
 
     override fun onRequestPermissionsResult(
