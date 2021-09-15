@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_background"
                 android:enabled="@{vm.signUpButtonEnable}"
-                android:text="다음"
+                android:text="@string/next"
                 android:textColor="@color/white" />
         </LinearLayout>
 
