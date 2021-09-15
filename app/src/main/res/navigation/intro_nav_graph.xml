@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.fitsionary.momspt.presentation.splash.view.SplashFragment"
-        android:label="SplashFragment"
+        android:label=""
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_signInFragment"
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.fitsionary.momspt.presentation.signin.view.SignInFragment"
-        android:label="SignInFragment"
+        android:label=""
         tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
@@ -51,6 +51,20 @@
         android:name="com.fitsionary.momspt.presentation.analysis.view.RecordPreviewFragment"
         android:label="체형분석"
         tools:layout="@layout/fragment_record_preview">
+        <argument
+            android:name="filePath"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_recordPreviewFragment_to_analysisResultFragment"
+            app:destination="@id/analysisResultFragment"
+            app:popUpTo="@+id/signUpFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/analysisResultFragment"
+        android:name="com.fitsionary.momspt.presentation.analysis.view.AnalysisResultFragment"
+        android:label="체형분석 결과"
+        tools:layout="@layout/fragment_analysis_result">
         <argument
             android:name="filePath"
             app:argType="string" />

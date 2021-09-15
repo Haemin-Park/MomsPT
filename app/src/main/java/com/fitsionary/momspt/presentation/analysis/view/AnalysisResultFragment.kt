@@ -1,15 +1,18 @@
 package com.fitsionary.momspt.presentation.analysis.view
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Choreographer
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.databinding.ActivityAnalysisResultBinding
-import com.fitsionary.momspt.presentation.analysis.view.AnalysisFragment.Companion.PATH
+import com.fitsionary.momspt.databinding.FragmentAnalysisResultBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisResultViewModel
-import com.fitsionary.momspt.presentation.base.BaseActivity
+import com.fitsionary.momspt.presentation.base.BaseFragment
+import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.google.android.filament.Engine
 import com.google.android.filament.Fence
 import com.google.android.filament.Skybox
@@ -19,9 +22,9 @@ import java.io.File
 import java.nio.Buffer
 import java.nio.ByteBuffer
 
-class AnalysisResultActivity
+class AnalysisResultFragment
     :
-    BaseActivity<ActivityAnalysisResultBinding, AnalysisResultViewModel>(R.layout.activity_analysis_result) {
+    BaseFragment<FragmentAnalysisResultBinding, AnalysisResultViewModel>(R.layout.fragment_analysis_result) {
     override val viewModel: AnalysisResultViewModel by lazy {
         ViewModelProvider(this).get(AnalysisResultViewModel::class.java)
     }
@@ -32,9 +35,10 @@ class AnalysisResultActivity
         }
 
         private val kDefaultObjectPosition = Float3(0.0f, 0.0f, -300.0f)
-        private val TAG = AnalysisResultActivity::class.simpleName
+        private val TAG = AnalysisResultFragment::class.simpleName
     }
 
+    private var isSuccess = false
     private lateinit var choreographer: Choreographer
     private val frameScheduler = FrameCallback()
     private lateinit var modelViewer: ModelViewer
@@ -44,9 +48,8 @@ class AnalysisResultActivity
     private lateinit var engine: Engine
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         choreographer = Choreographer.getInstance()
 
         engine = Engine.create()
@@ -62,26 +65,36 @@ class AnalysisResultActivity
 
         binding.surface.setOnTouchListener(modelViewer)
 
-        val path = intent.getStringExtra(PATH)
-        if (path != null) {
+        val safeArgs: AnalysisResultFragmentArgs by navArgs()
+        val path = safeArgs.filePath
+        if (File(path).exists()) {
+            isSuccess = true
+
             val byte = FileUtils.readFileToByteArray(File(path))
             val buffer = ByteBuffer.wrap(byte)
 
             createModel(buffer)
             createIndirectLight()
+
+            modelViewer.view.apply {
+                dynamicResolutionOptions = dynamicResolutionOptions.apply {
+                    enabled = true
+                }
+                ambientOcclusionOptions = ambientOcclusionOptions.apply {
+                    enabled = true
+                }
+                bloomOptions = bloomOptions.apply {
+                    enabled = true
+                }
+            }
         } else {
-            showToast("모델을 로드할 수 없습니다.")
+            showToast("파일을 로드할 수 없습니다.")
         }
 
-        modelViewer.view.apply {
-            dynamicResolutionOptions = dynamicResolutionOptions.apply {
-                enabled = true
-            }
-            ambientOcclusionOptions = ambientOcclusionOptions.apply {
-                enabled = true
-            }
-            bloomOptions = bloomOptions.apply {
-                enabled = true
+        binding.btnGoMain.setOnClickListener {
+            activity?.let {
+                startActivity(Intent(it, MainActivity::class.java))
+                it.finish()
             }
         }
     }
@@ -103,7 +116,7 @@ class AnalysisResultActivity
     }
 
     private fun readCompressedAsset(assetName: String): ByteBuffer {
-        val input = assets.open(assetName)
+        val input = requireContext().assets.open(assetName)
         val bytes = ByteArray(input.available())
         input.read(bytes)
         return ByteBuffer.wrap(bytes)
@@ -111,19 +124,22 @@ class AnalysisResultActivity
 
     override fun onResume() {
         super.onResume()
-        choreographer.postFrameCallback(frameScheduler)
+        if (isSuccess)
+            choreographer.postFrameCallback(frameScheduler)
     }
 
     override fun onPause() {
         super.onPause()
-        choreographer.removeFrameCallback(frameScheduler)
+        if (isSuccess)
+            choreographer.removeFrameCallback(frameScheduler)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        choreographer.removeFrameCallback(frameScheduler)
-        modelViewer.destroyModel()
-
+        if (isSuccess) {
+            choreographer.removeFrameCallback(frameScheduler)
+            modelViewer.destroyModel()
+        }
     }
 
     inner class FrameCallback : Choreographer.FrameCallback {

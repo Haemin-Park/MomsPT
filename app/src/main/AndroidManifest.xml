@@ -44,7 +44,6 @@
         <activity
             android:name=".presentation.workout.view.WorkoutResultActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".presentation.analysis.view.AnalysisResultActivity" />
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -52,7 +51,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
                 <data
                     android:host="oauth"
                     android:scheme="@string/kakao_redirect_uri" />
