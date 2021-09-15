@@ -1,7 +1,6 @@
 package com.fitsionary.momspt.presentation.analysis.view
 
 import android.Manifest
-import android.content.Intent
 import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.view.View
@@ -15,7 +14,6 @@ import com.fitsionary.momspt.databinding.FragmentAnalysisBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.COUNT_DOWN_TIMER_END
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.COUNT_UP_TIMER_END
-import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisViewModel.Companion.START_ANALYSIS_RESULT_ACTIVITY
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.util.rx.ui
 import com.tbruyelle.rxpermissions3.RxPermissions
@@ -66,9 +64,6 @@ class AnalysisFragment :
                                         )
                                     }
                                 }
-                                START_ANALYSIS_RESULT_ACTIVITY -> {
-                                    startAnalysisResultActivity(event.second)
-                                }
                             }
                         }
                     })
@@ -98,15 +93,5 @@ class AnalysisFragment :
             binding.wrapView.removeView(sampleGLView)
             sampleGLView = null
         }
-    }
-
-    private fun startAnalysisResultActivity(path: String) {
-        startActivity(
-            Intent(activity, AnalysisResultActivity::class.java).putExtra(PATH, path)
-        )
-    }
-
-    companion object {
-        const val PATH = "PATH"
     }
 }
