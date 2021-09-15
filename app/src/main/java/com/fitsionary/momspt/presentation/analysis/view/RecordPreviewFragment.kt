@@ -3,14 +3,17 @@ package com.fitsionary.momspt.presentation.analysis.view
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.FragmentRecordPreviewBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel
+import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel.Companion.START_ANALYSIS_RESULT_ACTIVITY
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.util.Util
 
 class RecordPreviewFragment :
     BaseFragment<FragmentRecordPreviewBinding, RecordPreviewViewModel>(R.layout.fragment_record_preview) {
@@ -24,31 +27,69 @@ class RecordPreviewFragment :
     private var currentWindow = 0
     private var playbackPosition: Long = 0
 
-    override fun onResume() {
-        super.onResume()
-        if (player == null) {
+    override fun onStart() {
+        super.onStart()
+        if (Util.SDK_INT >= 24) {
             initializePlayer()
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        initializePlayer()
+    override fun onResume() {
+        super.onResume()
+        if ((Util.SDK_INT < 24 || player == null)) {
+            initializePlayer()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Util.SDK_INT < 24) {
+            releasePlayer()
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        releasePlayer()
+        if (Util.SDK_INT >= 24) {
+            releasePlayer()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val safeArgs: RecordPreviewFragmentArgs by navArgs()
         mediaUrl = safeArgs.filePath
+
+        viewModel.event.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { event ->
+                when (event.first) {
+                    START_ANALYSIS_RESULT_ACTIVITY -> {
+                        findNavController().navigate(
+                            RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragment(
+                                event.second
+                            )
+                        )
+                    }
+                }
+            }
+        })
+
+        binding.btnReRecord.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        // for test
+        binding.btnSend.setOnClickListener {
+            findNavController().navigate(
+                RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragment(
+                    ""
+                )
+            )
+        }
     }
 
     private fun initializePlayer() {
-        val extractorsFactory = DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
+        val extractorsFactory =
+            DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
         player = SimpleExoPlayer.Builder(requireContext(), extractorsFactory).build()
         binding.playerView.player = player
         val mediaItem = MediaItem.fromUri(mediaUrl)
