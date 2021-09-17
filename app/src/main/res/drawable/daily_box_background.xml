@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/light_gray_f9f9f9" />
+    <corners android:radius="@dimen/daily_box_radius_22dp" />
+</shape>

@@ -43,5 +43,13 @@
     <string name="send">전송하기</string>
     <string name="next">다음</string>
     <string name="go_main">운동 하러가기</string>
+    <string name="kcal">kcal</string>
+    <string name="kcal_kor">칼로리</string>
+    <string name="minute">분</string>
+    <string name="time">시간</string>
+    <string name="weight">체중</string>
+    <string name="today_weight_comment">오늘 체중\n바로 입력하기</string>
+    <string name="go_analysis"><![CDATA[체형 분석 하기 >]]></string>
+    <string name="analysis_result">체형 분석 결과</string>
 
 </resources>
