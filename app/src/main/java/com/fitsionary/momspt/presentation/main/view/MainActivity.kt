@@ -47,7 +47,7 @@ class MainActivity :
                 binding.toolbarMain.apply {
                     contentInsetStartWithNavigation = 0
                     setTitleMargin(0, 0, 0, 0)
-                    setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+                    setNavigationIcon(R.drawable.ic_back)
                 }
                 binding.bottomNavigationMain.visibility = View.GONE
                 binding.ivLogo.visibility = View.INVISIBLE

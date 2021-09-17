@@ -41,7 +41,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(R.layou
                     binding.toolbarIntro.apply {
                         contentInsetStartWithNavigation = 0
                         setTitleMargin(0, 0, 0, 0)
-                        setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+                        setNavigationIcon(R.drawable.ic_back)
                     }
                 }
             }
