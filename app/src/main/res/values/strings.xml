@@ -9,7 +9,7 @@
     <string name="calorie_format">%dkcal</string>
 
     <!--string-->
-    <string name="app_name">MomsPT</string>
+    <string name="app_name">맘스피티</string>
     <string name="kakao_sign_in">카카오로 시작하기</string>
     <string name="naver_sign_in">네이버로 시작하기</string>
     <string name="sign_up_text">맘스피티를 이용하기 위한\n추가 정보를 입력하세요</string>
