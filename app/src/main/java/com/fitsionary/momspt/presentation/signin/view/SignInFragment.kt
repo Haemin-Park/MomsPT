@@ -37,6 +37,7 @@ class SignInFragment :
                 Timber.i("로그인 성공 $token")
                 UserApiClient.instance.me { user, _ ->
                     if (user != null) {
+                        Timber.i("로그인 유저 $user")
                         val nickname = user.kakaoAccount?.profile?.nickname
                         findNavController().navigate(
                             SignInFragmentDirections.actionSignInFragmentToSignUpFragment(
