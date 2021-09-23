@@ -26,6 +26,7 @@ abstract class BaseViewHolder<B : ViewDataBinding, T>(
             bindingVariableListenerId?.let {
                 binding.setVariable(it, listener)
             }
+            binding.executePendingBindings()
         } catch (e: Exception) {
             e.printStackTrace()
         }
