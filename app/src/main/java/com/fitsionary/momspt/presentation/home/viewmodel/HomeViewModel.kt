@@ -7,6 +7,7 @@ import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.api.response.TodayCommentResponse
 import com.fitsionary.momspt.data.api.response.toModel
 import com.fitsionary.momspt.data.model.WorkoutModel
+import com.fitsionary.momspt.data.model.getTestData
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
 import com.fitsionary.momspt.util.rx.applyNetworkScheduler
@@ -20,6 +21,10 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     private val _workoutList = MutableLiveData<List<WorkoutModel>>()
     val workoutList: LiveData<List<WorkoutModel>>
         get() = _workoutList
+
+    init {
+        _workoutList.value = getTestData()
+    }
 
     fun getTodayComment(name: String) {
         addDisposable(
