@@ -48,16 +48,47 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <Button
-                    style="@style/medium_14sp"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_16dp"
-                    android:drawableLeft="@drawable/workout_current_stage_icon"
-                    android:text="2단계 > 3일차"
-                    android:textColor="@color/white"
+                    android:background="@drawable/round_background"
+                    android:backgroundTint="@color/pink"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/spacing_10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_workout_current_stage" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_workout_current_stage">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_8dp"
+                        android:src="@drawable/workout_current_stage_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/medium_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_5dp"
+                        android:text="2단계"
+                        android:textColor="@color/white" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_5dp"
+                        android:src="@drawable/ic_white_arrow" />
+
+                    <TextView
+                        style="@style/medium_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3일차"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView

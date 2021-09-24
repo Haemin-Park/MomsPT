@@ -49,7 +49,7 @@
     <string name="time">시간</string>
     <string name="weight">체중</string>
     <string name="today_weight_comment">오늘 체중\n바로 입력하기</string>
-    <string name="go_analysis"><![CDATA[체형 분석 하기 >]]></string>
+    <string name="go_analysis">체형 분석 하기</string>
     <string name="analysis_result">체형 분석 결과</string>
     <string name="sir">&#160;님</string>
     <string name="withdraw">회원탈퇴</string>
