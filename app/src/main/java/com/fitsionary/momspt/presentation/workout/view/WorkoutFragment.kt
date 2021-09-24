@@ -11,6 +11,7 @@ import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentWorkoutBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.base.BaseRecyclerViewAdapter
+import com.fitsionary.momspt.presentation.custom.CustomStepPickerDialog
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutViewModel
 import com.fitsionary.momspt.util.DateUtil
 import com.fitsionary.momspt.util.TEST_USER_NAME
@@ -35,7 +36,13 @@ class WorkoutFragment :
             rvWorkout.adapter = routineAdapter
         }
 
-        viewModel.getTodayComment(TEST_USER_NAME)
+        binding.layoutStep.setOnClickListener {
+            val dialog = CustomStepPickerDialog.CustomStepPickerDialogBuilder()
+                .setOnOkClickedListener {
+                }
+                .create()
+            dialog.show(parentFragmentManager, dialog.tag)
+        }
 
         viewModel.getTodayWorkoutList(
             TodayWorkoutListRequest(

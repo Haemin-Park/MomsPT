@@ -49,6 +49,7 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <LinearLayout
+                    android:id="@+id/layout_step"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_16dp"
