@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -39,18 +40,19 @@ class MainActivity :
             if (nd.id in bottomMenuId) {
                 binding.toolbarMain.setTitleMargin(22, 0, 0, 0)
                 binding.bottomNavigationMain.visibility = View.VISIBLE
-                if (nd.id == nc.graph.startDestination)
-                    binding.ivLogo.visibility = View.VISIBLE
-                else
-                    binding.ivLogo.visibility = View.INVISIBLE
+                if (nd.id == nc.graph.startDestination) {
+                    binding.toolbarMain.setLogo(R.drawable.ic_logo2)
+                } else {
+                    binding.toolbarMain.logo = null
+                }
             } else {
                 binding.toolbarMain.apply {
                     contentInsetStartWithNavigation = 0
                     setTitleMargin(0, 0, 0, 0)
                     setNavigationIcon(R.drawable.ic_back)
+                    logo = null
                 }
                 binding.bottomNavigationMain.visibility = View.GONE
-                binding.ivLogo.visibility = View.INVISIBLE
             }
         }
     }
