@@ -20,3 +20,12 @@ fun setImageFromResource(imageView: ImageView, resource: Int) {
         .placeholder(R.drawable.placeholder)
         .into(imageView)
 }
+
+@BindingAdapter("profile_image_url")
+fun setProfileImageFromImageUrl(imageView: ImageView, imageUrl: String) {
+    Glide.with(imageView.context)
+        .load(imageUrl)
+        .circleCrop()
+        .placeholder(R.drawable.placeholder)
+        .into(imageView)
+}

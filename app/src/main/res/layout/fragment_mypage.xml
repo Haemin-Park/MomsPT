@@ -1,9 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/spacing_22dp"
+            android:paddingEnd="@dimen/spacing_22dp">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="@dimen/mypage_profile_img_diameter"
+                    android:layout_height="@dimen/mypage_profile_img_diameter"
+                    android:layout_marginTop="@dimen/spacing_20dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_nickname"
+                    style="@style/bold_24sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_16dp"
+                    android:text="아리따움"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toStartOf="@id/tv_sir"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+
+                <TextView
+                    android:id="@+id/tv_sir"
+                    style="@style/medium_18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sir"
+                    android:textColor="@color/black"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_nickname"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_nickname" />
+
+                <TextView
+                    android:id="@+id/tv_baby_name"
+                    style="@style/medium_16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_8dp"
+                    android:text="@string/baby_name"
+                    android:textColor="@color/dark_gray_666666"
+                    app:layout_constraintEnd_toStartOf="@id/tv_day"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
+
+                <TextView
+                    android:id="@+id/tv_day"
+                    style="@style/medium_16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mypage_day"
+                    android:textColor="@color/pink"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_baby_name"
+                    app:layout_constraintEnd_toStartOf="@id/tv_after"
+                    app:layout_constraintStart_toEndOf="@id/tv_baby_name" />
+
+                <TextView
+                    android:id="@+id/tv_after"
+                    style="@style/medium_16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/after"
+                    android:textColor="@color/dark_gray_666666"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_day"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_day" />
+
+                <Button
+                    android:id="@+id/btn_modify_profile"
+                    style="@style/medium_14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_18dp"
+                    android:background="@drawable/button_background"
+                    android:text="@string/modify_profile"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_baby_name" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mypage_divider_height"
+                    android:layout_marginTop="@dimen/spacing_30dp"
+                    android:background="@color/light_gray"
+                    app:layout_constraintTop_toBottomOf="@id/btn_modify_profile" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Switch
+                style="@style/medium_16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_33dp"
+                android:paddingTop="@dimen/spacing_15dp"
+                android:paddingBottom="@dimen/spacing_15dp"
+                android:text="@string/set_alarm"
+                android:textColor="@color/black"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                style="@style/medium_16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingTop="@dimen/spacing_15dp"
+                android:paddingBottom="@dimen/spacing_15dp"
+                android:text="@string/sign_out"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/medium_16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingTop="@dimen/spacing_15dp"
+                android:paddingBottom="@dimen/spacing_15dp"
+                android:text="@string/withdraw"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </ScrollView>
 </layout>
