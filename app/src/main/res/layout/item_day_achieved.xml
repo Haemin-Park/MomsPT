@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/day_achieved_height"
-        android:layout_marginEnd="9dp"
+        android:layout_marginEnd="@dimen/spacing_9dp"
         android:background="@drawable/round_background"
         android:backgroundTint="@{DayAchieved.success ? @color/pink : DayAchieved.successCount == 0 ? @color/light_gray : @color/medium_pink}">
 
