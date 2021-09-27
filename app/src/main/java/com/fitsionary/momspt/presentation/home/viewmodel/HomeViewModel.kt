@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.api.response.TodayCommentResponse
 import com.fitsionary.momspt.data.api.response.toModel
+import com.fitsionary.momspt.data.model.DayAchievedModel
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.data.model.getTestData
+import com.fitsionary.momspt.data.model.getTestDayAchievedData
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
 import com.fitsionary.momspt.util.rx.applyNetworkScheduler
@@ -22,8 +24,13 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     val workoutList: LiveData<List<WorkoutModel>>
         get() = _workoutList
 
+    private val _dayAchievedList = MutableLiveData<List<DayAchievedModel>>()
+    val dayAchievedList: LiveData<List<DayAchievedModel>>
+        get() = _dayAchievedList
+
     init {
         _workoutList.value = getTestData()
+        _dayAchievedList.value = getTestDayAchievedData()
     }
 
     fun getTodayComment(name: String) {

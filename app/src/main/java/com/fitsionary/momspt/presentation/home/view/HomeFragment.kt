@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.fitsionary.momspt.BR
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
+import com.fitsionary.momspt.data.model.DayAchievedModel
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentHomeBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
@@ -29,12 +30,19 @@ class HomeFragment :
             bindingVariableListenerId = BR.MediumWorkoutItemListener
         ) {}
 
+    private val dayAchievedAdapter =
+        object : BaseRecyclerViewAdapter<FragmentHomeBinding, DayAchievedModel>(
+            layoutResId = R.layout.item_day_achieved,
+            bindingVariableItemId = BR.DayAchieved
+        ) {}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.run {
             vm = viewModel
             rvRecommendWorkout.adapter = routineAdapter
+            rvDayAchieved.adapter = dayAchievedAdapter
         }
 
         viewModel.getTodayComment(TEST_USER_NAME)
