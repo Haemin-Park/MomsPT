@@ -39,6 +39,7 @@
     <dimen name="spacing_14dp">14dp</dimen>
     <dimen name="spacing_15dp">15dp</dimen>
     <dimen name="spacing_16dp">16dp</dimen>
+    <dimen name="spacing_17dp">17dp</dimen>
     <dimen name="spacing_18dp">18dp</dimen>
     <dimen name="spacing_20dp">20dp</dimen>
     <dimen name="spacing_22dp">22dp</dimen>
