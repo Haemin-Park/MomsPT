@@ -26,7 +26,11 @@
         android:id="@+id/main_daily"
         android:name="com.fitsionary.momspt.presentation.daily.view.DailyFragment"
         android:label="데일리"
-        tools:layout="@layout/fragment_daily" />
+        tools:layout="@layout/fragment_daily">
+        <action
+            android:id="@+id/action_main_daily_to_dayStatisticsDetailFragment"
+            app:destination="@id/dayStatisticsDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/main_mypage"
         android:name="com.fitsionary.momspt.presentation.mypage.view.MyPageFragment"
@@ -50,4 +54,9 @@
         android:name="com.fitsionary.momspt.presentation.mypage.view.EditProfileFragment"
         android:label="프로필 수정"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/dayStatisticsDetailFragment"
+        android:name="com.fitsionary.momspt.presentation.daily.view.DayStatisticsDetailFragment"
+        android:label="일자별 상세"
+        tools:layout="@layout/fragment_day_statistics_detail" />
 </navigation>
