@@ -10,6 +10,7 @@
     <string name="score_format">%d점</string>
     <string name="minutes_format">%d분</string>
     <string name="calorie_format">%dkcal</string>
+    <string name="baby_name_format">%s&#160;</string>
 
     <!--string-->
     <string name="app_name">맘스피티</string>
@@ -65,6 +66,9 @@
     <string name="edit_profile">프로필 수정</string>
     <string name="after">이 흘렀어요</string>
     <string name="mypage_day">출산 후 40일</string>
-    <string name="baby_name">튼튼이&#160;</string>
+    <string name="baby_name">아기 태명</string>
+    <string name="nickname">닉네임</string>
+    <string name="write_baby_name">아기 태명을 입력하세요</string>
+    <string name="edit_finish">수정 완료</string>
 
 </resources>
