@@ -31,7 +31,11 @@
         android:id="@+id/main_mypage"
         android:name="com.fitsionary.momspt.presentation.mypage.view.MyPageFragment"
         android:label="마이페이지"
-        tools:layout="@layout/fragment_mypage" />
+        tools:layout="@layout/fragment_mypage">
+        <action
+            android:id="@+id/action_main_mypage_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/workoutDetailFragment"
         android:name="com.fitsionary.momspt.presentation.workoutdetail.view.WorkoutDetailFragment"
@@ -41,4 +45,9 @@
             android:name="workout"
             app:argType="com.fitsionary.momspt.data.model.WorkoutModel" />
     </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.fitsionary.momspt.presentation.mypage.view.EditProfileFragment"
+        android:label="프로필 수정"
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>
