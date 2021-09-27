@@ -4,6 +4,7 @@
     <string name="month_format">%d월</string>
     <string name="day_format">%d일</string>
     <string name="d_day_format">D+%d</string>
+    <string name="day_achieved_format">%d/%d</string>
     <string name="step_format">%d단계</string>
     <string name="step_day_format">%d일차</string>
     <string name="score_format">%d점</string>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="DayAchieved"
+            type="com.fitsionary.momspt.data.model.DayAchievedModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/day_achieved_height"
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/round_background"
+        android:backgroundTint="@{DayAchieved.success ? @color/pink : DayAchieved.successCount == 0 ? @color/light_gray : @color/medium_pink}">
+
+        <TextView
+            style="@style/medium_16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_10dp"
+            android:text="@{DayAchieved.day}"
+            android:textColor="@{DayAchieved.successCount > 0 ? @color/white : @color/black}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="월" />
+
+        <TextView
+            style="@style/medium_16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_10dp"
+            android:text="@{@string/day_achieved_format(DayAchieved.successCount,DayAchieved.entireCount)}"
+            android:textColor="@{DayAchieved.successCount > 0 ? @color/white : @color/medium_gray}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="3/3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

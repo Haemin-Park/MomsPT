@@ -11,6 +11,8 @@
     <dimen name="workout_stroke_width">1dp</dimen>
     <dimen name="workout_checkbox_width">26dp</dimen>
     <dimen name="workout_checkbox_height">26dp</dimen>
+    <dimen name="day_achieved_width">45dp</dimen>
+    <dimen name="day_achieved_height">72dp</dimen>
     <dimen name="workout_current_stage_box_height">150dp</dimen>
     <dimen name="workout_current_stage_img_width">165dp</dimen>
     <dimen name="workout_current_stage_img_height">95dp</dimen>
