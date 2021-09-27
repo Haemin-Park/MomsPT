@@ -15,4 +15,9 @@
         <attr name="rightTextColor" format="reference|integer" />
         <attr name="iconImg" format="reference|integer" />
     </declare-styleable>
+    <declare-styleable name="MonthStatisticsBox">
+        <attr name="headerText" format="reference|string" />
+        <attr name="bodyText" format="reference|string" />
+        <attr name="footerText" format="reference|string" />
+    </declare-styleable>
 </resources>

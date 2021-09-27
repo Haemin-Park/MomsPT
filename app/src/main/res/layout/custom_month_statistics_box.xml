@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/month_statistics_box_background"
+        android:padding="@dimen/spacing_18dp">
+
+        <TextView
+            android:id="@+id/tv_custom_statistics_box_header"
+            style="@style/medium_16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/count"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_custom_statistics_box_body"
+            style="@style/bold_18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/spacing_5dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_custom_statistics_box_footer"
+            app:layout_constraintEnd_toStartOf="@id/tv_custom_statistics_box_footer"
+            tools:ignore="RtlSymmetry"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/tv_custom_statistics_box_footer"
+            style="@style/medium_14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/count_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
