@@ -22,7 +22,7 @@ class WorkoutFragment :
     override val viewModel: WorkoutViewModel by lazy {
         ViewModelProvider(this).get(WorkoutViewModel::class.java)
     }
-    private val routineAdapter =
+    private val workoutAdapter =
         object : BaseRecyclerViewAdapter<FragmentWorkoutBinding, WorkoutModel>(
             layoutResId = R.layout.item_workout_large,
             bindingVariableItemId = BR.LargeWorkoutItem,
@@ -33,7 +33,7 @@ class WorkoutFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.run {
             vm = viewModel
-            rvWorkout.adapter = routineAdapter
+            rvWorkout.adapter = workoutAdapter
         }
 
         binding.layoutStep.setOnClickListener {
@@ -51,7 +51,7 @@ class WorkoutFragment :
             )
         )
 
-        routineAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
+        workoutAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {
                 findNavController().navigate(
                     WorkoutFragmentDirections.actionMainWorkoutToWorkoutDetailFragment(

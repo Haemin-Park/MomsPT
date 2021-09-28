@@ -23,7 +23,7 @@ class HomeFragment :
     override val viewModel: HomeViewModel by lazy {
         ViewModelProvider(this).get(HomeViewModel::class.java)
     }
-    private val routineAdapter =
+    private val workoutAdapter =
         object : BaseRecyclerViewAdapter<FragmentHomeBinding, WorkoutModel>(
             layoutResId = R.layout.item_workout_medium,
             bindingVariableItemId = BR.MediumWorkoutItem,
@@ -41,7 +41,7 @@ class HomeFragment :
 
         binding.run {
             vm = viewModel
-            rvRecommendWorkout.adapter = routineAdapter
+            rvRecommendWorkout.adapter = workoutAdapter
             rvDayAchieved.adapter = dayAchievedAdapter
         }
 
@@ -54,7 +54,7 @@ class HomeFragment :
             )
         )
 
-        routineAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
+        workoutAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {
                 findNavController().navigate(
                     HomeFragmentDirections.actionMainHomeToWorkoutDetailFragment(

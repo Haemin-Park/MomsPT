@@ -18,7 +18,7 @@ class DayStatisticsDetailFragment :
         ViewModelProvider(this).get(DayStatisticsDetailViewModel::class.java)
     }
 
-    private val routineAdapter =
+    private val workoutAdapter =
         object : BaseRecyclerViewAdapter<FragmentWorkoutBinding, WorkoutModel>(
             layoutResId = R.layout.item_workout_large,
             bindingVariableItemId = BR.LargeWorkoutItem
@@ -28,7 +28,7 @@ class DayStatisticsDetailFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.run {
             vm = viewModel
-            rvDayDetailWorkout.adapter = routineAdapter
+            rvDayDetailWorkout.adapter = workoutAdapter
         }
     }
 }
