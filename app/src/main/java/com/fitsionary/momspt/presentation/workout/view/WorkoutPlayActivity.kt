@@ -7,14 +7,12 @@ import android.util.Log
 import android.util.Size
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navArgs
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.util.S3_URL
 import com.fitsionary.momspt.data.api.response.Landmark
 import com.fitsionary.momspt.data.enum.PoseEnum
 import com.fitsionary.momspt.databinding.ActivityWorkoutPlayBinding
-import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
 import com.fitsionary.momspt.presentation.base.BaseActivity
-import com.fitsionary.momspt.presentation.home.view.HomeFragment.Companion.WORKOUT_NAME
 import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
 import com.fitsionary.momspt.presentation.workout.view.WorkoutResultActivity.Companion.RESULT_CUMULATIVE_SCORE
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutPlayViewModel
@@ -30,6 +28,7 @@ import com.google.mediapipe.framework.Packet
 import com.google.mediapipe.framework.PacketGetter
 import com.google.mediapipe.glutil.EglManager
 import com.google.protobuf.InvalidProtocolBufferException
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.floor
@@ -41,15 +40,11 @@ class WorkoutPlayActivity :
         ViewModelProvider(this).get(WorkoutPlayViewModel::class.java)
     }
 
-    /**
-     * TODO: Room에서 데이터 읽어오기
-     */
-    private val workoutLandmarks = WorkoutLandmarkDomainModel(listOf())
-
     private lateinit var playerControlDialogFragment: PlayerControlDialogFragment
     var isFirst = true
     var isEnd = false
     private var playWhenReady = false
+    private lateinit var scoreAlgorithm: ScoringAlgorithm
 
     private lateinit var mediaUrl: String
 
@@ -140,8 +135,9 @@ class WorkoutPlayActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        workoutName = intent.getStringExtra(WORKOUT_NAME)!!
-        mediaUrl = "$S3_URL/$workoutName.mp4"
+        val safeArgs: WorkoutPlayActivityArgs by navArgs()
+        workoutName = safeArgs.workoutName
+        mediaUrl = "https://d29r6pfiojlanv.cloudfront.net/tabata.mp4"
 
         binding.vm = viewModel
 
@@ -160,7 +156,12 @@ class WorkoutPlayActivity :
             applicationInfo.metaData.getString("outputVideoStreamName")
         )
 
-        val scoreAlgorithm = ScoringAlgorithm(workoutLandmarks)
+        viewModel.workoutLandmarks.observe(this, { landmarks ->
+            if (!::scoreAlgorithm.isInitialized) {
+                Timber.i("Landmarks 로드 완료 " + landmarks.poseData.count())
+                scoreAlgorithm = ScoringAlgorithm(landmarks)
+            }
+        })
         processor!!
             .videoSurfaceOutput
             .setFlipY(
@@ -173,7 +174,7 @@ class WorkoutPlayActivity :
             OUTPUT_LANDMARKS_STREAM_NAME
         ) { packet: Packet ->
             try {
-                if (playWhenReady) {
+                if (playWhenReady && ::scoreAlgorithm.isInitialized) {
                     val landmarksRaw = PacketGetter.getProtoBytes(packet)
                     poseLandmarks = NormalizedLandmarkList.parseFrom(landmarksRaw)
                     var idx = 0

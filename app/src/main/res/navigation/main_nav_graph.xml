@@ -48,6 +48,9 @@
         <argument
             android:name="workout"
             app:argType="com.fitsionary.momspt.data.model.WorkoutModel" />
+        <action
+            android:id="@+id/action_workoutDetailFragment_to_workoutPlayActivity"
+            app:destination="@id/workoutPlayActivity" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -59,4 +62,13 @@
         android:name="com.fitsionary.momspt.presentation.daily.view.DayStatisticsDetailFragment"
         android:label="일자별 상세"
         tools:layout="@layout/fragment_day_statistics_detail" />
+    <activity
+        android:id="@+id/workoutPlayActivity"
+        android:name="com.fitsionary.momspt.presentation.workout.view.WorkoutPlayActivity"
+        android:label="WorkoutPlayActivity"
+        tools:layout="@layout/activity_workout_play">
+        <argument
+            android:name="workoutName"
+            app:argType="string" />
+    </activity>
 </navigation>
