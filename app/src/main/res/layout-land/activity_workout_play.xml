@@ -70,12 +70,12 @@
             tools:text="10점" />
 
         <ImageView
+            score_image="@{vm.score}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            score_image="@{vm.score}"
             android:layout_marginTop="@dimen/spacing_10dp"
             android:layout_marginEnd="@dimen/spacing_22dp"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_score"
             tools:src="@drawable/ic_perpect" />
     </androidx.constraintlayout.widget.ConstraintLayout>

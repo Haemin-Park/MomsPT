@@ -29,3 +29,21 @@ fun setProfileImageFromImageUrl(imageView: ImageView, imageUrl: String) {
         .placeholder(R.drawable.placeholder)
         .into(imageView)
 }
+
+@BindingAdapter("score_image")
+fun setScoreImage(imageView: ImageView, score: Int) {
+    when (score) {
+        in 1..29 -> {
+            imageView.setImageResource(R.drawable.ic_bad)
+        }
+        in 30..59 -> {
+            imageView.setImageResource(R.drawable.ic_cool)
+        }
+        in 60..89 -> {
+            imageView.setImageResource(R.drawable.ic_great)
+        }
+        in 90..100 -> {
+            imageView.setImageResource(R.drawable.ic_perpect)
+        }
+    }
+}

@@ -70,5 +70,6 @@
     <string name="nickname">닉네임</string>
     <string name="write_baby_name">아기 태명을 입력하세요</string>
     <string name="edit_finish">수정 완료</string>
+    <string name="no_camera_permission">카메라 권한이 없습니다.</string>
 
 </resources>
