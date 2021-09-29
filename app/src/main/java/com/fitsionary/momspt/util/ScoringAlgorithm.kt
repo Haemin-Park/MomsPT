@@ -6,7 +6,6 @@ import timber.log.Timber
 import kotlin.math.abs
 
 class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
-
     val landmarksList = workoutLandmarks.poseData
     private var count = 0
     var targetKeyPoints = ArrayList<Double>()
@@ -28,10 +27,9 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
         DTWTarget.add(targetKeyPoints)
         count++
         if (count % FRAME_CUT == 0) {
-            /**
-             * target 과 비교할 프레임만큼 resource 만들기
-             */
+            // target 과 비교할 프레임만큼 resource 만들기
             for (i in count - FRAME_CUT until count) {
+
                 val resourceKeypoints = keyPoints2Vec(landmarksList[i].landmarks, 720, 404)
                 DTWResource.add(resourceKeypoints)
             }
@@ -57,9 +55,7 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
         var minY = Double.POSITIVE_INFINITY
         var scaler = Double.NEGATIVE_INFINITY
 
-        /**
-         * 1. 벡터 배열로 만들기, scale 을 위한 변수 계산하기.
-         */
+        // 1. 벡터 배열로 만들기, scale 을 위한 변수 계산하기.
         for (i in keyPoints.indices) {
             val xValue: Double = keyPoints[i].x * cameraWidth
             val yValue: Double = keyPoints[i].y * cameraHeight
@@ -70,14 +66,10 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
             scaler = Math.max(scaler, Math.max(xValue, yValue))
         }
 
-        /**
-         * 2. scale & translate
-         */
+        // 2. scale & translate
         vector = scaleAndTranslate(vector, minX / scaler, minY / scaler, scaler)
 
-        /**
-         * L2 normalization
-         */
+        // L2 normalization
         vector = l2Normalize(vector)
         return vector
     }
@@ -124,18 +116,14 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
             )
         }
 
-        /**
-         * DTW table 초기화
-         */
+        // DTW table 초기화
         for (i in 0 until resourcePoseSet.size) {
             for (j in 0 until targetPoseSet.size) {
                 if (i == 0 && j == 0) DTW[i][j] = 0.0 else DTW[i][j] = Double.POSITIVE_INFINITY
             }
         }
 
-        /**
-         * DTW table first row and column 계산
-         */
+        // DTW table first row and column 계산
         for (i in 1 until resourcePoseSet.size) {
             DTW[i][0] = DTW[i - 1][0] + cosineDistanceOfPose(resourcePoseSet[i], targetPoseSet[0])
         }
@@ -169,6 +157,7 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
         var v1Dotv2 = 0.0
         var absV1 = 0.0
         var absV2 = 0.0
+        Timber.i("스코어 " + poseVecA.size.toString() + " " + poseVecB.size.toString())
         for (i in 0 until poseVecA.size) {
             val valueA = poseVecA[i]
             val valueB = poseVecB[i]
