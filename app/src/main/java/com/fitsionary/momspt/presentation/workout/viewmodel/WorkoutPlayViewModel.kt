@@ -1,13 +1,25 @@
 package com.fitsionary.momspt.presentation.workout.viewmodel
 
+import android.app.Application
 import android.text.format.DateUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.fitsionary.momspt.presentation.base.BaseViewModel
+import com.fitsionary.momspt.database.getDatabase
+import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
+import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
+import com.fitsionary.momspt.repository.WorkoutPoseLandmarkRepository
 import java.util.*
 
-class WorkoutPlayViewModel : BaseViewModel() {
+class WorkoutPlayViewModel(application: Application) : BaseAndroidViewModel(application) {
+    private val database = getDatabase(application)
+    private val workoutPoseLandmarkRepository =
+        WorkoutPoseLandmarkRepository(application, database)
+
+    // TODO ViewModelFactory 구현하기
+    val workoutLandmarks: LiveData<WorkoutLandmarkDomainModel> =
+        workoutPoseLandmarkRepository.workoutLandmarks("tabata.mp4")
+
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
         get() = _score
@@ -19,10 +31,8 @@ class WorkoutPlayViewModel : BaseViewModel() {
     private lateinit var timer: Timer
 
     private val _timerCountDown = MutableLiveData<Long>()
-    private val timerCountDown: LiveData<Long>
-        get() = _timerCountDown
 
-    val formattedTimer = Transformations.map(timerCountDown) { time ->
+    val formattedTimer = Transformations.map(_timerCountDown) { time ->
         DateUtils.formatElapsedTime(time / 1000)
     }
 
@@ -54,9 +64,5 @@ class WorkoutPlayViewModel : BaseViewModel() {
     fun setScore(score: Int) {
         _score.postValue(score)
         _cumulativeScore.postValue(_cumulativeScore.value?.plus(score))
-    }
-
-    companion object {
-        private val TAG = WorkoutPlayViewModel::class.simpleName
     }
 }
