@@ -6,194 +6,190 @@
 
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_22dp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_22dp">
+                android:orientation="horizontal">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/container_day"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/daily_square_box_size"
-                        android:layout_marginEnd="@dimen/spacing_14dp"
-                        android:background="@drawable/daily_box_background"
-                        android:padding="@dimen/spacing_18dp"
-                        app:layout_constraintEnd_toStartOf="@id/container_weight"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/tv_day_time_comment"
-                            style="@style/medium_14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/time"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tv_day_time"
-                            style="@style/bold_28sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10"
-                            android:textColor="@color/pink"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_day_time_comment" />
-
-                        <TextView
-                            style="@style/medium_16sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/spacing_5dp"
-                            android:text="@string/minute"
-                            app:layout_constraintBaseline_toBaselineOf="@+id/tv_day_time"
-                            app:layout_constraintStart_toEndOf="@id/tv_day_time" />
-
-                        <TextView
-                            android:id="@+id/tv_calorie_time_comment"
-                            style="@style/medium_14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/kcal_kor"
-                            app:layout_constraintBottom_toTopOf="@id/tv_day_calorie"
-                            app:layout_constraintStart_toStartOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tv_day_calorie"
-                            style="@style/bold_28sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="120"
-                            android:textColor="@color/pink"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
-
-                        <TextView
-                            style="@style/medium_16sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/spacing_5dp"
-                            android:text="@string/kcal"
-                            app:layout_constraintBaseline_toBaselineOf="@+id/tv_day_calorie"
-                            app:layout_constraintStart_toEndOf="@id/tv_day_calorie" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/container_weight"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/daily_square_box_size"
-                        android:background="@drawable/daily_box_background"
-                        android:backgroundTint="@color/black"
-                        android:padding="@dimen/spacing_18dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/container_day"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/tv_weight_comment"
-                            style="@style/medium_14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/weight"
-                            android:textColor="@color/white"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tv_weight"
-                            style="@style/bold_28sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="57.5"
-                            android:textColor="@color/white"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_weight_comment" />
-
-                        <TextView
-                            style="@style/medium_16sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/spacing_5dp"
-                            android:text="@string/kg"
-                            android:textColor="@color/white"
-                            app:layout_constraintBaseline_toBaselineOf="@+id/tv_weight"
-                            app:layout_constraintStart_toEndOf="@id/tv_weight" />
-
-                        <TextView
-                            android:id="@+id/tv_today_weight_comment"
-                            style="@style/medium_14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/today_weight_comment"
-                            android:textColor="@color/white"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:src="@drawable/ic_edit"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tv_today_weight_comment" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_16dp"
+                    android:id="@+id/container_day"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/daily_square_box_size"
+                    android:layout_marginEnd="@dimen/spacing_14dp"
                     android:background="@drawable/daily_box_background"
-                    android:padding="@dimen/spacing_18dp">
+                    android:padding="@dimen/spacing_18dp"
+                    app:layout_constraintEnd_toStartOf="@id/container_weight"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:id="@+id/tv_day_time_comment"
                         style="@style/medium_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_white_arrow"
-                        android:drawablePadding="@dimen/spacing_5dp"
-                        android:text="@string/go_analysis"
-                        android:textColor="@color/pink"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:drawableTint="@color/pink"
+                        android:text="@string/time"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_day_analysis_comment"
-                        style="@style/bold_16sp"
+                        android:id="@+id/tv_day_time"
+                        style="@style/bold_28sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/analysis_result"
+                        android:text="10"
+                        android:textColor="@color/pink"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_day_time_comment" />
 
                     <TextView
                         style="@style/medium_16sp"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_16dp"
-                        android:text="아리따움님은 오른쪽 골반이 살짝 올라간 체형입니다."
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_day_analysis_comment" />
+                        android:layout_marginStart="@dimen/spacing_5dp"
+                        android:text="@string/minute"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/tv_day_time"
+                        app:layout_constraintStart_toEndOf="@id/tv_day_time" />
+
+                    <TextView
+                        android:id="@+id/tv_calorie_time_comment"
+                        style="@style/medium_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/kcal_kor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_day_calorie"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_day_calorie"
+                        style="@style/bold_28sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="120"
+                        android:textColor="@color/pink"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        style="@style/medium_16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_5dp"
+                        android:text="@string/kcal"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/tv_day_calorie"
+                        app:layout_constraintStart_toEndOf="@id/tv_day_calorie" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/container_weight"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/daily_square_box_size"
+                    android:background="@drawable/daily_box_background"
+                    android:backgroundTint="@color/black"
+                    android:padding="@dimen/spacing_18dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/container_day"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_weight_comment"
+                        style="@style/medium_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/weight"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_weight"
+                        style="@style/bold_28sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="57.5"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_weight_comment" />
+
+                    <TextView
+                        style="@style/medium_16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_5dp"
+                        android:text="@string/kg"
+                        android:textColor="@color/white"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/tv_weight"
+                        app:layout_constraintStart_toEndOf="@id/tv_weight" />
+
+                    <TextView
+                        android:id="@+id/tv_today_weight_comment"
+                        style="@style/medium_14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/today_weight_comment"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:src="@drawable/ic_edit"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_today_weight_comment" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                android:background="@drawable/daily_box_background"
+                android:padding="@dimen/spacing_18dp">
+
+                <TextView
+                    style="@style/medium_14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_white_arrow"
+                    android:drawablePadding="@dimen/spacing_5dp"
+                    android:text="@string/go_analysis"
+                    android:textColor="@color/pink"
+                    app:drawableTint="@color/pink"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_day_analysis_comment"
+                    style="@style/bold_16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/analysis_result"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/medium_16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_16dp"
+                    android:text="아리따움님은 오른쪽 골반이 살짝 올라간 체형입니다."
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_day_analysis_comment" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 </layout>
