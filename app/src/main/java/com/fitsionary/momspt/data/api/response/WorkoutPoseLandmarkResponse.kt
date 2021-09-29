@@ -29,6 +29,7 @@ fun WorkoutPoseLandmarkResponse.asDatabaseModel(): Result {
         it.landmarks.map { landmark ->
             databaseLandmark.add(
                 DatabaseLandmark(
+                    0,
                     landmarkId = landmarkId,
                     part = landmark.part,
                     x = landmark.x,

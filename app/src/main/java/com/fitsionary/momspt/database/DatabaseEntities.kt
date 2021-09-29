@@ -23,7 +23,8 @@ data class DatabaseWorkout(
  */
 @Entity(tableName = "landmarks")
 data class DatabaseLandmark(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val landmarkId: String,
     val part: String,
     val x: Double,
