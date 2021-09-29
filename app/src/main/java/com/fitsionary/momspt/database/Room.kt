@@ -22,8 +22,8 @@ interface WorkoutLandmarkDao {
      * workout - landmark
      */
     @Transaction
-    @Query("select * from workouts")
-    fun getWorkoutWithLandmark(): LiveData<List<DatabaseWorkoutWithLandmark>>
+    @Query("select * from workouts where workoutName=:workoutName")
+    fun getWorkoutWithLandmark(workoutName: String): LiveData<List<DatabaseWorkoutWithLandmark>>
 
 }
 
