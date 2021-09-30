@@ -14,5 +14,6 @@ data class Workout(
     val name: String,
     val playtime: Int,
     val thumbnail: String,
-    val type: String
+    val type: String,
+    val rank: String
 ) : Parcelable

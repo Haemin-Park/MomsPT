@@ -24,6 +24,7 @@ fun TodayWorkoutListResponseItem.toModel() : WorkoutModel {
         playtime = TimeUtil.makeWorkoutTimeFormat(workout.playtime),
         thumbnail = workout.thumbnail,
         type = workout.type,
-        isFinish = true
+        isFinish = true,
+        rank = workout.rank
     )
 }
