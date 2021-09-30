@@ -15,9 +15,11 @@
     <color name="white">#FFFFFF</color>
     <color name="pink">#ec5363</color>
     <color name="pink_99ec5363">#99ec5363</color>
+    <color name="pink_d44b62">#d44b62</color>
     <color name="medium_pink">#f796a1</color>
     <color name="light_pink">#fff7f7</color>
     <color name="dark_gray">#797979</color>
+    <color name="dark_gray_818181">#818181</color>
     <color name="dark_gray_666666">#666666</color>
     <color name="medium_gray">#cccccc</color>
     <color name="medium_gray_999999">#999999</color>
@@ -27,6 +29,8 @@
     <color name="light_gray_f8f8f8">#f8f8f8</color>
     <color name="light_gray_f9f9f9">#f9f9f9</color>
     <color name="blue">#2bb5fd</color>
+    <color name="blue_2b9bfd">#2b9bfd</color>
     <color name="yellow">#fee500</color>
     <color name="green">#03c75a</color>
+    <color name="orange_ec7653">#ec7653</color>
 </resources>

@@ -65,11 +65,11 @@
                 style="@style/medium_16sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:text="@{LargeWorkoutItem.name}"
+                app:layout_constraintEnd_toStartOf="@id/tv_workout_large_score"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:singleLine="true"
-                app:layout_constraintEnd_toStartOf="@id/tv_workout_large_score"
                 tools:text="힙 브릿지 운동" />
 
             <TextView
@@ -105,6 +105,7 @@
             <TextView
                 android:id="@+id/tv_workout_large_score"
                 style="@style/medium_18sp"
+                rankText="@{LargeWorkoutItem.rank}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
@@ -112,11 +113,12 @@
                 android:paddingTop="@dimen/spacing_8dp"
                 android:paddingRight="@dimen/spacing_16dp"
                 android:paddingBottom="@dimen/spacing_8dp"
-                android:text="A+"
-                android:textColor="@color/pink"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="A+"
+                tools:textColor="@color/pink" />
 
             <TextView
                 style="@style/medium_13sp"
