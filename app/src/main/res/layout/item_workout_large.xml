@@ -41,7 +41,7 @@
             android:layout_marginStart="@dimen/spacing_16dp"
             app:cardCornerRadius="@dimen/workout_img_radius"
             app:strokeColor="@color/gray"
-            app:strokeWidth="1dp">
+            app:strokeWidth="@dimen/workout_stroke_width">
 
             <ImageView
                 image_url="@{LargeWorkoutItem.thumbnail}"
