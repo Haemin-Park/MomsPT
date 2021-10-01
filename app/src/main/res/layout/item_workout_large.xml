@@ -16,8 +16,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/workout_large_height"
         android:layout_marginBottom="@dimen/spacing_20dp"
+        android:clipToPadding="false"
         android:gravity="center_vertical"
         android:onClick="@{()->LargeWorkoutItemListener.onClick(LargeWorkoutItem)}"
         android:orientation="horizontal"
@@ -34,8 +35,8 @@
             tools:checked="true" />
 
         <androidx.cardview.widget.CardView
-            android:layout_width="@dimen/workout_large_width"
-            android:layout_height="@dimen/workout_large_height"
+            android:layout_width="@dimen/workout_large_image_width"
+            android:layout_height="@dimen/workout_large_image_height"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/spacing_16dp"
             app:cardCornerRadius="@dimen/workout_img_radius"
@@ -44,8 +45,8 @@
 
             <ImageView
                 image_url="@{LargeWorkoutItem.thumbnail}"
-                android:layout_width="@dimen/workout_large_width"
-                android:layout_height="@dimen/workout_large_height"
+                android:layout_width="@dimen/workout_large_image_width"
+                android:layout_height="@dimen/workout_large_image_height"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/sample" />
@@ -106,9 +107,10 @@
                 android:id="@+id/tv_workout_large_score"
                 style="@style/medium_18sp"
                 rankText="@{LargeWorkoutItem.rank}"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/workout_rank_box_width"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_background"
+                android:gravity="center"
                 android:paddingLeft="@dimen/spacing_16dp"
                 android:paddingTop="@dimen/spacing_8dp"
                 android:paddingRight="@dimen/spacing_16dp"
