@@ -7,11 +7,13 @@ import android.util.Log
 import android.view.Choreographer
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.FragmentAnalysisResultBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisResultViewModel
 import com.fitsionary.momspt.presentation.base.BaseFragment
+import com.fitsionary.momspt.presentation.intro.view.IntroActivity
 import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.google.android.filament.Engine
 import com.google.android.filament.Fence
@@ -92,9 +94,13 @@ class AnalysisResultFragment
         }
 
         binding.btnGoMain.setOnClickListener {
-            activity?.let {
-                startActivity(Intent(it, MainActivity::class.java))
-                it.finish()
+            if (activity is IntroActivity) {
+                activity?.let {
+                    startActivity(Intent(it, MainActivity::class.java))
+                    it.finish()
+                }
+            } else if (activity is MainActivity) {
+                findNavController().navigate(AnalysisResultFragmentDirections.actionAnalysisResultFragmentToMainDaily())
             }
         }
     }

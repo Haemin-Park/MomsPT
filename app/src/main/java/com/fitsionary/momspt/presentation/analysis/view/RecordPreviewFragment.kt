@@ -10,6 +10,8 @@ import com.fitsionary.momspt.databinding.FragmentRecordPreviewBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel.Companion.START_ANALYSIS_RESULT_ACTIVITY
 import com.fitsionary.momspt.presentation.base.BaseFragment
+import com.fitsionary.momspt.presentation.intro.view.IntroActivity
+import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
@@ -79,11 +81,19 @@ class RecordPreviewFragment :
         }
         // for test
         binding.btnSend.setOnClickListener {
-            findNavController().navigate(
-                RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragment(
-                    ""
+            if (activity is IntroActivity) {
+                findNavController().navigate(
+                    RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragment(
+                        ""
+                    )
                 )
-            )
+            } else if (activity is MainActivity) {
+                findNavController().navigate(
+                    RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragmentInMain(
+                        ""
+                    )
+                )
+            }
         }
     }
 

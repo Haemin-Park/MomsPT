@@ -25,6 +25,7 @@
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
     </fragment>
+    <include app:graph="@navigation/analysis_nav_graph" />
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.fitsionary.momspt.presentation.signup.view.SignUpFragment"
@@ -35,38 +36,6 @@
             app:argType="string" />
         <action
             android:id="@+id/action_signUpFragment_to_analysisFragment"
-            app:destination="@id/analysisFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/analysisFragment"
-        android:name="com.fitsionary.momspt.presentation.analysis.view.AnalysisFragment"
-        android:label="체형분석"
-        tools:layout="@layout/fragment_analysis">
-        <action
-            android:id="@+id/action_analysisFragment_to_recordPreviewFragment"
-            app:destination="@id/recordPreviewFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/recordPreviewFragment"
-        android:name="com.fitsionary.momspt.presentation.analysis.view.RecordPreviewFragment"
-        android:label="체형분석"
-        tools:layout="@layout/fragment_record_preview">
-        <argument
-            android:name="filePath"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_recordPreviewFragment_to_analysisResultFragment"
-            app:destination="@id/analysisResultFragment"
-            app:popUpTo="@+id/signUpFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/analysisResultFragment"
-        android:name="com.fitsionary.momspt.presentation.analysis.view.AnalysisResultFragment"
-        android:label="체형분석 결과"
-        tools:layout="@layout/fragment_analysis_result">
-        <argument
-            android:name="filePath"
-            app:argType="string" />
+            app:destination="@id/analysis_nav_graph" />
     </fragment>
 </navigation>

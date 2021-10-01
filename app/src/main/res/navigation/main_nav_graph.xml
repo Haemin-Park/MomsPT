@@ -22,6 +22,7 @@
             android:id="@+id/action_main_workout_to_workoutDetailFragment"
             app:destination="@id/workoutDetailFragment" />
     </fragment>
+    <include app:graph="@navigation/analysis_nav_graph" />
     <fragment
         android:id="@+id/main_daily"
         android:name="com.fitsionary.momspt.presentation.daily.view.DailyFragment"
@@ -30,6 +31,9 @@
         <action
             android:id="@+id/action_main_daily_to_dayStatisticsDetailFragment"
             app:destination="@id/dayStatisticsDetailFragment" />
+        <action
+            android:id="@+id/action_main_daily_to_analysisFragment"
+            app:destination="@id/analysis_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/main_mypage"
