@@ -25,6 +25,7 @@
     <dimen name="workout_detail_img_height">220dp</dimen>
     <dimen name="workout_detail_name_width">200dp</dimen>
     <dimen name="workout_detail_box_height">94dp</dimen>
+    <dimen name="workout_player_control_icon_size">80dp</dimen>
     <dimen name="workout_detail_vertical_line_width">3dp</dimen>
     <dimen name="daily_square_box_size">180dp</dimen>
     <dimen name="mypage_profile_img_diameter">130dp</dimen>

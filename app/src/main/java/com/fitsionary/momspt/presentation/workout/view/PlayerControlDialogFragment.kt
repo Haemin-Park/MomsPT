@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.DialogFragmentPlayerControlBinding
@@ -31,6 +33,14 @@ class PlayerControlDialogFragment(isPlaying: Boolean) :
         binding.btnControl.setOnClickListener {
             listener.onControllerClicked()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
+        params.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT
+        dialog!!.window!!.attributes = params as WindowManager.LayoutParams
     }
 
     fun setState(isPlaying: Boolean) {
