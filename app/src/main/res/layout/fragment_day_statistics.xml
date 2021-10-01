@@ -161,6 +161,7 @@
                 android:padding="@dimen/spacing_18dp">
 
                 <TextView
+                    android:id="@+id/tv_analysis"
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
