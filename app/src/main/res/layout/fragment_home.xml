@@ -34,7 +34,7 @@
                     style="@style/bold_22sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="근력 회복 운동을\n집중적으로\n해야하는 시기에요"
+                    android:text="@{vm.comment.comment}"
                     android:textColor="@color/black"
                     tools:text="근력 회복 운동을\n집중적으로\n해야하는 시기에요" />
 
@@ -52,7 +52,7 @@
                     android:paddingTop="@dimen/spacing_8dp"
                     android:paddingRight="@dimen/spacing_16dp"
                     android:paddingBottom="@dimen/spacing_8dp"
-                    android:text="@{@string/d_day_format(vm.comment.d_day)}"
+                    android:text="@{@string/d_day_format(vm.comment.dayAfterBabyDue)}"
                     android:textColor="@color/pink"
                     tools:text="D+18" />
             </LinearLayout>

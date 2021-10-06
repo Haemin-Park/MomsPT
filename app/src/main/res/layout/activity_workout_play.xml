@@ -13,7 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_workout_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/black_000000">
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/player_view"
@@ -52,7 +53,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center"
-                android:text="@string/no_camera_permission" />
+                android:text="@string/no_camera_permission"
+                android:textColor="@color/white" />
 
         </FrameLayout>
 
@@ -70,12 +72,12 @@
             tools:text="10점" />
 
         <ImageView
+            score_image="@{vm.score}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            score_image="@{vm.score}"
             android:layout_marginTop="@dimen/spacing_10dp"
             android:layout_marginEnd="@dimen/spacing_22dp"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_score"
             tools:src="@drawable/ic_perpect" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,22 +29,13 @@
             android:orientation="vertical"
             android:paddingTop="@dimen/spacing_2dp">
 
-            <androidx.cardview.widget.CardView
+            <ImageView
+                round_image_url="@{MediumWorkoutItem.thumbnail}"
                 android:layout_width="@dimen/workout_medium_image_width"
                 android:layout_height="@dimen/workout_medium_image_height"
                 android:layout_gravity="center"
-                app:cardCornerRadius="@dimen/workout_img_radius"
-                app:strokeColor="@color/light_gray"
-                app:strokeWidth="@dimen/workout_stroke_width">
-
-                <ImageView
-                    image_url="@{MediumWorkoutItem.thumbnail}"
-                    android:layout_width="@dimen/workout_medium_image_width"
-                    android:layout_height="@dimen/workout_medium_image_height"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    tools:src="@drawable/sample" />
-            </androidx.cardview.widget.CardView>
+                android:scaleType="centerCrop"
+                tools:src="@drawable/sample" />
 
             <TextView
                 style="@style/medium_16sp"
@@ -92,10 +83,10 @@
             android:layout_width="@dimen/workout_checkbox_width"
             android:layout_height="@dimen/workout_checkbox_height"
             android:layout_marginTop="@dimen/spacing_10dp"
-            android:layout_marginRight="@dimen/spacing_10dp"
+            android:layout_marginEnd="@dimen/spacing_10dp"
             android:background="@drawable/custom_checkbox"
             android:button="@null"
-            android:checked="true"
+            android:checked="@{MediumWorkoutItem.finish}"
             android:clickable="false"
             android:includeFontPadding="false"
             app:layout_constraintRight_toRightOf="parent"

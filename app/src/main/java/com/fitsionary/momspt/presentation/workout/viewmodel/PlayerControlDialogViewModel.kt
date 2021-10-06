@@ -33,8 +33,8 @@ class PlayerControlDialogViewModel(isPlaying: Boolean) : BaseViewModel() {
 
     private fun setImage(isPlaying: Boolean) {
         if (isPlaying) {
-            _imgRes.value = R.drawable.exo_controls_pause
+            _imgRes.value = R.drawable.pause
         } else
-            _imgRes.value = R.drawable.exo_controls_play
+            _imgRes.value = R.drawable.ic_play
     }
 }

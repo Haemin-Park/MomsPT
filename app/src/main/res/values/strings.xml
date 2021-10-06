@@ -7,6 +7,7 @@
     <string name="day_achieved_format">%d/%d</string>
     <string name="step_format">%d단계</string>
     <string name="step_day_format">%d일차</string>
+    <string name="hashtag_format">#%s</string>
     <string name="score_format">%d점</string>
     <string name="minutes_format">%d분</string>
     <string name="calorie_format">%dkcal</string>

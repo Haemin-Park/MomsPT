@@ -165,12 +165,12 @@
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_white_arrow"
                     android:drawablePadding="@dimen/spacing_5dp"
                     android:text="@string/go_analysis"
                     android:textColor="@color/pink"
                     app:drawableTint="@color/pink"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:drawableEndCompat="@drawable/ic_white_arrow"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
