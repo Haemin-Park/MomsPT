@@ -8,6 +8,6 @@ import android.os.Parcelable
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class TodayCommentResponse(
-    val comment: String,
-    val d_day: Int
+    val dayAfterBabyDue: Int,
+    val comment: String
 ) : Parcelable

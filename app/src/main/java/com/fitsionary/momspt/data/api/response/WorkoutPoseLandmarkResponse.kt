@@ -5,7 +5,7 @@ import com.fitsionary.momspt.database.DatabaseWorkout
 
 data class WorkoutPoseLandmarkResponse(
     val workout: String,
-    val poseData: List<PostDataItem>
+    val posedata: List<PostDataItem>
 ) {
     data class PostDataItem(
         val frame: Long,
@@ -17,7 +17,7 @@ fun WorkoutPoseLandmarkResponse.asDatabaseModel(): Result {
     val databaseWorkout = mutableListOf<DatabaseWorkout>()
     val databaseLandmark = mutableListOf<DatabaseLandmark>()
 
-    this.poseData.map {
+    this.posedata.map {
         val landmarkId = workout + "_" + it.frame
         databaseWorkout.add(
             DatabaseWorkout(
