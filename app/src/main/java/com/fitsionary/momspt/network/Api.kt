@@ -1,28 +1,28 @@
 package com.fitsionary.momspt.network
 
-import com.fitsionary.momspt.data.api.request.NicknameDuplicateCheckRequest
+import com.fitsionary.momspt.data.api.request.SignInRequest
 import com.fitsionary.momspt.data.api.request.SignUpRequest
 import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
-import com.fitsionary.momspt.data.api.response.CommonResponse
-import com.fitsionary.momspt.data.api.response.TodayCommentResponse
-import com.fitsionary.momspt.data.api.response.TodayWorkoutListResponse
-import com.fitsionary.momspt.data.api.response.WorkoutPoseLandmarkResponse
+import com.fitsionary.momspt.data.api.response.*
 import io.reactivex.rxjava3.core.Single
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface Api {
+    @POST("/user/login")
+    fun signIn(@Body body: SignInRequest): Single<SignInResponse>
+
     @POST("/user/signup")
     fun signUp(@Body body: SignUpRequest): Single<CommonResponse>
 
-    @POST("/user/nicknameduplicatecheck")
-    fun nicknameDuplicateCheck(@Body body: NicknameDuplicateCheckRequest): Single<CommonResponse>
+    @GET("/user/nicknameduplicate")
+    fun nicknameDuplicateCheck(@Query("nickname") nickname: String): Single<CommonResponse>
 
-    @GET("/users/getdaycomment")
-    fun getTodayComment(@Query("name") name: String): Single<TodayCommentResponse>
+    @GET("/user/daycomment")
+    fun getTodayComment(): Single<TodayCommentResponse>
 
-    @POST("/workout/todayworkoutlist")
-    fun getTodayWorkoutList(@Body body: TodayWorkoutListRequest): Single<TodayWorkoutListResponse>
+    @GET("/workout/workoutlist")
+    fun getTodayWorkoutList(): Single<WorkoutListResponse>
 
     @Multipart
     @POST("/upload")
@@ -30,6 +30,6 @@ interface Api {
         @Part file: MultipartBody.Part
     ): Single<String>
 
-    @GET("")
-    fun getWorkoutPoseLandmark(): Single<WorkoutPoseLandmarkResponse>
+    @GET("workout/keypoints")
+    suspend fun getWorkoutPoseLandmark(@Query("workoutcode") workoutCode: String): WorkoutPoseLandmarkResponse
 }
