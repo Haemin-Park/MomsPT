@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
-import com.fitsionary.momspt.util.BASE_URL2
+import com.fitsionary.momspt.util.BASE_URL
 import com.fitsionary.momspt.util.Event
 import com.fitsionary.momspt.util.FormDataUtil
 import com.fitsionary.momspt.util.rx.applyNetworkScheduler
@@ -34,13 +34,13 @@ class RecordPreviewViewModel(application: Application) : BaseAndroidViewModel(ap
     fun sendVideo() {
         val file = File(videoPath)
         addDisposable(
-            NetworkService.api2.sendVideo(
+            NetworkService.api.sendVideo(
                 FormDataUtil.getVideoBody(FormDataUtil.FILE, file)
             ).applyNetworkScheduler()
                 .doOnSubscribe { isLoading.onNext(true) }
                 .doAfterTerminate { isLoading.onNext(false) }
                 .subscribe({
-                    downloadResult(BASE_URL2 + it)
+                    downloadResult(BASE_URL + it)
                 }, {
                     Timber.e(it.message!!)
                 })
