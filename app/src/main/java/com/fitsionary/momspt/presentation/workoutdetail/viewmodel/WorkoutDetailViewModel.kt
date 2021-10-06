@@ -12,17 +12,14 @@ import kotlinx.coroutines.launch
 class WorkoutDetailViewModel(application: Application) : BaseAndroidViewModel(application) {
     private val database = getDatabase(application)
     private val workoutPoseLandmarkRepository =
-        WorkoutPoseLandmarkRepository(application, database)
+        WorkoutPoseLandmarkRepository(database)
 
     val loadingStatus: LiveData<Boolean> = workoutPoseLandmarkRepository.isLoading
     val ableNavigation: LiveData<Event<Boolean>> = workoutPoseLandmarkRepository.ableNavigation
 
-    fun downloadLandmarks() {
+    fun downloadLandmarks(code: String) {
         viewModelScope.launch {
-            workoutPoseLandmarkRepository.testRefreshData()
+            workoutPoseLandmarkRepository.refreshData(code)
         }
-//        addDisposable(
-//            workoutPoseLandmarkRepository.refreshData()
-//        )
     }
 }
