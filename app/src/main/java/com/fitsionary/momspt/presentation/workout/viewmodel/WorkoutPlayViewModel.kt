@@ -2,23 +2,21 @@ package com.fitsionary.momspt.presentation.workout.viewmodel
 
 import android.app.Application
 import android.text.format.DateUtils
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import com.fitsionary.momspt.database.getDatabase
 import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
 import com.fitsionary.momspt.repository.WorkoutPoseLandmarkRepository
 import java.util.*
 
-class WorkoutPlayViewModel(application: Application) : BaseAndroidViewModel(application) {
+class WorkoutPlayViewModel(application: Application, workoutCode: String) :
+    BaseAndroidViewModel(application) {
     private val database = getDatabase(application)
     private val workoutPoseLandmarkRepository =
-        WorkoutPoseLandmarkRepository(application, database)
+        WorkoutPoseLandmarkRepository(database)
 
-    // TODO ViewModelFactory 구현하기
     val workoutLandmarks: LiveData<WorkoutLandmarkDomainModel> =
-        workoutPoseLandmarkRepository.workoutLandmarks("tabata.mp4")
+        workoutPoseLandmarkRepository.workoutLandmarks(workoutCode)
 
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
@@ -64,5 +62,16 @@ class WorkoutPlayViewModel(application: Application) : BaseAndroidViewModel(appl
     fun setScore(score: Int) {
         _score.postValue(score)
         _cumulativeScore.postValue(_cumulativeScore.value?.plus(score))
+    }
+
+    class ViewModelFactory(private val application: Application, private val workoutCode: String) :
+        ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return if (modelClass.isAssignableFrom(WorkoutPlayViewModel::class.java)) {
+                WorkoutPlayViewModel(application, workoutCode) as T
+            } else {
+                throw IllegalArgumentException()
+            }
+        }
     }
 }
