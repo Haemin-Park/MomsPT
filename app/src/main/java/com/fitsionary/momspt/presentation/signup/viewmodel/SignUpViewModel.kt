@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.data.api.request.NicknameDuplicateCheckRequest
 import com.fitsionary.momspt.data.api.request.SignUpRequest
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
@@ -47,15 +46,10 @@ class SignUpViewModel(application: Application) : BaseAndroidViewModel(applicati
             if (nickname.isNotEmpty()) {
                 if (pattern.matcher(nickname).matches()) {
                     addDisposable(
-                        NetworkService.api.nicknameDuplicateCheck(
-                            NicknameDuplicateCheckRequest(
-                                nickname
-                            )
-                        ).subscribe({
-                            if (it.message == "Success") {
+                        NetworkService.api.nicknameDuplicateCheck(nickname).subscribe({
+                            if (it.success) {
                                 validationResultText.postValue(NICKNAME_VALIDATION)
                             }
-
                         }, {
                             Timber.i(it.message)
                             validationResultText.postValue(NICKNAME_DUPLICATE)

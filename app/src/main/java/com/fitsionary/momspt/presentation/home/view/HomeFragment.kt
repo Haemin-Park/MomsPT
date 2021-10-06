@@ -6,15 +6,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.fitsionary.momspt.BR
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.model.DayAchievedModel
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentHomeBinding
+import com.fitsionary.momspt.databinding.ItemDayAchievedBinding
+import com.fitsionary.momspt.databinding.ItemWorkoutMediumBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.base.BaseRecyclerViewAdapter
 import com.fitsionary.momspt.presentation.home.viewmodel.HomeViewModel
-import com.fitsionary.momspt.util.DateUtil
-import com.fitsionary.momspt.util.TEST_USER_NAME
 import com.fitsionary.momspt.util.listener.OnItemClickListener
 
 
@@ -24,14 +23,14 @@ class HomeFragment :
         ViewModelProvider(this).get(HomeViewModel::class.java)
     }
     private val workoutAdapter =
-        object : BaseRecyclerViewAdapter<FragmentHomeBinding, WorkoutModel>(
+        object : BaseRecyclerViewAdapter<ItemWorkoutMediumBinding, WorkoutModel>(
             layoutResId = R.layout.item_workout_medium,
             bindingVariableItemId = BR.MediumWorkoutItem,
             bindingVariableListenerId = BR.MediumWorkoutItemListener
         ) {}
 
     private val dayAchievedAdapter =
-        object : BaseRecyclerViewAdapter<FragmentHomeBinding, DayAchievedModel>(
+        object : BaseRecyclerViewAdapter<ItemDayAchievedBinding, DayAchievedModel>(
             layoutResId = R.layout.item_day_achieved,
             bindingVariableItemId = BR.DayAchieved
         ) {}
@@ -45,14 +44,10 @@ class HomeFragment :
             rvDayAchieved.adapter = dayAchievedAdapter
         }
 
-        viewModel.getTodayComment(TEST_USER_NAME)
-
-        viewModel.getTodayWorkoutList(
-            TodayWorkoutListRequest(
-                DateUtil.getRequestDateFormat(),
-                TEST_USER_NAME
-            )
-        )
+        viewModel.run {
+            getTodayComment()
+            getTodayWorkoutList()
+        }
 
         workoutAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {
@@ -63,9 +58,5 @@ class HomeFragment :
                 )
             }
         }
-    }
-
-    companion object {
-        const val WORKOUT_NAME = "WORKOUT_NAME"
     }
 }

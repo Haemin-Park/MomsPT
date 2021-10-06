@@ -1,17 +1,14 @@
 package com.fitsionary.momspt.presentation.workout.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.api.response.TodayCommentResponse
 import com.fitsionary.momspt.data.api.response.toModel
 import com.fitsionary.momspt.data.model.WorkoutModel
-import com.fitsionary.momspt.data.model.getTestData
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseViewModel
-import com.fitsionary.momspt.presentation.home.viewmodel.HomeViewModel
 import com.fitsionary.momspt.util.rx.applyNetworkScheduler
+import timber.log.Timber
 
 class WorkoutViewModel : BaseViewModel() {
     private val _comment = MutableLiveData<TodayCommentResponse>()
@@ -22,37 +19,16 @@ class WorkoutViewModel : BaseViewModel() {
     val workoutList: LiveData<List<WorkoutModel>>
         get() = _workoutList
 
-    init {
-        _workoutList.value = getTestData()
-    }
-
-    fun getTodayComment(name: String) {
+    fun getTodayWorkoutList() {
         addDisposable(
-            NetworkService.api.getTodayComment(name)
+            NetworkService.api.getTodayWorkoutList()
                 .applyNetworkScheduler()
                 .subscribe({
-                    Log.i(TAG, it.toString())
-                    _comment.value = it
-                }, {
-                    Log.i(TAG, it.toString())
-                })
-        )
-    }
-
-    fun getTodayWorkoutList(request: TodayWorkoutListRequest) {
-        addDisposable(
-            NetworkService.api.getTodayWorkoutList(request)
-                .applyNetworkScheduler()
-                .subscribe({
-                    Log.i(TAG, it.toString())
+                    Timber.i(it.toString())
                     _workoutList.value = it.map { response -> response.toModel() }
                 }, {
-                    Log.i(TAG, it.toString())
+                    Timber.e(it.message!!)
                 })
         )
-    }
-
-    companion object {
-        private val TAG = WorkoutViewModel::class.simpleName
     }
 }

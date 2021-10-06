@@ -6,15 +6,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.fitsionary.momspt.BR
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentWorkoutBinding
+import com.fitsionary.momspt.databinding.ItemTypeBinding
+import com.fitsionary.momspt.databinding.ItemWorkoutLargeBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.base.BaseRecyclerViewAdapter
+import com.fitsionary.momspt.presentation.base.BaseViewHolder
 import com.fitsionary.momspt.presentation.custom.CustomStepPickerDialog
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutViewModel
-import com.fitsionary.momspt.util.DateUtil
-import com.fitsionary.momspt.util.TEST_USER_NAME
+import com.fitsionary.momspt.util.ext.bindItems
 import com.fitsionary.momspt.util.listener.OnItemClickListener
 
 class WorkoutFragment :
@@ -23,11 +24,25 @@ class WorkoutFragment :
         ViewModelProvider(this).get(WorkoutViewModel::class.java)
     }
     private val workoutAdapter =
-        object : BaseRecyclerViewAdapter<FragmentWorkoutBinding, WorkoutModel>(
+        object : BaseRecyclerViewAdapter<ItemWorkoutLargeBinding, WorkoutModel>(
             layoutResId = R.layout.item_workout_large,
             bindingVariableItemId = BR.LargeWorkoutItem,
             bindingVariableListenerId = BR.LargeWorkoutItemListener,
-        ) {}
+        ) {
+            override fun onBindViewHolder(
+                holder: BaseViewHolder<ItemWorkoutLargeBinding, WorkoutModel>,
+                position: Int
+            ) {
+                super.onBindViewHolder(holder, position)
+                val workoutTypeAdapter =
+                    object : BaseRecyclerViewAdapter<ItemTypeBinding, String>(
+                        layoutResId = R.layout.item_type,
+                        bindingVariableItemId = BR.TypeItem
+                    ) {}
+                holder.binding.rvWorkoutLargeType.adapter = workoutTypeAdapter
+                holder.binding.rvWorkoutLargeType.bindItems(currentList[position].type)
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +51,8 @@ class WorkoutFragment :
             rvWorkout.adapter = workoutAdapter
         }
 
+        viewModel.getTodayWorkoutList()
+
         binding.layoutStep.setOnClickListener {
             val dialog = CustomStepPickerDialog.CustomStepPickerDialogBuilder()
                 .setOnOkClickedListener {
@@ -43,13 +60,6 @@ class WorkoutFragment :
                 .create()
             dialog.show(parentFragmentManager, dialog.tag)
         }
-
-        viewModel.getTodayWorkoutList(
-            TodayWorkoutListRequest(
-                DateUtil.getRequestDateFormat(),
-                TEST_USER_NAME
-            )
-        )
 
         workoutAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {

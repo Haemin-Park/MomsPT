@@ -3,12 +3,10 @@ package com.fitsionary.momspt.presentation.home.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.api.response.TodayCommentResponse
 import com.fitsionary.momspt.data.api.response.toModel
 import com.fitsionary.momspt.data.model.DayAchievedModel
 import com.fitsionary.momspt.data.model.WorkoutModel
-import com.fitsionary.momspt.data.model.getTestData
 import com.fitsionary.momspt.data.model.getTestDayAchievedData
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
@@ -29,13 +27,12 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
         get() = _dayAchievedList
 
     init {
-        _workoutList.value = getTestData()
         _dayAchievedList.value = getTestDayAchievedData()
     }
 
-    fun getTodayComment(name: String) {
+    fun getTodayComment() {
         addDisposable(
-            NetworkService.api.getTodayComment(name)
+            NetworkService.api.getTodayComment()
                 .applyNetworkScheduler()
                 .subscribe({
                     Timber.i(it.toString())
@@ -46,9 +43,9 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
         )
     }
 
-    fun getTodayWorkoutList(request: TodayWorkoutListRequest) {
+    fun getTodayWorkoutList() {
         addDisposable(
-            NetworkService.api.getTodayWorkoutList(request)
+            NetworkService.api.getTodayWorkoutList()
                 .applyNetworkScheduler()
                 .subscribe({
                     Timber.i(it.toString())
