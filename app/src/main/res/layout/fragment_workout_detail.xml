@@ -28,25 +28,17 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
+                <ImageView
+                    android:id="@+id/iv_workout_detail"
+                    round_image_url="@{WorkoutItem.thumbnail}"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/workout_detail_img_height"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/spacing_22dp"
                     android:layout_marginTop="@dimen/spacing_20dp"
                     android:layout_marginRight="@dimen/spacing_22dp"
-                    app:cardCornerRadius="@dimen/workout_img_radius"
-                    app:strokeColor="@color/gray"
-                    app:strokeWidth="1dp">
-
-                    <ImageView
-                        android:id="@+id/iv_workout_detail"
-                        image_url="@{WorkoutItem.thumbnail}"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/workout_detail_img_height"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/sample" />
-                </androidx.cardview.widget.CardView>
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -98,12 +90,13 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="47kcal" />
 
-                    <TextView
-                        style="@style/medium_13sp"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_workout_detail_type"
+                        bindItems="@{WorkoutItem.type}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="#힙 운동 #코어 운동"
-                        android:textColor="@color/blue"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
