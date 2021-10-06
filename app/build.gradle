@@ -137,5 +137,13 @@ dependencies {
     // kakao login
     implementation "com.kakao.sdk:v2-user:2.7.0"
 
+    // Number picker
     implementation 'io.github.ShawnLin013:number-picker:2.4.13'
+
+    // MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // DataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-core:1.0.0"
 }
