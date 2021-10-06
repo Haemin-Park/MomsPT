@@ -72,7 +72,7 @@
         android:label="WorkoutPlayActivity"
         tools:layout="@layout/activity_workout_play">
         <argument
-            android:name="workoutName"
-            app:argType="string" />
+            android:name="workout"
+            app:argType="com.fitsionary.momspt.data.model.WorkoutModel" />
     </activity>
 </navigation>

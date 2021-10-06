@@ -11,6 +11,7 @@ import androidx.navigation.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.api.response.Landmark
 import com.fitsionary.momspt.data.enum.PoseEnum
+import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.ActivityWorkoutPlayBinding
 import com.fitsionary.momspt.presentation.base.BaseActivity
 import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
@@ -37,7 +38,10 @@ import kotlin.math.floor
 class WorkoutPlayActivity :
     BaseActivity<ActivityWorkoutPlayBinding, WorkoutPlayViewModel>(R.layout.activity_workout_play) {
     override val viewModel: WorkoutPlayViewModel by lazy {
-        ViewModelProvider(this).get(WorkoutPlayViewModel::class.java)
+        ViewModelProvider(
+            this,
+            WorkoutPlayViewModel.ViewModelFactory(application, workoutItem.workoutCode + ".mp4")
+        ).get(WorkoutPlayViewModel::class.java)
     }
 
     private lateinit var playerControlDialogFragment: PlayerControlDialogFragment
@@ -131,13 +135,13 @@ class WorkoutPlayActivity :
     private var parentWidth = 0
 
     private lateinit var poseLandmarks: NormalizedLandmarkList
-    private lateinit var workoutName: String
+    private lateinit var workoutItem: WorkoutModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val safeArgs: WorkoutPlayActivityArgs by navArgs()
-        workoutName = safeArgs.workoutName
-        mediaUrl = "https://d29r6pfiojlanv.cloudfront.net/tabata.mp4"
+        workoutItem = safeArgs.workout
+        mediaUrl = workoutItem.video
 
         binding.vm = viewModel
 
