@@ -73,5 +73,6 @@
     <string name="edit_finish">수정 완료</string>
     <string name="no_camera_permission">카메라 권한이 없습니다.</string>
     <string name="workout_finish">운동 종료하기</string>
+    <string name="loading">조금만 기다려주세요...</string>
 
 </resources>

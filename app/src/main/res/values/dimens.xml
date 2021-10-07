@@ -6,6 +6,7 @@
     <dimen name="custom_picker_height">150dp</dimen>
     <dimen name="circle_timer_diameter">80dp</dimen>
     <dimen name="record_send_button_width">180dp</dimen>
+    <dimen name="loading_indicator_size">80dp</dimen>
     <dimen name="workout_medium_width">182dp</dimen>
     <dimen name="workout_medium_image_width">178dp</dimen>
     <dimen name="workout_medium_image_height">190dp</dimen>
