@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -38,21 +37,31 @@ class MainActivity :
         NavigationUI.setupWithNavController(binding.bottomNavigationMain, navController)
         navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
             if (nd.id in bottomMenuId) {
+                binding.toolbarMain.visibility = View.VISIBLE
                 binding.toolbarMain.setTitleMargin(22, 0, 0, 0)
                 binding.bottomNavigationMain.visibility = View.VISIBLE
-                if (nd.id == nc.graph.startDestination) {
+                if (nd.id == R.id.main_home) {
                     binding.toolbarMain.setLogo(R.drawable.ic_logo2)
                 } else {
                     binding.toolbarMain.logo = null
                 }
             } else {
-                binding.toolbarMain.apply {
-                    contentInsetStartWithNavigation = 0
-                    setTitleMargin(0, 0, 0, 0)
-                    setNavigationIcon(R.drawable.ic_back)
-                    logo = null
+                when (nd.id) {
+                    R.id.splashFragment, R.id.signInFragment -> binding.toolbarMain.visibility =
+                        View.INVISIBLE
+                    else -> {
+                        if (nd.id == R.id.analysisResultFragment)
+                            binding.toolbarMain.navigationIcon = null
+                        binding.toolbarMain.visibility = View.VISIBLE
+                        binding.toolbarMain.apply {
+                            contentInsetStartWithNavigation = 0
+                            setTitleMargin(0, 0, 0, 0)
+                            setNavigationIcon(R.drawable.ic_back)
+                            logo = null
+                        }
+                        binding.bottomNavigationMain.visibility = View.GONE
+                    }
                 }
-                binding.bottomNavigationMain.visibility = View.GONE
             }
         }
     }

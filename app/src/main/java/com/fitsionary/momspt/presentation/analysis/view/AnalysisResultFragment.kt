@@ -1,7 +1,6 @@
 package com.fitsionary.momspt.presentation.analysis.view
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Choreographer
@@ -10,11 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
+import com.fitsionary.momspt.data.enum.DirectionEnum
 import com.fitsionary.momspt.databinding.FragmentAnalysisResultBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.AnalysisResultViewModel
 import com.fitsionary.momspt.presentation.base.BaseFragment
-import com.fitsionary.momspt.presentation.intro.view.IntroActivity
-import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.google.android.filament.Engine
 import com.google.android.filament.Fence
 import com.google.android.filament.Skybox
@@ -68,7 +66,9 @@ class AnalysisResultFragment
         binding.surface.setOnTouchListener(modelViewer)
 
         val safeArgs: AnalysisResultFragmentArgs by navArgs()
+        val direction = safeArgs.direction
         val path = safeArgs.filePath
+
         if (File(path).exists()) {
             isSuccess = true
 
@@ -94,13 +94,13 @@ class AnalysisResultFragment
         }
 
         binding.btnGoMain.setOnClickListener {
-            if (activity is IntroActivity) {
-                activity?.let {
-                    startActivity(Intent(it, MainActivity::class.java))
-                    it.finish()
-                }
-            } else if (activity is MainActivity) {
-                findNavController().navigate(AnalysisResultFragmentDirections.actionAnalysisResultFragmentToMainDaily())
+            when (direction) {
+                DirectionEnum.TO_MAIN -> findNavController().navigate(
+                    AnalysisResultFragmentDirections.actionAnalysisResultFragmentToMainHome()
+                )
+                DirectionEnum.TO_DAILY -> findNavController().navigate(
+                    AnalysisResultFragmentDirections.actionAnalysisResultFragmentToMainDaily()
+                )
             }
         }
     }

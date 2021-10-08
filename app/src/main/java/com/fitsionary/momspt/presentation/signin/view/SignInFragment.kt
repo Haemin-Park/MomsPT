@@ -1,6 +1,5 @@
 package com.fitsionary.momspt.presentation.signin.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +9,6 @@ import com.fitsionary.momspt.MomsPTApplication
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.FragmentSignInBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
-import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.fitsionary.momspt.presentation.signin.viewmodel.SignInViewModel
 import com.fitsionary.momspt.util.CurrentUser
 import com.kakao.sdk.auth.model.OAuthToken
@@ -68,8 +66,7 @@ class SignInFragment :
                     viewLifecycleOwner.lifecycleScope.launch {
                         MomsPTApplication.getInstance().getTokenDataStore().saveToken(userToken)
                     }
-                    startActivity(Intent(requireActivity(), MainActivity::class.java))
-                    requireActivity().finish()
+                    findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToMainHome())
                 } else {
                     findNavController().navigate(
                         SignInFragmentDirections.actionSignInFragmentToSignUpFragment(userNickname)

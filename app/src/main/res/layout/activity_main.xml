@@ -17,7 +17,6 @@
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/elevation_1dp"
             android:gravity="center"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/CustomToolbarStyle"

@@ -9,6 +9,9 @@
         android:name="com.fitsionary.momspt.presentation.analysis.view.AnalysisFragment"
         android:label="체형분석"
         tools:layout="@layout/fragment_analysis">
+        <argument
+            android:name="direction"
+            app:argType="com.fitsionary.momspt.data.enum.DirectionEnum" />
         <action
             android:id="@+id/action_analysisFragment_to_recordPreviewFragment"
             app:destination="@id/recordPreviewFragment" />
@@ -19,15 +22,18 @@
         android:label="체형분석"
         tools:layout="@layout/fragment_record_preview">
         <argument
+            android:name="direction"
+            app:argType="com.fitsionary.momspt.data.enum.DirectionEnum" />
+        <argument
             android:name="filePath"
             app:argType="string" />
         <action
-            android:id="@+id/action_recordPreviewFragment_to_analysisResultFragment"
+            android:id="@+id/action_recordPreviewFragment_to_analysisResultFragment_in_sign_in_scenario"
             app:destination="@id/analysisResultFragment"
             app:popUpTo="@+id/signUpFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_recordPreviewFragment_to_analysisResultFragment_in_main"
+            android:id="@+id/action_recordPreviewFragment_to_analysisResultFragment_in_main_scenario"
             app:destination="@id/analysisResultFragment"
             app:popUpTo="@+id/analysisFragment"
             app:popUpToInclusive="true" />
@@ -38,8 +44,14 @@
         android:label="체형분석 결과"
         tools:layout="@layout/fragment_analysis_result">
         <argument
+            android:name="direction"
+            app:argType="com.fitsionary.momspt.data.enum.DirectionEnum" />
+        <argument
             android:name="filePath"
             app:argType="string" />
+        <action
+            android:id="@+id/action_analysisResultFragment_to_main_home"
+            app:destination="@id/main_home" />
         <action
             android:id="@+id/action_analysisResultFragment_to_main_daily"
             app:destination="@id/main_daily" />

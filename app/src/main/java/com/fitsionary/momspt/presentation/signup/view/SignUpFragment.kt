@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
+import com.fitsionary.momspt.data.enum.DirectionEnum
 import com.fitsionary.momspt.databinding.FragmentSignUpBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.custom.CustomDatePickerDialog
@@ -53,7 +54,11 @@ class SignUpFragment :
         })
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToAnalysisFragment())
+            findNavController().navigate(
+                SignUpFragmentDirections.actionSignUpFragmentToAnalysisFragment(
+                    DirectionEnum.TO_MAIN
+                )
+            )
         }
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.daasuu.camerarecorder.CameraRecorder
 import com.daasuu.camerarecorder.CameraRecorderBuilder
 import com.daasuu.camerarecorder.LensFacing
@@ -31,6 +32,9 @@ class AnalysisFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val safeArgs: AnalysisFragmentArgs by navArgs()
+        val direction = safeArgs.direction
 
         binding.vm = viewModel
 
@@ -59,7 +63,7 @@ class AnalysisFragment :
                                     if (File(event.second).exists()) {
                                         findNavController().navigate(
                                             AnalysisFragmentDirections.actionAnalysisFragmentToRecordPreviewFragment(
-                                                event.second
+                                                direction, event.second
                                             )
                                         )
 

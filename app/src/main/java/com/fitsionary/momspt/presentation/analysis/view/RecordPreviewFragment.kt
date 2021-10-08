@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
+import com.fitsionary.momspt.data.enum.DirectionEnum
 import com.fitsionary.momspt.databinding.FragmentRecordPreviewBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel.Companion.START_ANALYSIS_RESULT_ACTIVITY
 import com.fitsionary.momspt.presentation.base.BaseFragment
-import com.fitsionary.momspt.presentation.intro.view.IntroActivity
-import com.fitsionary.momspt.presentation.main.view.MainActivity
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
@@ -60,17 +59,14 @@ class RecordPreviewFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val safeArgs: RecordPreviewFragmentArgs by navArgs()
+        val direction = safeArgs.direction
         mediaUrl = safeArgs.filePath
 
         viewModel.event.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { event ->
                 when (event.first) {
                     START_ANALYSIS_RESULT_ACTIVITY -> {
-                        findNavController().navigate(
-                            RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragment(
-                                event.second
-                            )
-                        )
+                        showResult(direction)
                     }
                 }
             }
@@ -81,16 +77,23 @@ class RecordPreviewFragment :
         }
         // for test
         binding.btnSend.setOnClickListener {
-            if (activity is IntroActivity) {
+            showResult(direction)
+        }
+    }
+
+    private fun showResult(direction: DirectionEnum) {
+        when (direction) {
+            DirectionEnum.TO_MAIN -> {
                 findNavController().navigate(
-                    RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragment(
-                        ""
+                    RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragmentInSignInScenario(
+                        direction, ""
                     )
                 )
-            } else if (activity is MainActivity) {
+            }
+            DirectionEnum.TO_DAILY -> {
                 findNavController().navigate(
-                    RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragmentInMain(
-                        ""
+                    RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragmentInMainScenario(
+                        direction, ""
                     )
                 )
             }
