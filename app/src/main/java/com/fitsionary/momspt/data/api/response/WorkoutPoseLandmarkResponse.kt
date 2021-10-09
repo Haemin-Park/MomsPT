@@ -18,10 +18,11 @@ fun WorkoutPoseLandmarkResponse.asDatabaseModel(): Result {
     val databaseLandmark = mutableListOf<DatabaseLandmark>()
 
     this.posedata.map {
-        val landmarkId = workout + "_" + it.frame
+        val workoutCode = workout.split('.')[0]
+        val landmarkId = workoutCode + "_" + it.frame
         databaseWorkout.add(
             DatabaseWorkout(
-                workoutName = workout,
+                workoutCode = workoutCode,
                 frameNum = it.frame,
                 childLandmarkId = landmarkId
             )

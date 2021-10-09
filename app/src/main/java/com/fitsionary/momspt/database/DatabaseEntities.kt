@@ -12,10 +12,10 @@ import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
  */
 @Entity(tableName = "workouts")
 data class DatabaseWorkout(
-    val workoutName: String,
+    val workoutCode: String,
     val frameNum: Long,
     @PrimaryKey
-    val childLandmarkId: String // workoutName_frameNum
+    val childLandmarkId: String // workoutCode_frameNum
 )
 
 /**
