@@ -21,17 +21,17 @@ class MainActivity :
     }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val navController = this.findNavController(R.id.main_nav_host_fragment)
         val bottomMenuId = setOf(
             R.id.main_home,
             R.id.main_workout,
             R.id.main_daily,
             R.id.main_mypage
         )
+        navController = this.findNavController(R.id.main_nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(bottomMenuId)
         NavigationUI.setupWithNavController(binding.toolbarMain, navController, appBarConfiguration)
         NavigationUI.setupWithNavController(binding.bottomNavigationMain, navController)
@@ -46,9 +46,10 @@ class MainActivity :
                     binding.toolbarMain.logo = null
                 }
             } else {
+                binding.bottomNavigationMain.visibility = View.GONE
                 when (nd.id) {
-                    R.id.splashFragment, R.id.signInFragment -> binding.toolbarMain.visibility =
-                        View.INVISIBLE
+                    R.id.splashFragment, R.id.signInFragment ->
+                        binding.toolbarMain.visibility = View.GONE
                     else -> {
                         if (nd.id == R.id.analysisResultFragment)
                             binding.toolbarMain.navigationIcon = null
@@ -59,7 +60,6 @@ class MainActivity :
                             setNavigationIcon(R.drawable.ic_back)
                             logo = null
                         }
-                        binding.bottomNavigationMain.visibility = View.GONE
                     }
                 }
             }
@@ -67,7 +67,6 @@ class MainActivity :
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = this.findNavController(R.id.main_nav_host_fragment)
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
 }

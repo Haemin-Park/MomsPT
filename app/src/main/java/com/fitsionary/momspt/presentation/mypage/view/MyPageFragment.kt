@@ -2,6 +2,7 @@ package com.fitsionary.momspt.presentation.mypage.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.fitsionary.momspt.R
@@ -14,6 +15,17 @@ class MyPageFragment :
     BaseFragment<FragmentMypageBinding, MyPageViewModel>(R.layout.fragment_mypage) {
     override val viewModel: MyPageViewModel by lazy {
         ViewModelProvider(this).get(MyPageViewModel::class.java)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
