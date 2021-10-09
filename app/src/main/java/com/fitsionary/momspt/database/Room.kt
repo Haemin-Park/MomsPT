@@ -12,6 +12,9 @@ interface WorkoutLandmarkDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWorkout(vararg workout: DatabaseWorkout)
 
+    @Query("select * from workouts where workoutCode=:workoutCode")
+    fun getWorkout(workoutCode: String): LiveData<DatabaseWorkout>
+
     /**
      * landmark
      */
@@ -22,9 +25,8 @@ interface WorkoutLandmarkDao {
      * workout - landmark
      */
     @Transaction
-    @Query("select * from workouts where workoutName=:workoutName")
-    fun getWorkoutWithLandmark(workoutName: String): LiveData<List<DatabaseWorkoutWithLandmark>>
-
+    @Query("select * from workouts where workoutCode=:workoutCode")
+    fun getWorkoutWithLandmark(workoutCode: String): LiveData<List<DatabaseWorkoutWithLandmark>>
 }
 
 @Database(entities = [DatabaseWorkout::class, DatabaseLandmark::class], version = 1)
