@@ -14,19 +14,24 @@ import timber.log.Timber
 class WorkoutPoseLandmarkRepository(
     private val database: WorkoutLandmarkDatabase,
 ) {
-    fun workoutLandmarks(workName: String) =
-        Transformations.map(database.dao.getWorkoutWithLandmark(workName)) {
-            Timber.i("$workName ${it.count()}")
+    fun workoutLandmarks(workoutCode: String) =
+        Transformations.map(database.dao.getWorkoutWithLandmark(workoutCode)) {
+            Timber.i("$workoutCode ${it.count()}")
             it.asDomainModel()
+        }
+
+    fun isAlreadyExistWorkout(workoutCode: String) =
+        Transformations.map(database.dao.getWorkout(workoutCode)) {
+            it != null
         }
 
     val isLoading = MutableLiveData(false)
     val ableNavigation = MutableLiveData(Event(false))
 
-    suspend fun refreshData(code: String) {
+    suspend fun refreshData(workoutCode: String) {
         withContext(Dispatchers.IO) {
             isLoading.postValue(true)
-            val result = NetworkService.api.getWorkoutPoseLandmark(code)
+            val result = NetworkService.api.getWorkoutPoseLandmark(workoutCode)
             val db = result.asDatabaseModel()
             database.dao.insertWorkout(*db.workoutDBModel)
             database.dao.insertLandmark(*db.landmarkDBModel)
