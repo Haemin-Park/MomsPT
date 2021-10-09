@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutPlayViewModel" />
+            type="com.fitsionary.momspt.presentation.workoutplay.viewmodel.WorkoutPlayViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

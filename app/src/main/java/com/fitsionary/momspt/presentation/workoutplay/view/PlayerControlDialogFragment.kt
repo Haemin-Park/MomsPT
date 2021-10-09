@@ -1,4 +1,4 @@
-package com.fitsionary.momspt.presentation.workout.view
+package com.fitsionary.momspt.presentation.workoutplay.view
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.DialogFragmentPlayerControlBinding
 import com.fitsionary.momspt.presentation.base.BaseDialogFragment
-import com.fitsionary.momspt.presentation.workout.viewmodel.PlayerControlDialogViewModel
+import com.fitsionary.momspt.presentation.workoutplay.viewmodel.PlayerControlDialogViewModel
 
 class PlayerControlDialogFragment(isPlaying: Boolean) :
     BaseDialogFragment<DialogFragmentPlayerControlBinding>(R.layout.dialog_fragment_player_control) {

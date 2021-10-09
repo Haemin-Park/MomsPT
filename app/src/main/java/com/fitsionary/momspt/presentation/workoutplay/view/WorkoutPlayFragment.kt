@@ -1,22 +1,25 @@
-package com.fitsionary.momspt.presentation.workout.view
+package com.fitsionary.momspt.presentation.workoutplay.view
 
-import android.content.Intent
+import android.app.Application
+import android.content.Context
 import android.graphics.SurfaceTexture
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
-import android.view.*
+import android.view.SurfaceHolder
+import android.view.SurfaceView
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.navArgs
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.api.response.Landmark
 import com.fitsionary.momspt.data.enum.PoseEnum
 import com.fitsionary.momspt.data.model.WorkoutModel
-import com.fitsionary.momspt.databinding.ActivityWorkoutPlayBinding
-import com.fitsionary.momspt.presentation.base.BaseActivity
-import com.fitsionary.momspt.presentation.workout.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
-import com.fitsionary.momspt.presentation.workout.view.WorkoutResultActivity.Companion.RESULT_CUMULATIVE_SCORE
-import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutPlayViewModel
+import com.fitsionary.momspt.databinding.FragmentWorkoutPlayBinding
+import com.fitsionary.momspt.presentation.base.BaseFragment
+import com.fitsionary.momspt.presentation.workoutplay.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
+import com.fitsionary.momspt.presentation.workoutplay.viewmodel.WorkoutPlayViewModel
 import com.fitsionary.momspt.util.ScoringAlgorithm
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -30,17 +33,17 @@ import com.google.mediapipe.framework.PacketGetter
 import com.google.mediapipe.glutil.EglManager
 import com.google.protobuf.InvalidProtocolBufferException
 import timber.log.Timber
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.floor
 
 
-class WorkoutPlayActivity :
-    BaseActivity<ActivityWorkoutPlayBinding, WorkoutPlayViewModel>(R.layout.activity_workout_play) {
+class WorkoutPlayFragment :
+    BaseFragment<FragmentWorkoutPlayBinding, WorkoutPlayViewModel>(R.layout.fragment_workout_play) {
+    val safeArgs: WorkoutPlayFragmentArgs by navArgs()
+    lateinit var application: Application
     override val viewModel: WorkoutPlayViewModel by lazy {
         ViewModelProvider(
             this,
-            WorkoutPlayViewModel.ViewModelFactory(application, workoutItem.workoutCode + ".mp4")
+            WorkoutPlayViewModel.ViewModelFactory(application, workoutItem.workoutCode)
         ).get(WorkoutPlayViewModel::class.java)
     }
 
@@ -53,7 +56,7 @@ class WorkoutPlayActivity :
     private lateinit var mediaUrl: String
 
     companion object {
-        private val TAG = WorkoutPlayActivity::class.java.simpleName
+        private val TAG = WorkoutPlayFragment::class.java.simpleName
 
         val Poses = listOf(
             "PoseLandmark.NOSE",
@@ -137,30 +140,43 @@ class WorkoutPlayActivity :
     private lateinit var poseLandmarks: NormalizedLandmarkList
     private lateinit var workoutItem: WorkoutModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val safeArgs: WorkoutPlayActivityArgs by navArgs()
-        workoutItem = safeArgs.workout
-        mediaUrl = workoutItem.video
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        application = requireNotNull(activity).application
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        workoutItem = safeArgs.workout
         binding.vm = viewModel
 
-        previewDisplayView = SurfaceView(this)
+        view.viewTreeObserver?.addOnWindowFocusChangeListener { _ ->
+            binding.previewDisplayLayout.run {
+                parentWidth = width
+                parentHeight = height
+            }
+        }
+
+        mediaUrl = workoutItem.video
+
+        previewDisplayView = SurfaceView(application)
         setupPreviewDisplayView()
 
         // Initialize asset manager so that MediaPipe native libraries can access the app assets, e.g.,
         // binary graphs.
-        AndroidAssetUtil.initializeNativeAssetManager(this)
+        AndroidAssetUtil.initializeNativeAssetManager(application)
         eglManager = EglManager(null)
-        processor = FrameProcessor(
-            this,
-            eglManager!!.nativeContext,
-            applicationInfo.metaData.getString("binaryGraphName"),
-            applicationInfo.metaData.getString("inputVideoStreamName"),
-            applicationInfo.metaData.getString("outputVideoStreamName")
-        )
+        application.run {
+            processor = FrameProcessor(
+                this,
+                eglManager!!.nativeContext,
+                applicationInfo.metaData.getString("binaryGraphName"),
+                applicationInfo.metaData.getString("inputVideoStreamName"),
+                applicationInfo.metaData.getString("outputVideoStreamName")
+            )
+        }
 
-        viewModel.workoutLandmarks.observe(this, { landmarks ->
+        viewModel.workoutLandmarks.observe(viewLifecycleOwner, { landmarks ->
             if (!::scoreAlgorithm.isInitialized) {
                 Timber.i("Landmarks 로드 완료 " + landmarks.poseData.count())
                 scoreAlgorithm = ScoringAlgorithm(landmarks)
@@ -169,7 +185,7 @@ class WorkoutPlayActivity :
         processor!!
             .videoSurfaceOutput
             .setFlipY(
-                applicationInfo.metaData.getBoolean(
+                application.applicationInfo.metaData.getBoolean(
                     "flipFramesVertically",
                     FLIP_FRAMES_VERTICALLY
                 )
@@ -208,7 +224,7 @@ class WorkoutPlayActivity :
                 Log.e(TAG, "Failed to get proto.", exception)
             }
         }
-        PermissionHelper.checkAndRequestCameraPermissions(this)
+        PermissionHelper.checkAndRequestCameraPermissions(activity)
     }
 
     override fun onResume() {
@@ -217,21 +233,24 @@ class WorkoutPlayActivity :
             initializePlayer()
         }
 
-        converter = ExternalTextureConverter(
-            eglManager!!.context,
-            applicationInfo.metaData.getInt(
-                "converterNumBuffers",
-                NUM_BUFFERS
+        application.run {
+            converter = ExternalTextureConverter(
+                eglManager!!.context,
+                applicationInfo.metaData.getInt(
+                    "converterNumBuffers",
+                    NUM_BUFFERS
+                )
             )
-        )
-        converter!!.setFlipY(
-            applicationInfo.metaData.getBoolean(
-                "flipFramesVertically",
-                FLIP_FRAMES_VERTICALLY
+            converter!!.setFlipY(
+                applicationInfo.metaData.getBoolean(
+                    "flipFramesVertically",
+                    FLIP_FRAMES_VERTICALLY
+                )
             )
-        )
+        }
+
         converter!!.setConsumer(processor)
-        if (PermissionHelper.cameraPermissionsGranted(this)) {
+        if (PermissionHelper.cameraPermissionsGranted(activity)) {
             startCamera()
         }
     }
@@ -288,18 +307,12 @@ class WorkoutPlayActivity :
         val cameraFacing: CameraHelper.CameraFacing = CameraHelper.CameraFacing.FRONT
 
         cameraHelper!!.startCamera(
-            this, cameraFacing, null, cameraTargetResolution()
+            activity, cameraFacing, null, cameraTargetResolution()
         )
     }
 
     private fun computeViewSize(width: Int, height: Int): Size {
         return Size(width, height)
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        parentWidth = binding.previewDisplayLayout.width
-        parentHeight = binding.previewDisplayLayout.height
     }
 
     fun onPreviewDisplaySurfaceChanged(
@@ -320,7 +333,7 @@ class WorkoutPlayActivity :
     }
 
     private fun setupPreviewDisplayView() {
-        runOnUiThread {
+        requireActivity().runOnUiThread {
             run {
                 previewDisplayView!!.visibility = View.GONE
                 val viewGroup = binding.previewDisplayLayout
@@ -351,7 +364,7 @@ class WorkoutPlayActivity :
     }
 
     private fun initializePlayer() {
-        player = SimpleExoPlayer.Builder(this).build()
+        player = SimpleExoPlayer.Builder(application).build()
         binding.playerView.player = player
         val mediaItem = MediaItem.fromUri(mediaUrl)
         player!!.apply {
@@ -385,7 +398,7 @@ class WorkoutPlayActivity :
                     }
                 }
                 playerControlDialogFragment.show(
-                    supportFragmentManager,
+                    childFragmentManager,
                     PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
                 )
             }
@@ -408,11 +421,11 @@ class WorkoutPlayActivity :
                     viewModel.countDownTimerStop()
                     if (state == Player.STATE_ENDED) {
                         isEnd = true
-                        val intent =
-                            Intent(this@WorkoutPlayActivity, WorkoutResultActivity::class.java)
-                        intent.putExtra(RESULT_CUMULATIVE_SCORE, viewModel.cumulativeScore.value)
-                        startActivity(intent)
-                        finish()
+                        findNavController().navigate(
+                            WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
+                                viewModel.cumulativeScore.value ?: 0
+                            )
+                        )
                     }
                 } else {
                     // player paused in any state

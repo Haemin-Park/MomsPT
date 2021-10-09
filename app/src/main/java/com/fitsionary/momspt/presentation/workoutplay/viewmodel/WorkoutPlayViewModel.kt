@@ -1,4 +1,4 @@
-package com.fitsionary.momspt.presentation.workout.viewmodel
+package com.fitsionary.momspt.presentation.workoutplay.viewmodel
 
 import android.app.Application
 import android.text.format.DateUtils
