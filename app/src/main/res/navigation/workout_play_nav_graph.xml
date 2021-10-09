@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/workout_play_nav_graph"
+    app:startDestination="@id/workoutPlayFragment">
+
+    <fragment
+        android:id="@+id/workoutPlayFragment"
+        android:name="com.fitsionary.momspt.presentation.workoutplay.view.WorkoutPlayFragment"
+        android:label="WorkoutPlayFragment"
+        tools:layout="@layout/fragment_workout_play">
+        <argument
+            android:name="workout"
+            app:argType="com.fitsionary.momspt.data.model.WorkoutModel" />
+        <action
+            android:id="@+id/action_workoutPlayFragment_to_workoutResultFragment"
+            app:destination="@id/workoutResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/workoutResultFragment"
+        android:name="com.fitsionary.momspt.presentation.workoutplay.view.WorkoutResultFragment"
+        android:label="WorkoutResultFragment"
+        tools:layout="@layout/fragment_workout_result">
+        <argument
+            android:name="resultScore"
+            app:argType="integer" />
+    </fragment>
+</navigation>
