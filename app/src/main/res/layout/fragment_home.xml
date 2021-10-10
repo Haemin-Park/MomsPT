@@ -21,48 +21,61 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_22dp"
-                android:layout_marginTop="@dimen/spacing_26dp"
-                android:layout_marginEnd="@dimen/spacing_22dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:padding="@dimen/spacing_22dp">
 
                 <TextView
+                    android:id="@+id/tv_home_step"
+                    style="@style/medium_22sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1단계 4일차,"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_ment"
                     style="@style/bold_22sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{vm.comment.comment}"
-                    android:textColor="@color/black"
-                    tools:text="근력 회복 운동을\n집중적으로\n해야하는 시기에요" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_home_step"
+                    tools:text="근력 회복 운동을\n집중적으로 해주세요" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/flag"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/seekbar_step"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                <TextView
-                    style="@style/medium_18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/round_background"
-                    android:paddingLeft="@dimen/spacing_16dp"
-                    android:paddingTop="@dimen/spacing_8dp"
-                    android:paddingRight="@dimen/spacing_16dp"
-                    android:paddingBottom="@dimen/spacing_8dp"
-                    android:text="@{@string/d_day_format(vm.comment.dayAfterBabyDue)}"
-                    android:textColor="@color/pink"
-                    tools:text="D+18" />
-            </LinearLayout>
+                <androidx.appcompat.widget.AppCompatSeekBar
+                    android:id="@+id/seekbar_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_10dp"
+                    android:max="5"
+                    android:min="0"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:progress="1"
+                    android:progressDrawable="@drawable/custom_seekbar"
+                    android:splitTrack="false"
+                    android:thumbTint="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_ment" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 style="@style/bold_20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_22dp"
-                android:layout_marginTop="@dimen/spacing_50dp"
+                android:layout_marginTop="@dimen/spacing_28dp"
                 android:layout_marginEnd="@dimen/spacing_22dp"
                 android:layout_marginBottom="@dimen/spacing_18dp"
                 android:fontFamily="@font/noto_sans_bold"

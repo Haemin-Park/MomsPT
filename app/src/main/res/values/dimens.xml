@@ -52,6 +52,7 @@
     <dimen name="spacing_24dp">24dp</dimen>
     <dimen name="spacing_25dp">25dp</dimen>
     <dimen name="spacing_26dp">26dp</dimen>
+    <dimen name="spacing_28dp">28dp</dimen>
     <dimen name="spacing_30dp">30dp</dimen>
     <dimen name="spacing_33dp">33dp</dimen>
     <dimen name="spacing_35dp">35dp</dimen>
@@ -59,6 +60,7 @@
     <dimen name="spacing_50dp">50dp</dimen>
 
     <!--radius-->
+    <dimen name="seekbar_radius">18dp</dimen>
     <dimen name="button_background_radius">18dp</dimen>
     <dimen name="sign_in_button_background_radius">18dp</dimen>
     <dimen name="sign_up_edit_text_background_radius">12dp</dimen>
