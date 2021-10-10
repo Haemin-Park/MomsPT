@@ -47,12 +47,12 @@
 
                 <com.fitsionary.momspt.presentation.custom.CustomSeekBar
                     android:id="@+id/seekbar_step"
-                    android:layout_marginTop="@dimen/spacing_20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_20dp"
                     android:max="6"
-                    android:paddingTop="@dimen/spacing_22dp"
                     android:paddingStart="0dp"
+                    android:paddingTop="@dimen/spacing_22dp"
                     android:progress="1"
                     android:progressDrawable="@drawable/custom_seekbar"
                     android:splitTrack="false"
