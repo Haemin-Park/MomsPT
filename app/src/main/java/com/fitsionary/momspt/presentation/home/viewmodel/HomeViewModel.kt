@@ -7,7 +7,6 @@ import com.fitsionary.momspt.data.api.response.TodayCommentResponse
 import com.fitsionary.momspt.data.api.response.toModel
 import com.fitsionary.momspt.data.model.DayAchievedModel
 import com.fitsionary.momspt.data.model.WorkoutModel
-import com.fitsionary.momspt.data.model.getTestDayAchievedData
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
 import com.fitsionary.momspt.util.rx.applyNetworkScheduler
@@ -25,10 +24,6 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
     private val _dayAchievedList = MutableLiveData<List<DayAchievedModel>>()
     val dayAchievedList: LiveData<List<DayAchievedModel>>
         get() = _dayAchievedList
-
-    init {
-        _dayAchievedList.value = getTestDayAchievedData()
-    }
 
     fun getTodayComment() {
         addDisposable(
@@ -50,6 +45,19 @@ class HomeViewModel(application: Application) : BaseAndroidViewModel(application
                 .subscribe({
                     Timber.i(it.toString())
                     _workoutList.value = it.map { response -> response.toModel() }
+                }, {
+                    Timber.e(it.message!!)
+                })
+        )
+    }
+
+    fun getWeeklyAchieved() {
+        addDisposable(
+            NetworkService.api.getWeeklyAchieved()
+                .applyNetworkScheduler()
+                .subscribe({
+                    Timber.i(it.toString())
+                    _dayAchievedList.value = it.map { response -> response.toModel() }
                 }, {
                     Timber.e(it.message!!)
                 })

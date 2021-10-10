@@ -59,6 +59,7 @@ class HomeFragment :
         viewModel.run {
             getTodayComment()
             getTodayWorkoutList()
+            getWeeklyAchieved()
         }
 
         workoutAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
