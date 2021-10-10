@@ -20,7 +20,9 @@
     <item android:id="@android:id/progress">
         <scale android:scaleWidth="100%">
             <shape android:shape="rectangle">
-                <corners android:radius="@dimen/seekbar_radius" />
+                <corners
+                    android:bottomLeftRadius="@dimen/seekbar_radius"
+                    android:topLeftRadius="@dimen/seekbar_radius" />
                 <solid android:color="@color/pink" />
             </shape>
         </scale>
