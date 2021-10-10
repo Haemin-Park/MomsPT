@@ -31,7 +31,7 @@
                     style="@style/medium_22sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1단계 4일차,"
+                    android:text="출산 후 23일"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,27 +45,18 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_home_step"
                     tools:text="근력 회복 운동을\n집중적으로 해주세요" />
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/flag"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/seekbar_step"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatSeekBar
+                <com.fitsionary.momspt.presentation.custom.CustomSeekBar
                     android:id="@+id/seekbar_step"
+                    android:layout_marginTop="@dimen/spacing_20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/spacing_10dp"
-                    android:max="5"
-                    android:min="0"
+                    android:max="6"
+                    android:paddingTop="@dimen/spacing_22dp"
                     android:paddingStart="0dp"
-                    android:paddingEnd="0dp"
                     android:progress="1"
                     android:progressDrawable="@drawable/custom_seekbar"
                     android:splitTrack="false"
-                    android:thumbTint="@android:color/transparent"
+                    android:thumb="@drawable/thumb_style"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_ment" />
             </androidx.constraintlayout.widget.ConstraintLayout>
