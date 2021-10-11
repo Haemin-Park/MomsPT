@@ -18,9 +18,11 @@ import com.fitsionary.momspt.data.enum.PoseEnum
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentWorkoutPlayBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
+import com.fitsionary.momspt.presentation.guide.view.GuideDialogFragment
 import com.fitsionary.momspt.presentation.workoutplay.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
 import com.fitsionary.momspt.presentation.workoutplay.viewmodel.WorkoutPlayViewModel
 import com.fitsionary.momspt.util.ScoringAlgorithm
+import com.fitsionary.momspt.util.rx.ui
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -175,13 +177,14 @@ class WorkoutPlayFragment :
                 applicationInfo.metaData.getString("outputVideoStreamName")
             )
         }
-
         viewModel.workoutLandmarks.observe(viewLifecycleOwner, { landmarks ->
             if (!::scoreAlgorithm.isInitialized) {
                 Timber.i("Landmarks 로드 완료 " + landmarks.poseData.count())
                 scoreAlgorithm = ScoringAlgorithm(landmarks)
             }
         })
+        viewModel.guideTimerStart(5000)
+        viewModel.isGuide.observeOn(ui()).subscribe { if (it) showGuide() else hideGuide() }
         processor!!
             .videoSurfaceOutput
             .setFlipY(
@@ -443,6 +446,29 @@ class WorkoutPlayFragment :
             currentWindow = player!!.currentWindowIndex
             player!!.release()
             player = null
+        }
+    }
+
+    private var guideDialogFragment: GuideDialogFragment? = null
+
+    private fun showGuide() {
+        activity?.runOnUiThread {
+            if (guideDialogFragment != null || (guideDialogFragment?.dialog)?.isShowing == true) {
+                return@runOnUiThread
+            } else {
+                guideDialogFragment = GuideDialogFragment.newInstance()
+                guideDialogFragment?.show(
+                    childFragmentManager,
+                    GuideDialogFragment.GUIDE_DIALOG_FRAGMENT_TAG
+                )
+            }
+        }
+    }
+
+    private fun hideGuide() {
+        activity?.runOnUiThread {
+            (childFragmentManager.findFragmentByTag(GuideDialogFragment.GUIDE_DIALOG_FRAGMENT_TAG) as? GuideDialogFragment)?.dismiss()
+            guideDialogFragment = null
         }
     }
 }
