@@ -13,7 +13,6 @@ import com.fitsionary.momspt.databinding.ItemTypeBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.base.BaseRecyclerViewAdapter
 import com.fitsionary.momspt.presentation.workoutdetail.viewmodel.WorkoutDetailViewModel
-import timber.log.Timber
 
 class WorkoutDetailFragment
     :
@@ -42,10 +41,7 @@ class WorkoutDetailFragment
         binding.workoutItem = workoutItem
 
         binding.rvWorkoutDetailType.adapter = workoutTypeAdapter
-        viewModel.isAlreadyExistWorkout.observe(viewLifecycleOwner, {
-            Timber.i("야호 $it")
-        }
-        )
+        viewModel.isAlreadyExistWorkout.observe(viewLifecycleOwner, {})
         binding.btnPlayWorkout.setOnClickListener {
             viewModel.isAlreadyExistWorkout.value?.let { isExist ->
                 if (isExist)
