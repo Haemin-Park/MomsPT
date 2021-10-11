@@ -70,6 +70,7 @@
     <dimen name="round_background_radius_12dp">12dp</dimen>
     <dimen name="round_background_radius_18dp">18dp</dimen>
     <dimen name="round_background_radius_21dp">21dp</dimen>
+    <dimen name="round_background_radius_25dp">25dp</dimen>
     <dimen name="daily_box_radius_22dp">22dp</dimen>
     <dimen name="workout_img_radius">22dp</dimen>
 
