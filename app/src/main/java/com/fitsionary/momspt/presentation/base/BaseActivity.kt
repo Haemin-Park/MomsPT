@@ -38,15 +38,6 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ViewModel>(@LayoutRes priv
                 loadingDialogFragment?.show(supportFragmentManager, LOADING_DIALOG_FRAGMENT_TAG)
             }
         }
-
-        this.runOnUiThread {
-            if (loadingDialogFragment != null || (loadingDialogFragment?.dialog)?.isShowing == true) {
-                return@runOnUiThread
-            } else {
-                loadingDialogFragment = LoadingDialogFragment.newInstance()
-                loadingDialogFragment?.show(supportFragmentManager, LOADING_DIALOG_FRAGMENT_TAG)
-            }
-        }
     }
 
     fun hideLoading() {
