@@ -195,7 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_16dp"
-                    android:text="아리따움님은 오른쪽 골반이 살짝 올라간 체형입니다."
+                    android:text="@{vm.todayStatistics.bodyType}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_day_analysis_comment" />
             </androidx.constraintlayout.widget.ConstraintLayout>
