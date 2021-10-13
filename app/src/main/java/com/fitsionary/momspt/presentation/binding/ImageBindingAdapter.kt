@@ -32,8 +32,8 @@ fun setImageFromResource(imageView: ImageView, resource: Int) {
         .into(imageView)
 }
 
-@BindingAdapter("profile_image_url")
-fun setProfileImageFromImageUrl(imageView: ImageView, imageUrl: String) {
+@BindingAdapter("circle_image_url")
+fun setCircleImageFromImageUrl(imageView: ImageView, imageUrl: String) {
     Glide.with(imageView.context)
         .load(imageUrl)
         .circleCrop()
