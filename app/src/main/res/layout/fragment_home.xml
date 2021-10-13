@@ -31,7 +31,7 @@
                     style="@style/medium_22sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="출산 후 23일"
+                    android:text="@{@string/after_birth_format(vm.comment.dayAfterBabyDue)}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
