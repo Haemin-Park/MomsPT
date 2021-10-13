@@ -79,6 +79,9 @@
                 android:name="direction"
                 app:argType="com.fitsionary.momspt.data.enum.DirectionEnum" />
         </action>
+        <action
+            android:id="@+id/action_main_daily_to_customEditTodayWeightDialog"
+            app:destination="@id/customEditTodayWeightDialog" />
     </fragment>
     <fragment
         android:id="@+id/main_mypage"
@@ -120,4 +123,9 @@
             android:name="workout"
             app:argType="com.fitsionary.momspt.data.model.WorkoutModel" />
     </activity>
+    <dialog
+        android:id="@+id/customEditTodayWeightDialog"
+        android:name="com.fitsionary.momspt.presentation.custom.CustomEditTodayWeightDialog"
+        android:label="CustomEditTodayWeightDialog"
+        tools:layout="@layout/custom_dialog_edit_today_weight" />
 </navigation>
