@@ -27,7 +27,7 @@ class WorkoutViewModel : BaseViewModel() {
                     Timber.i(it.toString())
                     _workoutList.value = it.map { response -> response.toModel() }
                 }, {
-                    Timber.e(it.message!!)
+                    Timber.e(it.message)
                 })
         )
     }
