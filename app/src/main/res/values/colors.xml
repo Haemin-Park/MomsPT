@@ -13,6 +13,7 @@
     <color name="black">#444444</color>
     <color name="black_000000">#000000</color>
     <color name="black_99000000">#99000000</color>
+    <color name="black_CC000000">#CC000000</color>
     <color name="white">#FFFFFF</color>
     <color name="pink">#ec5363</color>
     <color name="pink_99ec5363">#99ec5363</color>

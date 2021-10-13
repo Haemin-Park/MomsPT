@@ -7,6 +7,7 @@ import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.FragmentWorkoutResultBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
+import com.fitsionary.momspt.presentation.binding.setRankText
 import com.fitsionary.momspt.presentation.workoutplay.viewmodel.WorkoutResultViewModel
 
 class WorkoutResultFragment
@@ -19,8 +20,9 @@ class WorkoutResultFragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.workoutItem = safeArgs.workout
         val resultScore = safeArgs.resultScore
-        binding.tvResultCumulativeScore.text = "${resultScore}점"
+        setRankText(binding.tvResultCumulativeScore, "A_PLUS")
         binding.btnClose.setOnClickListener {
             requireActivity().finish()
         }

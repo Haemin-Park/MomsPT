@@ -23,6 +23,9 @@
         android:label="WorkoutResultFragment"
         tools:layout="@layout/fragment_workout_result">
         <argument
+            android:name="workout"
+            app:argType="com.fitsionary.momspt.data.model.WorkoutModel" />
+        <argument
             android:name="resultScore"
             app:argType="integer" />
     </fragment>
