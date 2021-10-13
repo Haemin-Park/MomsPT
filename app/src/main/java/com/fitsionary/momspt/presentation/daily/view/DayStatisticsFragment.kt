@@ -37,7 +37,7 @@ class DayStatisticsFragment :
             }
         }
 
-        viewModel.getTodayStatisticsList()
+        viewModel.getTodayUserStatistics()
         binding.btnEditWeight.setOnClickListener {
             findNavController().navigate(DailyFragmentDirections.actionMainDailyToCustomEditTodayWeightDialog())
         }
