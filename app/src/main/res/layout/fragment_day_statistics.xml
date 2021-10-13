@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.fitsionary.momspt.presentation.daily.viewmodel.DayStatisticsViewModel" />
     </data>
 
     <ScrollView
@@ -47,10 +51,11 @@
                         style="@style/bold_28sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10"
+                        android:text="@{String.valueOf(vm.todayStatistics.totalTime)}"
                         android:textColor="@color/pink"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_day_time_comment" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_day_time_comment"
+                        tools:text="10" />
 
                     <TextView
                         style="@style/medium_16sp"
@@ -75,10 +80,11 @@
                         style="@style/bold_28sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="120"
+                        android:text="@{String.valueOf(vm.todayStatistics.totalKcal)}"
                         android:textColor="@color/pink"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="120" />
 
                     <TextView
                         style="@style/medium_16sp"
@@ -117,10 +123,11 @@
                         style="@style/bold_28sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="57.5"
+                        android:text="@{String.valueOf(vm.todayStatistics.weightNow)}"
                         android:textColor="@color/white"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_weight_comment" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_weight_comment"
+                        tools:text="57.5" />
 
                     <TextView
                         style="@style/medium_16sp"
@@ -143,6 +150,7 @@
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <ImageButton
+                        android:id="@+id/btn_edit_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -168,9 +176,9 @@
                     android:drawablePadding="@dimen/spacing_5dp"
                     android:text="@string/go_analysis"
                     android:textColor="@color/pink"
+                    app:drawableEndCompat="@drawable/ic_white_arrow"
                     app:drawableTint="@color/pink"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:drawableEndCompat="@drawable/ic_white_arrow"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView

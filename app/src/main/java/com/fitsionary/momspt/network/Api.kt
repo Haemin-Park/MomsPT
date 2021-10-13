@@ -27,6 +27,9 @@ interface Api {
     @GET("/workout/weeklyworkoutstatistics")
     fun getWeeklyAchieved(): Single<WeeklyAchievedResponse>
 
+    @GET("/daily/day/todayanalysis")
+    fun getTodayStatistics(): Single<TodayStatisticsResponse>
+
     @Multipart
     @POST("/upload")
     fun sendVideo(
