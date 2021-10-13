@@ -28,7 +28,6 @@ fun setRoundImageFromImageUrl(imageView: ImageView, imageUrl: String) {
 fun setImageFromResource(imageView: ImageView, resource: Int) {
     Glide.with(imageView.context)
         .load(resource)
-        .placeholder(R.drawable.placeholder)
         .into(imageView)
 }
 
