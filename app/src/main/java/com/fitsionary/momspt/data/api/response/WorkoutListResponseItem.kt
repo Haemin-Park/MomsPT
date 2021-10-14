@@ -2,8 +2,8 @@ package com.fitsionary.momspt.data.api.response
 
 
 import android.os.Parcelable
+import com.fitsionary.momspt.data.enum.RankEnum
 import com.fitsionary.momspt.data.model.WorkoutModel
-import com.fitsionary.momspt.util.NONE
 import com.fitsionary.momspt.util.TimeUtil
 import kotlinx.android.parcel.Parcelize
 
@@ -27,6 +27,7 @@ data class WorkoutListResponseItem(
 
 fun WorkoutListResponseItem.toModel(): WorkoutModel {
     return WorkoutModel(
+        workoutId = id,
         workoutCode = workoutCode,
         calorie = calorie,
         effect = effect.toString().let {
@@ -39,6 +40,6 @@ fun WorkoutListResponseItem.toModel(): WorkoutModel {
         video = video,
         type = type,
         isFinish = history != null,
-        rank = history?.score ?: NONE
+        rank = history?.score ?: RankEnum.NONE.name
     )
 }
