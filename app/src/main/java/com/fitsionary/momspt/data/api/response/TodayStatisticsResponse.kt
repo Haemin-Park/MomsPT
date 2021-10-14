@@ -3,6 +3,7 @@ package com.fitsionary.momspt.data.api.response
 
 import android.os.Parcelable
 import com.fitsionary.momspt.data.model.TodayStatisticsModel
+import com.fitsionary.momspt.util.TimeUtil
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -23,7 +24,7 @@ fun TodayStatisticsResponse.toModel(): TodayStatisticsModel {
     return TodayStatisticsModel(
         bodyType = bodyTypeToString,
         totalKcal = totalKcal,
-        totalTime = totalTime,
+        totalTime = TimeUtil.makeWorkoutTimeFormat(totalTime),
         weightNow = weightNow
     )
 }
