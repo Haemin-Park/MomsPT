@@ -8,10 +8,10 @@ import kotlinx.android.parcel.Parcelize
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class WorkoutLandmarkDomainModel(
-    val poseData: List<PostDataItem>
+    val poseData: List<PoseDataItem>
 ) : Parcelable {
     @Parcelize
-    data class PostDataItem(
+    data class PoseDataItem(
         val frame: Long,
         val landmarks: List<Landmark>
     ) : Parcelable

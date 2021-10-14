@@ -50,7 +50,7 @@ data class DatabaseWorkoutWithLandmark(
 fun List<DatabaseWorkoutWithLandmark>.asDomainModel(): WorkoutLandmarkDomainModel {
     return WorkoutLandmarkDomainModel(
         poseData = this.map {
-            WorkoutLandmarkDomainModel.PostDataItem(
+            WorkoutLandmarkDomainModel.PoseDataItem(
                 it.workout.frameNum,
                 it.landmarks.map { landmark ->
                     Landmark(landmark.part, landmark.x, landmark.y, landmark.z, landmark.visibility)
