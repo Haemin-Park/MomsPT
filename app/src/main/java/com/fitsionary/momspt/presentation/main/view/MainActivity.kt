@@ -38,7 +38,7 @@ class MainActivity :
         navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
             if (nd.id in bottomMenuId) {
                 binding.toolbarMain.visibility = View.VISIBLE
-                binding.toolbarMain.setTitleMargin(22, 0, 0, 0)
+                binding.toolbarMain.setTitleMargin(16, 0, 0, 0)
                 binding.bottomNavigationMain.visibility = View.VISIBLE
                 if (nd.id == R.id.main_home) {
                     binding.toolbarMain.setLogo(R.drawable.ic_logo2)
