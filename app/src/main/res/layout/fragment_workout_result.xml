@@ -7,6 +7,10 @@
         <variable
             name="WorkoutItem"
             type="com.fitsionary.momspt.data.model.WorkoutModel" />
+
+        <variable
+            name="vm"
+            type="com.fitsionary.momspt.presentation.workoutplay.viewmodel.WorkoutResultViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
@@ -100,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/spacing_14dp"
-                    android:text="스쿼트"
+                    android:text="@{vm.nextWorkout.name}"
                     android:textColor="@color/white"
                     app:drawableEndCompat="@drawable/ic_back_reverse"
                     app:drawableTint="@color/white" />

@@ -25,15 +25,16 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
     val score: LiveData<Int>
         get() = _score
 
-    private val _cumulativeScore = MutableLiveData<Int>()
-    val cumulativeScore: LiveData<Int>
+    private val _cumulativeScore = MutableLiveData<Double>()
+    val cumulativeScore: LiveData<Double>
         get() = _cumulativeScore
 
     private lateinit var timer: Timer
 
     private val _timerCountDown = MutableLiveData<Long>()
-    private val _timerCountUp = MutableLiveData<Long>()
     private val _guideCountDown = MutableLiveData<Long>()
+
+    val cnt = MutableLiveData<Int>()
 
     val formattedTimer = Transformations.map(_timerCountDown) { time ->
         DateUtils.formatElapsedTime(time / 1000)
@@ -49,7 +50,8 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
 
     init {
         _score.value = 0
-        _cumulativeScore.value = 0
+        _cumulativeScore.value = 0.0
+        cnt.value = 0
     }
 
     fun timerSet(total: Long, guideTime: Long) {
@@ -82,9 +84,10 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
     }
 
     fun setScore(score: Int) {
-        if (_guideStart.value == true) {
+        if (_guideStart.value == true && _timerCountDown.value != 0L) {
             _score.postValue(score)
             _cumulativeScore.postValue(_cumulativeScore.value?.plus(score))
+            cnt.postValue(cnt.value?.plus(1))
         }
     }
 

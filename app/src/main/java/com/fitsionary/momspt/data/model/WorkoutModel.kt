@@ -1,12 +1,11 @@
 package com.fitsionary.momspt.data.model
 
-import android.annotation.SuppressLint
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-@SuppressLint("ParcelCreator")
 @Parcelize
 data class WorkoutModel(
+    val workoutId: Int,
     val workoutCode: String,
     val calorie: Int,
     val effect: String,

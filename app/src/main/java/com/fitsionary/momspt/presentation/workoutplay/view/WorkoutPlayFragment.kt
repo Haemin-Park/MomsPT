@@ -425,7 +425,9 @@ class WorkoutPlayFragment :
                         isEnd = true
                         findNavController().navigate(
                             WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
-                                workoutItem, viewModel.cumulativeScore.value ?: 0
+                                workoutItem, viewModel.cumulativeScore.value?.toInt()
+                                    ?.div(viewModel.cnt.value!!)
+                                    ?: 0
                             )
                         )
                     }

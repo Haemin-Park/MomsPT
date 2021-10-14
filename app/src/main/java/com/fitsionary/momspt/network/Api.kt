@@ -3,6 +3,7 @@ package com.fitsionary.momspt.network
 import com.fitsionary.momspt.data.api.request.EditWeightRequest
 import com.fitsionary.momspt.data.api.request.SignInRequest
 import com.fitsionary.momspt.data.api.request.SignUpRequest
+import com.fitsionary.momspt.data.api.request.WorkoutResultRequest
 import com.fitsionary.momspt.data.api.response.*
 import io.reactivex.rxjava3.core.Single
 import okhttp3.MultipartBody
@@ -23,6 +24,9 @@ interface Api {
 
     @GET("/workout/workoutlist")
     fun getTodayWorkoutList(): Single<WorkoutListResponse>
+
+    @POST("/workout/workoutresult")
+    fun sendWorkoutResult(@Body body: WorkoutResultRequest): Single<WorkoutResultResponse>
 
     @GET("/workout/weeklyworkoutstatistics")
     fun getWeeklyAchieved(): Single<WeeklyAchievedResponse>
