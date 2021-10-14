@@ -4,7 +4,7 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.util.*
+import com.fitsionary.momspt.data.enum.RankEnum
 
 @BindingAdapter("validationResultTextColor")
 fun setValidationResultTextColor(textView: TextView, success: Boolean) {
@@ -18,7 +18,7 @@ fun setValidationResultTextColor(textView: TextView, success: Boolean) {
 @BindingAdapter("rankText")
 fun setRankText(textView: TextView, rank: String) {
     when (rank) {
-        A_PLUS -> {
+        RankEnum.A_PLUS.name -> {
             textView.setTextColor(
                 ResourcesCompat.getColor(
                     textView.resources,
@@ -26,9 +26,9 @@ fun setRankText(textView: TextView, rank: String) {
                     null
                 )
             )
-            textView.text = "A+"
+            textView.text = RankEnum.A_PLUS.rankName
         }
-        A -> {
+        RankEnum.A.name -> {
             textView.setTextColor(
                 ResourcesCompat.getColor(
                     textView.resources,
@@ -36,9 +36,9 @@ fun setRankText(textView: TextView, rank: String) {
                     null
                 )
             )
-            textView.text = "A"
+            textView.text = RankEnum.A.rankName
         }
-        B -> {
+        RankEnum.B.name -> {
             textView.setTextColor(
                 ResourcesCompat.getColor(
                     textView.resources,
@@ -46,9 +46,9 @@ fun setRankText(textView: TextView, rank: String) {
                     null
                 )
             )
-            textView.text = "B"
+            textView.text = RankEnum.B.rankName
         }
-        C -> {
+        RankEnum.C.name -> {
             textView.setTextColor(
                 ResourcesCompat.getColor(
                     textView.resources,
@@ -56,9 +56,9 @@ fun setRankText(textView: TextView, rank: String) {
                     null
                 )
             )
-            textView.text = "C"
+            textView.text = RankEnum.C.rankName
         }
-        D -> {
+        RankEnum.D.name -> {
             textView.setTextColor(
                 ResourcesCompat.getColor(
                     textView.resources,
@@ -66,9 +66,9 @@ fun setRankText(textView: TextView, rank: String) {
                     null
                 )
             )
-            textView.text = "D"
+            textView.text = RankEnum.D.rankName
         }
-        NONE -> {
+        RankEnum.NONE.name -> {
             textView.setTextColor(
                 ResourcesCompat.getColor(
                     textView.resources,
@@ -76,7 +76,7 @@ fun setRankText(textView: TextView, rank: String) {
                     null
                 )
             )
-            textView.text = "-"
+            textView.text = RankEnum.NONE.rankName
         }
     }
 }
