@@ -11,8 +11,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="@dimen/spacing_22dp"
-            android:paddingEnd="@dimen/spacing_22dp">
+            android:paddingStart="@dimen/default_spacing"
+            android:paddingEnd="@dimen/default_spacing">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout

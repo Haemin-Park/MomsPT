@@ -33,6 +33,7 @@
     <dimen name="mypage_divider_height">4dp</dimen>
 
     <!--spacing-->
+    <dimen name="default_spacing">16dp</dimen>
     <dimen name="spacing_1dp">1dp</dimen>
     <dimen name="spacing_2dp">2dp</dimen>
     <dimen name="spacing_4dp">4dp</dimen>
@@ -48,7 +49,6 @@
     <dimen name="spacing_17dp">17dp</dimen>
     <dimen name="spacing_18dp">18dp</dimen>
     <dimen name="spacing_20dp">20dp</dimen>
-    <dimen name="spacing_22dp">22dp</dimen>
     <dimen name="spacing_24dp">24dp</dimen>
     <dimen name="spacing_25dp">25dp</dimen>
     <dimen name="spacing_26dp">26dp</dimen>

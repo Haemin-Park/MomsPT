@@ -27,7 +27,7 @@
                     android:id="@+id/container_current_body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_22dp"
+                    android:layout_marginStart="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_26dp"
                     android:orientation="horizontal">
 
@@ -49,9 +49,9 @@
                     style="@style/medium_16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_22dp"
+                    android:layout_marginLeft="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_8dp"
-                    android:layout_marginRight="@dimen/spacing_22dp"
+                    android:layout_marginRight="@dimen/default_spacing"
                     android:text="골반이 오른쪽 위로 올라간 체형입니다."
                     android:textColor="@color/dark_gray"
                     tools:text="골반이 오른쪽 위로 올라간 체형입니다." />
@@ -60,7 +60,7 @@
                     android:id="@+id/container_body_recommend_workout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_22dp"
+                    android:layout_marginStart="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_35dp"
                     android:orientation="horizontal">
 
@@ -81,9 +81,9 @@
                     style="@style/medium_16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_22dp"
+                    android:layout_marginLeft="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_8dp"
-                    android:layout_marginRight="@dimen/spacing_22dp"
+                    android:layout_marginRight="@dimen/default_spacing"
                     android:paddingBottom="@dimen/spacing_12dp"
                     android:text="좌측 골반 저근을 강화시키는 운동 중심으로 진행할 예정입니다."
                     android:textColor="@color/dark_gray"
@@ -95,9 +95,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bottom_nav_background"
-            android:paddingLeft="@dimen/spacing_22dp"
+            android:paddingLeft="@dimen/default_spacing"
             android:paddingTop="@dimen/spacing_20dp"
-            android:paddingRight="@dimen/spacing_22dp"
+            android:paddingRight="@dimen/default_spacing"
             android:paddingBottom="@dimen/spacing_20dp"
             app:layout_constraintBaseline_toBottomOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

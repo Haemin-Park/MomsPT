@@ -128,8 +128,8 @@
     </style>
 
     <style name="workoutPlayBox" parent="medium_22sp">
-        <item name="android:layout_marginStart">@dimen/spacing_22dp</item>
-        <item name="android:layout_marginTop">@dimen/spacing_22dp</item>
+        <item name="android:layout_marginStart">@dimen/default_spacing</item>
+        <item name="android:layout_marginTop">@dimen/default_spacing</item>
         <item name="android:background">@drawable/round_background_21dp</item>
         <item name="android:backgroundTint">@color/black_99000000</item>
         <item name="android:paddingStart">@dimen/spacing_14dp</item>

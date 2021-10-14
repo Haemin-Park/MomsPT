@@ -19,12 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/spacing_5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_22dp">
+                android:padding="@dimen/default_spacing">
 
                 <TextView
                     android:id="@+id/tv_home_step"
@@ -52,7 +53,7 @@
                     android:layout_marginTop="@dimen/spacing_20dp"
                     android:max="6"
                     android:paddingStart="0dp"
-                    android:paddingTop="@dimen/spacing_22dp"
+                    android:paddingTop="@dimen/default_spacing"
                     android:progress="1"
                     android:progressDrawable="@drawable/custom_seekbar"
                     android:splitTrack="false"
@@ -65,9 +66,9 @@
                 style="@style/bold_20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_22dp"
+                android:layout_marginStart="@dimen/default_spacing"
                 android:layout_marginTop="@dimen/spacing_28dp"
-                android:layout_marginEnd="@dimen/spacing_22dp"
+                android:layout_marginEnd="@dimen/default_spacing"
                 android:layout_marginBottom="@dimen/spacing_18dp"
                 android:fontFamily="@font/noto_sans_bold"
                 android:text="@string/daily_recommended_workout" />
@@ -80,7 +81,7 @@
                 android:clipToPadding="false"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
-                android:paddingStart="@dimen/spacing_22dp"
+                android:paddingStart="@dimen/default_spacing"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:ignore="RtlSymmetry" />
 
@@ -88,9 +89,9 @@
                 style="@style/bold_20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_22dp"
+                android:layout_marginStart="@dimen/default_spacing"
                 android:layout_marginTop="@dimen/spacing_50dp"
-                android:layout_marginEnd="@dimen/spacing_22dp"
+                android:layout_marginEnd="@dimen/default_spacing"
                 android:layout_marginBottom="@dimen/spacing_18dp"
                 android:fontFamily="@font/noto_sans_bold"
                 android:text="@string/weekly_statistics" />
@@ -102,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:overScrollMode="never"
-                android:paddingStart="@dimen/spacing_22dp"
+                android:paddingStart="@dimen/default_spacing"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="7"
                 tools:ignore="RtlSymmetry" />

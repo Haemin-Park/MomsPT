@@ -22,8 +22,8 @@
         android:gravity="center_vertical"
         android:onClick="@{()->LargeWorkoutItemListener.onClick(LargeWorkoutItem)}"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/spacing_22dp"
-        android:paddingRight="@dimen/spacing_22dp">
+        android:paddingLeft="@dimen/default_spacing"
+        android:paddingRight="@dimen/default_spacing">
 
         <CheckBox
             android:layout_width="@dimen/workout_checkbox_width"

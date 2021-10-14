@@ -22,9 +22,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_22dp"
+                android:layout_marginStart="@dimen/default_spacing"
                 android:layout_marginTop="@dimen/spacing_20dp"
-                android:layout_marginEnd="@dimen/spacing_22dp"
+                android:layout_marginEnd="@dimen/default_spacing"
                 android:background="@drawable/month_statistics_box_background"
                 android:gravity="center"
                 android:paddingTop="@dimen/spacing_17dp"
@@ -58,17 +58,17 @@
                 style="@style/medium_20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_22dp"
+                android:layout_marginStart="@dimen/default_spacing"
                 android:layout_marginTop="@dimen/spacing_50dp"
-                android:layout_marginEnd="@dimen/spacing_22dp"
+                android:layout_marginEnd="@dimen/default_spacing"
                 android:text="4단계 3일차" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_22dp"
+                android:layout_marginStart="@dimen/default_spacing"
                 android:layout_marginTop="@dimen/spacing_18dp"
-                android:layout_marginEnd="@dimen/spacing_22dp"
+                android:layout_marginEnd="@dimen/default_spacing"
                 android:orientation="horizontal">
 
                 <com.fitsionary.momspt.presentation.custom.CustomMonthStatisticsBox

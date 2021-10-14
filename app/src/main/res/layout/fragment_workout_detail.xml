@@ -34,18 +34,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/workout_detail_img_height"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/spacing_22dp"
+                    android:layout_marginLeft="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_20dp"
-                    android:layout_marginRight="@dimen/spacing_22dp"
+                    android:layout_marginRight="@dimen/default_spacing"
                     android:scaleType="centerCrop"
                     android:src="@drawable/sample" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/workout_detail_box_height"
-                    android:layout_marginLeft="@dimen/spacing_22dp"
+                    android:layout_marginLeft="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_12dp"
-                    android:layout_marginRight="@dimen/spacing_22dp"
+                    android:layout_marginRight="@dimen/default_spacing"
                     android:background="@drawable/round_background"
                     android:padding="@dimen/spacing_18dp">
 
@@ -104,7 +104,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_22dp"
+                    android:layout_marginStart="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_35dp"
                     android:orientation="horizontal">
 
@@ -125,9 +125,9 @@
                     style="@style/medium_16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_22dp"
+                    android:layout_marginLeft="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_8dp"
-                    android:layout_marginRight="@dimen/spacing_22dp"
+                    android:layout_marginRight="@dimen/default_spacing"
                     android:text="@{WorkoutItem.explanation}"
                     android:textColor="@color/dark_gray"
                     tools:text="코어 트레이닝을 대표하는 운동 중 하나입니다.
@@ -137,7 +137,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_22dp"
+                    android:layout_marginStart="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_35dp"
                     android:orientation="horizontal">
 
@@ -158,9 +158,9 @@
                     style="@style/medium_16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_22dp"
+                    android:layout_marginLeft="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_8dp"
-                    android:layout_marginRight="@dimen/spacing_22dp"
+                    android:layout_marginRight="@dimen/default_spacing"
                     android:paddingBottom="@dimen/spacing_12dp"
                     android:text="@{WorkoutItem.effect}"
                     android:textColor="@color/dark_gray"
@@ -175,9 +175,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bottom_nav_background"
-            android:paddingLeft="@dimen/spacing_22dp"
+            android:paddingLeft="@dimen/default_spacing"
             android:paddingTop="@dimen/spacing_20dp"
-            android:paddingRight="@dimen/spacing_22dp"
+            android:paddingRight="@dimen/default_spacing"
             android:paddingBottom="@dimen/spacing_20dp"
             app:layout_constraintBaseline_toBottomOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
