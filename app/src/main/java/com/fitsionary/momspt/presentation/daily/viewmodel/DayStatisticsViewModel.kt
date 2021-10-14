@@ -2,6 +2,7 @@ package com.fitsionary.momspt.presentation.daily.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.fitsionary.momspt.data.api.request.EditWeightRequest
 import com.fitsionary.momspt.data.api.response.toModel
 import com.fitsionary.momspt.data.model.TodayStatisticsModel
 import com.fitsionary.momspt.network.NetworkService
@@ -14,14 +15,36 @@ class DayStatisticsViewModel : BaseViewModel() {
     val todayStatistics: LiveData<TodayStatisticsModel>
         get() = _todayStatistics
 
+    private val _weight = MutableLiveData<Double>()
+    val weight: LiveData<Double>
+        get() = _weight
+
     fun getTodayUserStatistics() {
         NetworkService.api.getTodayStatistics()
             .applyNetworkScheduler()
             .subscribe({
                 Timber.i(it.toString())
                 _todayStatistics.value = it.toModel()
+                updateWeight(_todayStatistics.value!!.weightNow)
             }, {
                 Timber.e(it.message)
             })
+    }
+
+    fun editTodayUserWeight(weight: Double) {
+        NetworkService.api.editWeight(
+            EditWeightRequest(weight)
+        ).applyNetworkScheduler()
+            .subscribe({
+                Timber.i(it.toString())
+                if (it.success)
+                    updateWeight(weight)
+            }, {
+                Timber.e(it.message)
+            })
+    }
+
+    private fun updateWeight(weight: Double) {
+        _weight.value = weight
     }
 }

@@ -1,8 +1,8 @@
 package com.fitsionary.momspt.network
 
+import com.fitsionary.momspt.data.api.request.EditWeightRequest
 import com.fitsionary.momspt.data.api.request.SignInRequest
 import com.fitsionary.momspt.data.api.request.SignUpRequest
-import com.fitsionary.momspt.data.api.request.TodayWorkoutListRequest
 import com.fitsionary.momspt.data.api.response.*
 import io.reactivex.rxjava3.core.Single
 import okhttp3.MultipartBody
@@ -30,12 +30,17 @@ interface Api {
     @GET("/daily/day/todayanalysis")
     fun getTodayStatistics(): Single<TodayStatisticsResponse>
 
+    @POST("/daily/day/weight")
+    fun editWeight(
+        @Body body: EditWeightRequest
+    ): Single<CommonResponse>
+
     @Multipart
     @POST("/upload")
     fun sendVideo(
         @Part file: MultipartBody.Part
     ): Single<String>
 
-    @GET("workout/keypoints")
+    @GET("/workout/keypoints")
     suspend fun getWorkoutPoseLandmark(@Query("workoutcode") workoutCode: String): WorkoutPoseLandmarkResponse
 }

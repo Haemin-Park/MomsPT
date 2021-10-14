@@ -29,10 +29,10 @@ class DayStatisticsFragment :
 
         navResult(findNavController()) { answer ->
             when (answer) {
-                is NavResult.Cancel -> Timber.i("Cancel")
-                is NavResult.Ok -> Timber.i("Ok")
+                is NavResult.Cancel -> Timber.i("cancel")
+                is NavResult.Ok -> Timber.i("ok")
                 is NavResult.TodayWeight -> {
-                    println(answer.weight)
+                    viewModel.editTodayUserWeight(answer.weight)
                 }
             }
         }
