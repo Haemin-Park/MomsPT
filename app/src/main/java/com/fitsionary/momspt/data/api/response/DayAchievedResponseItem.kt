@@ -15,13 +15,13 @@ data class DayAchievedResponseItem(
 fun DayAchievedResponseItem.toModel(): DayAchievedModel {
     return DayAchievedModel(
         day = when (order) {
-            1 -> "월"
-            2 -> "화"
-            3 -> "수"
-            4 -> "목"
-            5 -> "금"
-            6 -> "토"
-            else -> "일"
+            1 -> "일"
+            2 -> "월"
+            3 -> "화"
+            4 -> "수"
+            5 -> "목"
+            6 -> "금"
+            else -> "토"
         },
         successCount = done,
         entireCount = totalWorkout,
