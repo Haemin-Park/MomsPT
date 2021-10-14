@@ -183,7 +183,6 @@ class WorkoutPlayFragment :
                 scoreAlgorithm = ScoringAlgorithm(landmarks)
             }
         })
-        viewModel.guideTimerStart(5000)
         viewModel.isGuide.observeOn(ui()).subscribe { if (it) showGuide() else hideGuide() }
         processor!!
             .videoSurfaceOutput
@@ -413,7 +412,7 @@ class WorkoutPlayFragment :
                 if (playWhenReady && state == Player.STATE_READY) {
                     // media actually playing
                     if (isFirst) {
-                        viewModel.countDownTimerSet(player!!.contentDuration)
+                        viewModel.timerSet(player!!.contentDuration, 5000)
                         isFirst = false
                     }
                     viewModel.countDownTimerStart()

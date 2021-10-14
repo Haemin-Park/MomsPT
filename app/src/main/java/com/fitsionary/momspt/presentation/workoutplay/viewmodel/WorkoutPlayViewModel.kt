@@ -30,10 +30,10 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
         get() = _cumulativeScore
 
     private lateinit var timer: Timer
-    private lateinit var guideTimer: Timer
 
     private val _timerCountDown = MutableLiveData<Long>()
     private val _timerCountUp = MutableLiveData<Long>()
+    private val _guideCountDown = MutableLiveData<Long>()
 
     val formattedTimer = Transformations.map(_timerCountDown) { time ->
         DateUtils.formatElapsedTime(time / 1000)
@@ -50,28 +50,11 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
     init {
         _score.value = 0
         _cumulativeScore.value = 0
-        _timerCountUp.value = 0
     }
 
-    fun countDownTimerSet(total: Long) {
+    fun timerSet(total: Long, guideTime: Long) {
         _timerCountDown.value = total
-    }
-
-    fun guideTimerStart(guideTime: Long) {
-        guideTimer = Timer()
-        guideTimer.schedule(object : TimerTask() {
-            override fun run() {
-                if (_timerCountUp.value == guideTime) {
-                    isGuide.onNext(true)
-                }
-                if (_timerCountUp.value == guideTime + 1000) {
-                    isGuide.onNext(false)
-                    _guideStart.postValue(true)
-                    guideTimer.cancel()
-                }
-                _timerCountUp.postValue(_timerCountUp.value?.plus(1000))
-            }
-        }, 1000, 1000)
+        _guideCountDown.value = guideTime
     }
 
     fun countDownTimerStart() {
@@ -81,7 +64,15 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
                 if (_timerCountDown.value == 0L) {
                     timer.cancel()
                 }
+                if (_guideCountDown.value == 0L) {
+                    isGuide.onNext(true)
+                }
+                if (_guideCountDown.value == -1000L) {
+                    isGuide.onNext(false)
+                    _guideStart.postValue(true)
+                }
                 _timerCountDown.postValue(_timerCountDown.value?.minus(1000))
+                _guideCountDown.postValue(_guideCountDown.value?.minus(1000))
             }
         }, 1000, 1000)
     }
