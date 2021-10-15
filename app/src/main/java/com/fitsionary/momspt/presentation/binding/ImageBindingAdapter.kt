@@ -20,7 +20,6 @@ fun setRoundImageFromImageUrl(imageView: ImageView, imageUrl: String) {
     Glide.with(imageView.context)
         .load(imageUrl)
         .transform(CenterCrop(), RoundedCorners(60))
-        .placeholder(R.drawable.placeholder)
         .into(imageView)
 }
 
@@ -36,7 +35,6 @@ fun setCircleImageFromImageUrl(imageView: ImageView, imageUrl: String) {
     Glide.with(imageView.context)
         .load(imageUrl)
         .circleCrop()
-        .placeholder(R.drawable.placeholder)
         .into(imageView)
 }
 
