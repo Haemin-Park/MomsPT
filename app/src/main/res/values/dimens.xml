@@ -10,7 +10,7 @@
     <dimen name="workout_medium_width">182dp</dimen>
     <dimen name="workout_medium_image_width">178dp</dimen>
     <dimen name="workout_medium_image_height">190dp</dimen>
-    <dimen name="workout_rank_box_width">65dp</dimen>
+    <dimen name="workout_rank_box_width">60dp</dimen>
     <dimen name="workout_stroke_width">0.5dp</dimen>
     <dimen name="workout_checkbox_width">26dp</dimen>
     <dimen name="workout_checkbox_height">26dp</dimen>
