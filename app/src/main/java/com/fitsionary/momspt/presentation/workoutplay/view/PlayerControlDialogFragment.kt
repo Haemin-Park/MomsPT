@@ -33,6 +33,9 @@ class PlayerControlDialogFragment(isPlaying: Boolean) :
         binding.btnControl.setOnClickListener {
             listener.onControllerClicked()
         }
+        binding.btnExitWorkout.setOnClickListener {
+            requireActivity().finish()
+        }
     }
 
     override fun onResume() {

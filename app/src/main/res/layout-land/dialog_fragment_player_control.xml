@@ -24,6 +24,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_exit_workout"
             style="@style/medium_16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
