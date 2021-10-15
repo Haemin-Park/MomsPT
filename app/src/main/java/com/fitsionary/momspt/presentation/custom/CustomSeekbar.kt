@@ -8,6 +8,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.fitsionary.momspt.R
 
 
+@SuppressLint("ClickableViewAccessibility")
 class CustomSeekBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : androidx.appcompat.widget.AppCompatSeekBar(context, attrs, defStyleAttr) {
@@ -20,6 +21,11 @@ class CustomSeekBar @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
         style = Paint.Style.FILL
         typeface = Typeface.DEFAULT
+    }
+    private var day = ""
+
+    init {
+        this.setOnTouchListener { _, _ -> true }
     }
 
     @SuppressLint("DrawAllocation", "ResourceAsColor")
@@ -36,9 +42,10 @@ class CustomSeekBar @JvmOverloads constructor(
             )
             it.draw(canvas)
         }
+
         if (progress in 1 until max) {
             val thumbX = (progress.toFloat() / max * width.toFloat())
-            currentText = "${progress}단계 3일차"
+            currentText = "${progress}단계 ${day}일차"
             currentText?.let {
                 textPaint.getTextBounds(it, 0, it.length, textBounds)
             }
@@ -46,7 +53,7 @@ class CustomSeekBar @JvmOverloads constructor(
             paint.color = ResourcesCompat.getColor(resources, R.color.pink_99ec5363, null)
             val rect = RectF(
                 thumbX - textBounds.exactCenterX() - 13,
-                0F,
+                height / 4 + textBounds.exactCenterY() - textBounds.height() - 5,
                 thumbX + textBounds.exactCenterX() + 13,
                 height / 4 + textBounds.exactCenterY() + 10
             )
@@ -58,5 +65,10 @@ class CustomSeekBar @JvmOverloads constructor(
                 textPaint
             )
         }
+    }
+
+    fun setDay(day: Int) {
+        this.day = day.toString()
+        invalidate()
     }
 }
