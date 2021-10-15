@@ -28,5 +28,8 @@
         <argument
             android:name="resultScore"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_workoutResultFragment_to_workoutPlayFragment"
+            app:destination="@id/workoutPlayFragment" />
     </fragment>
 </navigation>
