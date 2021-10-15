@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -73,8 +74,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/spacing_5dp"
-                        android:text="2단계"
-                        android:textColor="@color/white" />
+                        android:text="@{@string/step_format(vm.info.step)}"
+                        android:textColor="@color/white"
+                        tools:text="1단계" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -86,8 +88,9 @@
                         style="@style/medium_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3일차"
-                        android:textColor="@color/white" />
+                        android:text="@{@string/step_day_format(vm.info.day)}"
+                        android:textColor="@color/white"
+                        tools:text="3일차" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

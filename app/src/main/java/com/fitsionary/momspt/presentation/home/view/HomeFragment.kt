@@ -57,10 +57,14 @@ class HomeFragment :
         }
 
         viewModel.run {
-            getTodayComment()
+            getTodayInfo()
             getTodayWorkoutList()
             getWeeklyAchieved()
         }
+
+        viewModel.info.observe(viewLifecycleOwner, {
+            binding.seekbarCurrentStep.setDay(it.day)
+        })
 
         workoutAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {

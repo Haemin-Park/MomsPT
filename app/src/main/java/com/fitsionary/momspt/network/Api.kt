@@ -20,7 +20,7 @@ interface Api {
     fun nicknameDuplicateCheck(@Query("nickname") nickname: String): Single<CommonResponse>
 
     @GET("/user/daycomment")
-    fun getTodayComment(): Single<TodayCommentResponse>
+    fun getTodayInfo(): Single<TodayInfoResponse>
 
     @GET("/workout/workoutlist")
     fun getTodayWorkoutList(): Single<WorkoutListResponse>

@@ -63,7 +63,10 @@ class WorkoutFragment :
             rvWorkout.adapter = workoutAdapter
         }
 
-        viewModel.getTodayWorkoutList()
+        viewModel.run {
+            getTodayInfo()
+            getTodayWorkoutList()
+        }
 
         binding.layoutStep.setOnClickListener {
             val dialog = CustomStepPickerDialog.CustomStepPickerDialogBuilder()
