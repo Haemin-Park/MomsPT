@@ -13,7 +13,7 @@ class CustomMonthStatisticsBox @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private var binding: CustomMonthStatisticsBoxBinding = DataBindingUtil.inflate(
+    val binding: CustomMonthStatisticsBoxBinding = DataBindingUtil.inflate(
         LayoutInflater.from(context),
         R.layout.custom_month_statistics_box, this, true
     )
@@ -22,10 +22,12 @@ class CustomMonthStatisticsBox @JvmOverloads constructor(
         context.withStyledAttributes(attrs, R.styleable.MonthStatisticsBox) {
             binding.tvCustomStatisticsBoxHeader.text =
                 getString(R.styleable.MonthStatisticsBox_headerText)
-            binding.tvCustomStatisticsBoxBody.text =
-                getString(R.styleable.MonthStatisticsBox_bodyText)
             binding.tvCustomStatisticsBoxFooter.text =
                 getString(R.styleable.MonthStatisticsBox_footerText)
         }
+    }
+
+    fun setBodyText(text: String) {
+        binding.tvCustomStatisticsBoxBody.text = text
     }
 }
