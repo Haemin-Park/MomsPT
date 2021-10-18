@@ -39,6 +39,9 @@ interface Api {
         @Body body: EditWeightRequest
     ): Single<CommonResponse>
 
+    @GET("/daily/day/weeklystatistics")
+    fun getWeeklyStatistics(): Single<WeeklyStatisticsResponse>
+
     @Multipart
     @POST("/upload")
     fun sendVideo(
