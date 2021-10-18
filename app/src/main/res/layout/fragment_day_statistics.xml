@@ -199,6 +199,49 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_day_analysis_comment" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                android:background="@drawable/daily_box_background"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_18dp">
+
+                <TextView
+                    style="@style/bold_16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주간 운동 시간" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chart_workout_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="@dimen/spacing_16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                android:background="@drawable/daily_box_background"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_18dp">
+
+                <TextView
+                    style="@style/bold_16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주간 체중" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="@dimen/spacing_16dp"
+                    android:padding="@dimen/spacing_5dp" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </layout>

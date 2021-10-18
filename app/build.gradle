@@ -141,7 +141,7 @@ dependencies {
     implementation 'io.github.ShawnLin013:number-picker:2.4.13'
 
     // MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 
     // DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
