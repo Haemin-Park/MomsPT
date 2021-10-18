@@ -111,6 +111,9 @@
                     <View
                         android:layout_width="@dimen/workout_detail_vertical_line_width"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/spacing_4dp"
+                        android:layout_marginBottom="@dimen/spacing_4dp"
                         android:background="@color/pink" />
 
                     <TextView
@@ -144,6 +147,9 @@
                     <View
                         android:layout_width="@dimen/workout_detail_vertical_line_width"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/spacing_4dp"
+                        android:layout_marginBottom="@dimen/spacing_4dp"
                         android:background="@color/pink" />
 
                     <TextView
