@@ -29,14 +29,18 @@ class MainActivity :
             R.id.main_home,
             R.id.main_workout,
             R.id.main_daily,
-            R.id.main_mypage
+            R.id.main_mypage,
         )
+        val dialogId = setOf(
+            R.id.customEditTodayWeightDialog
+        )
+        val topLevelDestinations = bottomMenuId + dialogId
         navController = this.findNavController(R.id.main_nav_host_fragment)
-        appBarConfiguration = AppBarConfiguration(bottomMenuId)
+        appBarConfiguration = AppBarConfiguration(topLevelDestinations)
         NavigationUI.setupWithNavController(binding.toolbarMain, navController, appBarConfiguration)
         NavigationUI.setupWithNavController(binding.bottomNavigationMain, navController)
-        navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
-            if (nd.id in bottomMenuId) {
+        navController.addOnDestinationChangedListener { _: NavController, nd: NavDestination, _: Bundle? ->
+            if (nd.id in topLevelDestinations) {
                 binding.toolbarMain.visibility = View.VISIBLE
                 binding.toolbarMain.setTitleMargin(16, 0, 0, 0)
                 binding.bottomNavigationMain.visibility = View.VISIBLE
