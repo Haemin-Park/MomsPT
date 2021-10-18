@@ -49,7 +49,6 @@
                 android:id="@+id/calendar_month"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/CustomTextAppearance"
                 app:mcv_selectionColor="@color/white"
 
                 android:layout_marginTop="@dimen/spacing_50dp" />
