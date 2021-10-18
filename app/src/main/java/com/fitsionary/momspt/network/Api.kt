@@ -42,6 +42,12 @@ interface Api {
     @GET("/daily/day/weeklystatistics")
     fun getWeeklyStatistics(): Single<WeeklyStatisticsResponse>
 
+    @GET("/daily/month/monthlystatistics")
+    fun getMonthlyStatistics(
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): Single<MonthlyStatisticsResponse>
+
     @Multipart
     @POST("/upload")
     fun sendVideo(
