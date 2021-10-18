@@ -16,8 +16,8 @@ class CustomSeekBar @JvmOverloads constructor(
     private var currentText: String? = null
     private val textBounds = Rect()
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = 35F
-        color = ResourcesCompat.getColor(resources, R.color.white, null)
+        textSize = 32F
+        color = ResourcesCompat.getColor(resources, R.color.pink, null)
         textAlign = Paint.Align.CENTER
         style = Paint.Style.FILL
         typeface = Typeface.DEFAULT
@@ -32,17 +32,6 @@ class CustomSeekBar @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        val drawable = ResourcesCompat.getDrawable(resources, R.drawable.flag, null)
-        drawable?.let {
-            it.setBounds(
-                width - height / 2 - 10,
-                0,
-                width,
-                height / 2 + 10
-            )
-            it.draw(canvas)
-        }
-
         if (progress in 1 until max) {
             val thumbX = (progress.toFloat() / max * width.toFloat())
             currentText = "${progress}단계 ${day}일차"
@@ -50,7 +39,7 @@ class CustomSeekBar @JvmOverloads constructor(
                 textPaint.getTextBounds(it, 0, it.length, textBounds)
             }
             val paint = Paint()
-            paint.color = ResourcesCompat.getColor(resources, R.color.pink_99ec5363, null)
+            paint.color = ResourcesCompat.getColor(resources, R.color.light_gray_f9f9f9, null)
             val rect = RectF(
                 thumbX - textBounds.exactCenterX() - 13,
                 height / 4 + textBounds.exactCenterY() - textBounds.height() - 5,
@@ -64,6 +53,16 @@ class CustomSeekBar @JvmOverloads constructor(
                 height / 4 + textBounds.exactCenterY(),
                 textPaint
             )
+        }
+        val drawable = ResourcesCompat.getDrawable(resources, R.drawable.flag, null)
+        drawable?.let {
+            it.setBounds(
+                width - 100,
+                (height / 4 + textBounds.exactCenterY() + 10).toInt(),
+                width,
+                thumb.bounds.bottom
+            )
+            it.draw(canvas)
         }
     }
 

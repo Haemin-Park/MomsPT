@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/spacing_5dp">
+            android:paddingBottom="@dimen/default_spacing">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -29,7 +29,7 @@
 
                 <TextView
                     android:id="@+id/tv_home_step"
-                    style="@style/medium_22sp"
+                    style="@style/medium_18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{@string/after_birth_format(vm.info.dayAfterBabyDue)}"
@@ -38,10 +38,10 @@
 
                 <TextView
                     android:id="@+id/tv_ment"
-                    style="@style/bold_22sp"
+                    style="@style/bold_20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="약해진 근력을 키우는데\n좀 더 집중해주세요"
+                    android:text="@{vm.info.comment}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_home_step"
                     tools:text="근력 회복 운동을\n집중적으로 해주세요" />
@@ -53,7 +53,8 @@
                     android:layout_marginTop="@dimen/spacing_20dp"
                     android:max="6"
                     android:paddingStart="0dp"
-                    android:paddingTop="@dimen/spacing_25dp"
+                    android:maxHeight="2dp"
+                    android:paddingTop="@dimen/spacing_35dp"
                     android:progress="@{vm.info.step}"
                     android:progressDrawable="@drawable/custom_seekbar"
                     android:splitTrack="false"
