@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.fitsionary.momspt.presentation.daily.viewmodel.MonthStatisticsViewModel" />
     </data>
 
     <ScrollView
@@ -19,33 +22,36 @@
             android:paddingEnd="@dimen/default_spacing">
 
             <com.fitsionary.momspt.presentation.custom.CustomMonthStatisticsBox
+                android:id="@+id/layout_month_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_20dp"
-                app:bodyText="5"
                 app:footerText="@string/count_time"
                 app:headerText="@string/count" />
 
             <com.fitsionary.momspt.presentation.custom.CustomMonthStatisticsBox
+                android:id="@+id/layout_month_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_10dp"
-                app:bodyText="5"
                 app:footerText="@string/minute"
                 app:headerText="@string/time" />
 
             <com.fitsionary.momspt.presentation.custom.CustomMonthStatisticsBox
+                android:id="@+id/layout_month_step"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_10dp"
-                app:bodyText="1,2"
                 app:footerText="@string/step"
                 app:headerText="@string/step" />
 
-            <CalendarView
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                 android:id="@+id/calendar_month"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/CustomTextAppearance"
+                app:mcv_selectionColor="@color/white"
+
                 android:layout_marginTop="@dimen/spacing_50dp" />
         </LinearLayout>
     </ScrollView>
