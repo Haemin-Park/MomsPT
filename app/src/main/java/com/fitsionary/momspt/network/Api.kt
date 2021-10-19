@@ -1,9 +1,6 @@
 package com.fitsionary.momspt.network
 
-import com.fitsionary.momspt.data.api.request.EditWeightRequest
-import com.fitsionary.momspt.data.api.request.SignInRequest
-import com.fitsionary.momspt.data.api.request.SignUpRequest
-import com.fitsionary.momspt.data.api.request.WorkoutResultRequest
+import com.fitsionary.momspt.data.api.request.*
 import com.fitsionary.momspt.data.api.response.*
 import io.reactivex.rxjava3.core.Single
 import okhttp3.MultipartBody
@@ -47,6 +44,9 @@ interface Api {
         @Query("year") year: Int,
         @Query("month") month: Int
     ): Single<MonthlyStatisticsResponse>
+
+    @POST("/daily/month/detailstatistics")
+    fun getDayStatisticsDetail(@Body body: DayStatisticsDetailRequest): Single<DayStatisticsDetailResponse>
 
     @Multipart
     @POST("/upload")
