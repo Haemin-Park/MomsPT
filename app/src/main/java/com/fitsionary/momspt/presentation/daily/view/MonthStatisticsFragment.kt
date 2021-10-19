@@ -10,6 +10,7 @@ import com.fitsionary.momspt.databinding.FragmentMonthStatisticsBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.daily.viewmodel.MonthStatisticsViewModel
 import com.fitsionary.momspt.util.EventDecorator
+import java.time.LocalDate
 
 
 class MonthStatisticsFragment :
@@ -24,11 +25,15 @@ class MonthStatisticsFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.calendarMonth.setDateTextAppearance(R.color.calendar_text_color)
         binding.calendarMonth.setOnDateChangedListener { _, date, _ ->
-            findNavController().navigate(DailyFragmentDirections.actionMainDailyToDayStatisticsDetailFragment())
+            val selectedDate = LocalDate.of(date.year, date.month, date.day)
+            findNavController().navigate(
+                DailyFragmentDirections.actionMainDailyToDayStatisticsDetailFragment(
+                    selectedDate
+                )
+            )
         }
         val currentDate = binding.calendarMonth.currentDate
         viewModel.getUserMonthlyStatistic(currentDate.year, currentDate.month)
-        showToast(binding.calendarMonth.currentDate.year.toString())
 
         binding.calendarMonth.setOnMonthChangedListener { _, date ->
             viewModel.getUserMonthlyStatistic(date.year, date.month)
