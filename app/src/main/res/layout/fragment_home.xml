@@ -52,7 +52,7 @@
                     style="@style/bold_18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="약해진 근력을 키우는데\n좀 더 집중해주세요"
+                    android:text="@{vm.info.comment}"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_home_step"
