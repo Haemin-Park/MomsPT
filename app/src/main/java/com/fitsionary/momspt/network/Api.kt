@@ -22,6 +22,9 @@ interface Api {
     @GET("/workout/workoutlist")
     fun getTodayWorkoutList(): Single<WorkoutListResponse>
 
+    @POST("/workout/workoutlist")
+    fun getStepWorkoutList(@Body body: StepWorkoutRequest): Single<WorkoutListResponse>
+
     @POST("/workout/workoutresult")
     fun sendWorkoutResult(@Body body: WorkoutResultRequest): Single<WorkoutResultResponse>
 
