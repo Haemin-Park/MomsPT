@@ -8,13 +8,17 @@ import android.view.Display
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.CustomDialogStepPickerBinding
 import com.fitsionary.momspt.presentation.base.BaseDialogFragment
+import com.fitsionary.momspt.util.NAV_RESULT_KEY
+import com.fitsionary.momspt.util.NavResult
 
 class CustomStepPickerDialog :
     BaseDialogFragment<CustomDialogStepPickerBinding>(R.layout.custom_dialog_step_picker) {
-    private lateinit var listener: CustomDialogChoiceClickedListener
+    val safeArgs: CustomStepPickerDialogArgs by navArgs()
 
     override fun onResume() {
         super.onResume()
@@ -42,34 +46,46 @@ class CustomStepPickerDialog :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.apply {
-            binding.btnStepPickerCancel.setOnClickListener {
-                dismiss()
-            }
-            binding.btnStepPickerChoice.setOnClickListener {
-                listener.onChoiceClicked()
-                dismiss()
-            }
+        safeArgs.run {
+            settingPicker(step)
+            binding.pickerStep.value = step
+            binding.pickerStepDay.value = stepDay
+        }
+
+        binding.btnStepPickerCancel.setOnClickListener {
+            setNavResult(NavResult.Cancel)
+            dismiss()
+        }
+        binding.btnStepPickerChoice.setOnClickListener {
+            setNavResult(
+                NavResult.ChoiceResult(
+                    binding.pickerStep.value,
+                    binding.pickerStepDay.value
+                )
+            )
+            dismiss()
+        }
+        binding.pickerStep.setOnValueChangedListener { picker, oldVal, newVal ->
+            settingPicker(newVal)
         }
     }
 
-    class CustomStepPickerDialogBuilder {
-        private val dialog = CustomStepPickerDialog()
-
-        fun setOnOkClickedListener(listener: () -> Unit): CustomStepPickerDialogBuilder {
-            dialog.listener = object : CustomDialogChoiceClickedListener {
-                override fun onChoiceClicked() {
-                    listener()
-                }
-            }
-            return this
+    private fun settingPicker(step: Int) {
+        binding.pickerStepDay.maxValue = when (step) {
+            1 -> 7
+            2 -> 23
+            3 -> 20
+            4 -> 50
+            else -> 80
         }
-
-        fun create() = dialog
     }
 
-    interface CustomDialogChoiceClickedListener {
-        fun onChoiceClicked()
+    private fun setNavResult(answer: NavResult) {
+        findNavController().previousBackStackEntry?.apply {
+            savedStateHandle.set<NavResult>(
+                NAV_RESULT_KEY,
+                answer
+            )
+        }
     }
-
 }

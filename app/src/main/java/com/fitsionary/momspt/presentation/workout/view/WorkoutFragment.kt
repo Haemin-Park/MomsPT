@@ -14,10 +14,12 @@ import com.fitsionary.momspt.databinding.ItemWorkoutLargeBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.base.BaseRecyclerViewAdapter
 import com.fitsionary.momspt.presentation.base.BaseViewHolder
-import com.fitsionary.momspt.presentation.custom.CustomStepPickerDialog
 import com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutViewModel
+import com.fitsionary.momspt.util.NavResult
 import com.fitsionary.momspt.util.ext.bindItems
 import com.fitsionary.momspt.util.listener.OnItemClickListener
+import com.fitsionary.momspt.util.navResult
+import timber.log.Timber
 
 class WorkoutFragment :
     BaseFragment<FragmentWorkoutBinding, WorkoutViewModel>(R.layout.fragment_workout) {
@@ -44,6 +46,8 @@ class WorkoutFragment :
                 holder.binding.rvWorkoutLargeType.bindItems(currentList[position].type)
             }
         }
+    var step = 0
+    var stepDay = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,17 +67,38 @@ class WorkoutFragment :
             rvWorkout.adapter = workoutAdapter
         }
 
+        navResult(findNavController()) { result ->
+            when (result) {
+                is NavResult.Cancel -> Timber.i("cancel")
+                is NavResult.Ok -> Timber.i("ok")
+                is NavResult.ChoiceResult -> {
+                    viewModel.getStepWorkoutList(result.step, result.stepDay)
+                }
+                else -> Timber.i("unexpected result type")
+            }
+        }
+
         viewModel.run {
             getTodayInfo()
             getTodayWorkoutList()
         }
 
+        viewModel.step.observe(viewLifecycleOwner, {
+            step = it
+        })
+        viewModel.stepDay.observe(viewLifecycleOwner, {
+            stepDay = it
+        })
+
         binding.layoutStep.setOnClickListener {
-            val dialog = CustomStepPickerDialog.CustomStepPickerDialogBuilder()
-                .setOnOkClickedListener {
-                }
-                .create()
-            dialog.show(parentFragmentManager, dialog.tag)
+            if (step != 0 && stepDay != 0) {
+                findNavController().navigate(
+                    WorkoutFragmentDirections.actionMainWorkoutToCustomStepPickerDialog(
+                        step,
+                        stepDay
+                    )
+                )
+            }
         }
 
         workoutAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
