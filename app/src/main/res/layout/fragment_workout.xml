@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/workout_current_stage_box_height"
                 android:layout_marginLeft="@dimen/default_spacing"
-                android:layout_marginTop="@dimen/spacing_20dp"
+                android:layout_marginTop="@dimen/default_spacing"
                 android:layout_marginRight="@dimen/default_spacing"
                 android:background="@drawable/round_background"
                 android:backgroundTint="@color/light_pink"
@@ -74,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/spacing_5dp"
-                        android:text="@{@string/step_format(vm.info.step)}"
+                        android:text="@{@string/step_format(vm.step)}"
                         android:textColor="@color/white"
                         tools:text="1단계" />
 
@@ -88,7 +88,7 @@
                         style="@style/medium_14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/step_day_format(vm.info.day)}"
+                        android:text="@{@string/step_day_format(vm.stepDay)}"
                         android:textColor="@color/white"
                         tools:text="3일차" />
                 </LinearLayout>
@@ -96,7 +96,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                style="@style/bold_20sp"
+                style="@style/bold_18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/default_spacing"

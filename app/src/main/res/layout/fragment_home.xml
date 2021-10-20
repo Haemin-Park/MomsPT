@@ -18,14 +18,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="vertical"
             android:paddingBottom="@dimen/default_spacing">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/default_spacing">
+                android:background="@color/pink"
+                android:paddingStart="@dimen/default_spacing"
+                android:paddingTop="@dimen/default_spacing"
+                android:paddingEnd="@dimen/default_spacing">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_info_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_home_step"
@@ -33,15 +42,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{@string/after_birth_format(vm.info.dayAfterBabyDue)}"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="출산 후 32일" />
 
                 <TextView
                     android:id="@+id/tv_ment"
-                    style="@style/bold_20sp"
+                    style="@style/bold_18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.info.comment}"
+                    android:text="약해진 근력을 키우는데\n좀 더 집중해주세요"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_home_step"
                     tools:text="근력 회복 운동을\n집중적으로 해주세요" />
@@ -52,8 +64,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/spacing_20dp"
                     android:max="6"
+                    android:maxHeight="1dp"
                     android:paddingStart="0dp"
-                    android:maxHeight="2dp"
                     android:paddingTop="@dimen/spacing_35dp"
                     android:progress="@{vm.info.step}"
                     android:progressDrawable="@drawable/custom_seekbar"
@@ -64,11 +76,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                style="@style/bold_20sp"
+                style="@style/bold_18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_spacing"
-                android:layout_marginTop="@dimen/spacing_28dp"
+                android:layout_marginTop="@dimen/spacing_40dp"
                 android:layout_marginEnd="@dimen/default_spacing"
                 android:layout_marginBottom="@dimen/spacing_18dp"
                 android:fontFamily="@font/noto_sans_bold"
@@ -87,11 +99,11 @@
                 tools:ignore="RtlSymmetry" />
 
             <TextView
-                style="@style/bold_20sp"
+                style="@style/bold_18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_spacing"
-                android:layout_marginTop="@dimen/spacing_50dp"
+                android:layout_marginTop="@dimen/spacing_40dp"
                 android:layout_marginEnd="@dimen/default_spacing"
                 android:layout_marginBottom="@dimen/spacing_18dp"
                 android:fontFamily="@font/noto_sans_bold"

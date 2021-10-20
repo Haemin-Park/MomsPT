@@ -4,7 +4,7 @@
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/seekbar_radius" />
-            <solid android:color="@color/light_gray" />
+            <solid android:color="@color/pink" />
         </shape>
     </item>
 
@@ -12,7 +12,7 @@
         <scale android:scaleWidth="100%">
             <shape android:shape="rectangle">
                 <corners android:radius="@dimen/seekbar_radius" />
-                <solid android:color="@color/light_gray" />
+                <solid android:color="@color/pink" />
             </shape>
         </scale>
     </item>
@@ -23,7 +23,7 @@
                 <corners
                     android:bottomLeftRadius="@dimen/seekbar_radius"
                     android:topLeftRadius="@dimen/seekbar_radius" />
-                <solid android:color="@color/pink" />
+                <solid android:color="@color/white" />
             </shape>
         </scale>
     </item>

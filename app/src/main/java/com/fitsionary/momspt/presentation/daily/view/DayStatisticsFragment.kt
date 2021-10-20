@@ -32,13 +32,14 @@ class DayStatisticsFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
-        navResult(findNavController()) { answer ->
-            when (answer) {
+        navResult(findNavController()) { result ->
+            when (result) {
                 is NavResult.Cancel -> Timber.i("cancel")
                 is NavResult.Ok -> Timber.i("ok")
                 is NavResult.TodayWeight -> {
-                    viewModel.editTodayUserWeight(answer.weight)
+                    viewModel.editTodayUserWeight(result.weight)
                 }
+                else -> Timber.i("unexpected result type")
             }
         }
 
@@ -132,7 +133,6 @@ class DayStatisticsFragment :
             lineWidth = 1f
             color = ResourcesCompat.getColor(resources, R.color.pink, null)
 
-            circleSize = 5f
             setCircleColor(ResourcesCompat.getColor(resources, R.color.pink, null))
             setCircleColorHole(ResourcesCompat.getColor(resources, R.color.pink, null))
 
