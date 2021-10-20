@@ -63,6 +63,9 @@
         <action
             android:id="@+id/action_main_workout_to_workoutDetailFragment"
             app:destination="@id/workoutDetailFragment" />
+        <action
+            android:id="@+id/action_main_workout_to_customStepPickerDialog"
+            app:destination="@id/customStepPickerDialog" />
     </fragment>
     <fragment
         android:id="@+id/main_daily"
@@ -113,7 +116,16 @@
         android:id="@+id/dayStatisticsDetailFragment"
         android:name="com.fitsionary.momspt.presentation.daily.view.DayStatisticsDetailFragment"
         android:label="일자별 상세"
-        tools:layout="@layout/fragment_day_statistics_detail" />
+        tools:layout="@layout/fragment_day_statistics_detail">
+        <argument
+            android:name="date"
+            app:argType="java.time.LocalDate" />
+        <action
+            android:id="@+id/action_dayStatisticsDetailFragment_self"
+            app:destination="@id/dayStatisticsDetailFragment"
+            app:popUpTo="@id/dayStatisticsDetailFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <activity
         android:id="@+id/workoutPlayMainActivity"
         android:name="com.fitsionary.momspt.presentation.workoutplay.view.WorkoutPlayMainActivity"
@@ -126,6 +138,18 @@
     <dialog
         android:id="@+id/customEditTodayWeightDialog"
         android:name="com.fitsionary.momspt.presentation.custom.CustomEditTodayWeightDialog"
-        android:label="CustomEditTodayWeightDialog"
+        android:label=""
         tools:layout="@layout/custom_dialog_edit_today_weight" />
+    <dialog
+        android:id="@+id/customStepPickerDialog"
+        android:name="com.fitsionary.momspt.presentation.custom.CustomStepPickerDialog"
+        android:label="CustomStepPickerDialog"
+        tools:layout="@layout/custom_dialog_step_picker">
+        <argument
+            android:name="step"
+            app:argType="integer" />
+        <argument
+            android:name="stepDay"
+            app:argType="integer" />
+    </dialog>
 </navigation>
