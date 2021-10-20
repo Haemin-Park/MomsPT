@@ -18,6 +18,9 @@ sealed class NavResult : Parcelable {
 
     @Parcelize
     data class TodayWeight(val weight: Double) : NavResult()
+
+    @Parcelize
+    data class ChoiceResult(val step: Int, val stepDay: Int) : NavResult()
 }
 
 const val NAV_RESULT_KEY = "nav_result"
