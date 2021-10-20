@@ -16,5 +16,6 @@ data class WorkoutModel(
     val video: String,
     val type: List<String>,
     val isFinish: Boolean,
-    val rank: String
+    val rank: String,
+    val ai: Boolean
 ) : Parcelable

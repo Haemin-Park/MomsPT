@@ -7,9 +7,12 @@
     <dimen name="circle_timer_diameter">80dp</dimen>
     <dimen name="record_send_button_width">180dp</dimen>
     <dimen name="loading_indicator_size">80dp</dimen>
-    <dimen name="workout_medium_width">182dp</dimen>
-    <dimen name="workout_medium_image_width">178dp</dimen>
-    <dimen name="workout_medium_image_height">190dp</dimen>
+    <dimen name="workout_medium_width">180dp</dimen>
+    <dimen name="workout_medium_image_width">180dp</dimen>
+    <dimen name="workout_medium_image_height">180dp</dimen>
+    <dimen name="workout_finish_check_size">50dp</dimen>
+    <dimen name="ai_badge_large_diameter">25dp</dimen>
+    <dimen name="ai_badge_medium_diameter">20dp</dimen>
     <dimen name="workout_rank_box_width">60dp</dimen>
     <dimen name="workout_stroke_width">0.5dp</dimen>
     <dimen name="workout_checkbox_width">26dp</dimen>
@@ -19,8 +22,7 @@
     <dimen name="workout_current_stage_box_height">150dp</dimen>
     <dimen name="workout_current_stage_img_width">165dp</dimen>
     <dimen name="workout_current_stage_img_height">95dp</dimen>
-    <dimen name="workout_large_height">94dp</dimen>
-    <dimen name="workout_large_image_width">90dp</dimen>
+    <dimen name="workout_large_image_width">140dp</dimen>
     <dimen name="workout_large_image_height">90dp</dimen>
     <dimen name="workout_ic_height">19dp</dimen>
     <dimen name="workout_detail_img_height">220dp</dimen>

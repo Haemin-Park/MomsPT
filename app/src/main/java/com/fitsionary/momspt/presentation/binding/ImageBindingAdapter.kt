@@ -1,6 +1,7 @@
 package com.fitsionary.momspt.presentation.binding
 
 import android.widget.ImageView
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -19,7 +20,7 @@ fun setImageFromImageUrl(imageView: ImageView, imageUrl: String) {
 fun setRoundImageFromImageUrl(imageView: ImageView, imageUrl: String) {
     Glide.with(imageView.context)
         .load(imageUrl)
-        .transform(CenterCrop(), RoundedCorners(60))
+        .transform(CenterCrop(), RoundedCorners(30))
         .into(imageView)
 }
 
@@ -54,4 +55,16 @@ fun setScoreImage(imageView: ImageView, score: Int) {
             imageView.setImageResource(R.drawable.ic_perpect)
         }
     }
+}
+
+@BindingAdapter("image_tint")
+fun setImageTint(imageView: ImageView, finish: Boolean) {
+    if (finish)
+        imageView.setColorFilter(
+            ResourcesCompat.getColor(
+                imageView.resources,
+                R.color.black_99000000,
+                null
+            )
+        )
 }

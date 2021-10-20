@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="LargeWorkoutItem"
             type="com.fitsionary.momspt.data.model.WorkoutModel" />
@@ -16,7 +18,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/workout_large_height"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_20dp"
         android:clipToPadding="false"
         android:gravity="center_vertical"
@@ -25,24 +27,43 @@
         android:paddingLeft="@dimen/default_spacing"
         android:paddingRight="@dimen/default_spacing">
 
-        <CheckBox
-            android:layout_width="@dimen/workout_checkbox_width"
-            android:layout_height="@dimen/workout_checkbox_height"
-            android:background="@drawable/custom_checkbox"
-            android:button="@null"
-            android:checked="@{LargeWorkoutItem.finish}"
-            android:clickable="false"
-            tools:checked="true" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
+            <ImageView
+                image_tint="@{LargeWorkoutItem.finish}"
+                round_image_url="@{LargeWorkoutItem.thumbnail}"
+                android:layout_width="@dimen/workout_large_image_width"
+                android:layout_height="@dimen/workout_large_image_height"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:tintMode="src_atop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/sample" />
 
-        <ImageView
-            round_image_url="@{LargeWorkoutItem.thumbnail}"
-            android:layout_width="@dimen/workout_large_image_width"
-            android:layout_height="@dimen/workout_large_image_height"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/spacing_16dp"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/sample" />
+            <TextView
+                style="@style/medium_14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/success"
+                android:textColor="@color/white"
+                android:visibility="@{LargeWorkoutItem.finish ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                layout="@layout/layout_ai_badge_medium"
+                android:layout_width="@dimen/ai_badge_medium_diameter"
+                android:layout_height="@dimen/ai_badge_medium_diameter"
+                android:layout_marginEnd="@dimen/spacing_10dp"
+                android:layout_marginBottom="@dimen/spacing_10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"

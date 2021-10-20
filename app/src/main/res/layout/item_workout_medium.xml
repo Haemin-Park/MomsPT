@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="MediumWorkoutItem"
             type="com.fitsionary.momspt.data.model.WorkoutModel" />
@@ -26,16 +28,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/spacing_2dp">
+            android:orientation="vertical">
 
-            <ImageView
-                round_image_url="@{MediumWorkoutItem.thumbnail}"
-                android:layout_width="@dimen/workout_medium_image_width"
-                android:layout_height="@dimen/workout_medium_image_height"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/sample" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    image_tint="@{MediumWorkoutItem.finish}"
+                    round_image_url="@{MediumWorkoutItem.thumbnail}"
+                    android:layout_width="@dimen/workout_medium_image_width"
+                    android:layout_height="@dimen/workout_medium_image_height"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:tintMode="src_atop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/sample" />
+
+                <TextView
+                    style="@style/medium_16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/success"
+                    android:textColor="@color/white"
+                    android:visibility="@{MediumWorkoutItem.finish ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    layout="@layout/layout_ai_badge_large"
+                    android:layout_width="@dimen/ai_badge_large_diameter"
+                    android:layout_height="@dimen/ai_badge_large_diameter"
+                    android:layout_marginEnd="@dimen/spacing_10dp"
+                    android:layout_marginBottom="@dimen/spacing_10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 style="@style/medium_16sp"
@@ -43,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_12dp"
                 android:layout_marginEnd="@dimen/spacing_5dp"
+                android:layout_marginBottom="@dimen/spacing_2dp"
                 android:singleLine="true"
                 android:text="@{MediumWorkoutItem.name}"
                 android:textColor="@color/black"
@@ -55,7 +87,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/medium_14sp"
+                    style="@style/medium_13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{@string/minutes_format(MediumWorkoutItem.playtime)}"
@@ -63,14 +95,14 @@
                     tools:text="2분" />
 
                 <TextView
-                    style="@style/medium_14sp"
+                    style="@style/medium_13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/divide_dot"
                     android:textColor="@color/dark_gray" />
 
                 <TextView
-                    style="@style/medium_14sp"
+                    style="@style/medium_13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{@string/calorie_format(MediumWorkoutItem.calorie)}"
@@ -78,19 +110,5 @@
                     tools:text="15kcal" />
             </LinearLayout>
         </LinearLayout>
-
-        <CheckBox
-            android:layout_width="@dimen/workout_checkbox_width"
-            android:layout_height="@dimen/workout_checkbox_height"
-            android:layout_marginTop="@dimen/spacing_10dp"
-            android:layout_marginEnd="@dimen/spacing_10dp"
-            android:background="@drawable/custom_checkbox"
-            android:button="@null"
-            android:checked="@{MediumWorkoutItem.finish}"
-            android:clickable="false"
-            android:includeFontPadding="false"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:checked="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
