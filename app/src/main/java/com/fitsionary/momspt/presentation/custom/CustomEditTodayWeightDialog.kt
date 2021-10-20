@@ -47,21 +47,19 @@ class CustomEditTodayWeightDialog :
     @SuppressLint("ShowToast")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.apply {
-            binding.btnCancel.setOnClickListener {
-                setNavResult(NavResult.Cancel)
+        binding.btnCancel.setOnClickListener {
+            setNavResult(NavResult.Cancel)
+            dismiss()
+        }
+        binding.btnConfirm.setOnClickListener {
+            val text: String = binding.etEditWeight.text.toString()
+            if (text.isNotEmpty()) try {
+                setNavResult(NavResult.TodayWeight(text.toDouble()))
                 dismiss()
-            }
-            binding.btnConfirm.setOnClickListener {
-                val text: String = binding.etEditWeight.text.toString()
-                if (text.isNotEmpty()) try {
-                    setNavResult(NavResult.TodayWeight(text.toDouble()))
-                    dismiss()
-                } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "숫자와 소수점만 입력 가능합니다.", Toast.LENGTH_SHORT)
-                        .show()
-                    e.printStackTrace()
-                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "숫자와 소수점만 입력 가능합니다.", Toast.LENGTH_SHORT)
+                    .show()
+                e.printStackTrace()
             }
         }
     }
