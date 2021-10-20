@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -32,6 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageButton
+                    android:id="@+id/btn_pre_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_26dp"
@@ -39,14 +41,16 @@
                     android:src="@drawable/ic_back" />
 
                 <TextView
+                    android:id="@+id/tv_day_detail_date"
                     style="@style/medium_18sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="08월 18일(수)" />
+                    tools:text="08월 18일" />
 
                 <ImageButton
+                    android:id="@+id/btn_next_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_26dp"
@@ -55,13 +59,13 @@
             </LinearLayout>
 
             <TextView
-                style="@style/medium_20sp"
+                style="@style/medium_18sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_spacing"
                 android:layout_marginTop="@dimen/spacing_50dp"
                 android:layout_marginEnd="@dimen/default_spacing"
-                android:text="4단계 3일차" />
+                android:text="@{@string/step_and_day_format(vm.dayStatistics.step, vm.dayStatistics.stepDay)}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -72,26 +76,26 @@
                 android:orientation="horizontal">
 
                 <com.fitsionary.momspt.presentation.custom.CustomMonthStatisticsBox
+                    android:id="@+id/layout_day_detail_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_12dp"
                     android:layout_weight="1"
-                    app:bodyText="15"
                     app:footerText="@string/minute"
                     app:headerText="@string/time" />
 
                 <com.fitsionary.momspt.presentation.custom.CustomMonthStatisticsBox
+                    android:id="@+id/layout_day_detail_kcal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:bodyText="80"
                     app:footerText="@string/kcal"
                     app:headerText="@string/kcal_kor" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_day_detail_workout"
-                bindItems="@{vm.workoutList}"
+                bindItems="@{vm.dayStatistics.workout}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_40dp"

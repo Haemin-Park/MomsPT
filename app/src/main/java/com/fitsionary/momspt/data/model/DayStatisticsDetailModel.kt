@@ -7,5 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class DayStatisticsDetailModel(
     val time: Int,
     val kcal: Int,
+    val step: Int,
+    val stepDay: Int,
     val workout: List<WorkoutModel>
 ) : Parcelable

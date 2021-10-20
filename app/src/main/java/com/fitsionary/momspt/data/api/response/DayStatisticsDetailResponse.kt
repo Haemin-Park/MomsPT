@@ -9,12 +9,16 @@ import kotlinx.android.parcel.Parcelize
 data class DayStatisticsDetailResponse(
     val time: Int,
     val kcal: Int,
+    val step: Int,
+    val day: Int,
     val workout: List<WorkoutListResponseItem>
 ) : Parcelable
 
 fun DayStatisticsDetailResponse.toModel(): DayStatisticsDetailModel = DayStatisticsDetailModel(
     time = TimeUtil.makeWorkoutTimeFormat(time),
     kcal = kcal,
+    step = step,
+    stepDay = day,
     workout = workout.map {
         it.toModel()
     }
