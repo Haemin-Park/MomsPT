@@ -37,7 +37,7 @@ class MonthStatisticsViewModel : BaseViewModel() {
     ): List<CalendarDay> {
         val calendarDates = mutableListOf<CalendarDay>()
         for (dayItem in dates) {
-            if (dayItem.status == COMPLETE)
+            if (dayItem.status == COMPLETE || dayItem.status == SOME)
                 calendarDates.add(CalendarDay.from(year, month, dayItem.day))
         }
         return calendarDates
@@ -45,3 +45,4 @@ class MonthStatisticsViewModel : BaseViewModel() {
 }
 
 private val COMPLETE = "COMPLETE"
+private val SOME = "SOME"
