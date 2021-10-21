@@ -8,13 +8,12 @@ import android.view.Display
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.CustomDialogStepPickerBinding
 import com.fitsionary.momspt.presentation.base.BaseDialogFragment
-import com.fitsionary.momspt.util.NAV_RESULT_KEY
 import com.fitsionary.momspt.util.NavResult
+import com.fitsionary.momspt.util.setNavResult
 
 class CustomStepPickerDialog :
     BaseDialogFragment<CustomDialogStepPickerBinding>(R.layout.custom_dialog_step_picker) {
@@ -77,15 +76,6 @@ class CustomStepPickerDialog :
             3 -> 20
             4 -> 50
             else -> 80
-        }
-    }
-
-    private fun setNavResult(answer: NavResult) {
-        findNavController().previousBackStackEntry?.apply {
-            savedStateHandle.set<NavResult>(
-                NAV_RESULT_KEY,
-                answer
-            )
         }
     }
 }

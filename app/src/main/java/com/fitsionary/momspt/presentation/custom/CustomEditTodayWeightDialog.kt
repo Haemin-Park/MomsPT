@@ -10,12 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.CustomDialogEditTodayWeightBinding
 import com.fitsionary.momspt.presentation.base.BaseDialogFragment
-import com.fitsionary.momspt.util.NAV_RESULT_KEY
 import com.fitsionary.momspt.util.NavResult
+import com.fitsionary.momspt.util.setNavResult
 
 class CustomEditTodayWeightDialog :
     BaseDialogFragment<CustomDialogEditTodayWeightBinding>(R.layout.custom_dialog_edit_today_weight) {
@@ -61,15 +60,6 @@ class CustomEditTodayWeightDialog :
                     .show()
                 e.printStackTrace()
             }
-        }
-    }
-
-    private fun setNavResult(answer: NavResult) {
-        findNavController().previousBackStackEntry?.apply {
-            savedStateHandle.set<NavResult>(
-                NAV_RESULT_KEY,
-                answer
-            )
         }
     }
 }

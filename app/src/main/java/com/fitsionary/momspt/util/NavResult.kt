@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.fitsionary.momspt.data.model.WorkoutModel
 import kotlinx.android.parcel.Parcelize
 
 sealed class NavResult : Parcelable {
@@ -53,4 +54,13 @@ inline fun LifecycleOwner.navResult(
 
 inline fun Fragment.navResult(crossinline onResult: (NavResult?) -> Unit) {
     viewLifecycleOwner.navResult(findNavController(), onResult)
+}
+
+fun Fragment.setNavResult(result: NavResult) {
+    findNavController().previousBackStackEntry?.apply {
+        savedStateHandle.set<NavResult>(
+            NAV_RESULT_KEY,
+            result
+        )
+    }
 }
