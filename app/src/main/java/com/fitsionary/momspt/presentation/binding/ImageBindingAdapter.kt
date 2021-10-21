@@ -67,4 +67,6 @@ fun setImageTint(imageView: ImageView, finish: Boolean) {
                 null
             )
         )
+    else
+        imageView.colorFilter = null
 }
