@@ -423,11 +423,13 @@ class WorkoutPlayFragment :
                     viewModel.countDownTimerStop()
                     if (state == Player.STATE_ENDED) {
                         isEnd = true
+                        val resultScore = if (viewModel.cumulativeScore.value?.toInt() != 0) {
+                            viewModel.cumulativeScore.value!!.div(viewModel.cnt.value!!).toInt()
+                        } else
+                            0
                         findNavController().navigate(
                             WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
-                                workoutItem, viewModel.cumulativeScore.value?.toInt()
-                                    ?.div(viewModel.cnt.value!!)
-                                    ?: 0
+                                workoutItem, resultScore
                             )
                         )
                     }
