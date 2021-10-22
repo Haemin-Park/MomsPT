@@ -30,8 +30,8 @@
                 android:paddingEnd="@dimen/default_spacing">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:src="@drawable/ic_baseline_info_24"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -114,6 +114,7 @@
                 bindItems="@{vm.dayAchievedList}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_11dp"
                 android:orientation="vertical"
                 android:overScrollMode="never"
                 android:paddingStart="@dimen/default_spacing"

@@ -13,7 +13,7 @@
     <dimen name="workout_finish_check_size">50dp</dimen>
     <dimen name="ai_badge_large_diameter">25dp</dimen>
     <dimen name="ai_badge_medium_diameter">20dp</dimen>
-    <dimen name="workout_rank_box_width">60dp</dimen>
+    <dimen name="workout_rank_box_width">55dp</dimen>
     <dimen name="workout_stroke_width">0.5dp</dimen>
     <dimen name="workout_checkbox_width">26dp</dimen>
     <dimen name="workout_checkbox_height">26dp</dimen>
@@ -22,10 +22,10 @@
     <dimen name="workout_current_stage_box_height">150dp</dimen>
     <dimen name="workout_current_stage_img_width">165dp</dimen>
     <dimen name="workout_current_stage_img_height">95dp</dimen>
-    <dimen name="workout_large_image_width">140dp</dimen>
+    <dimen name="workout_large_image_width">130dp</dimen>
     <dimen name="workout_large_image_height">90dp</dimen>
     <dimen name="workout_ic_height">19dp</dimen>
-    <dimen name="workout_detail_img_height">240dp</dimen>
+    <dimen name="workout_detail_img_height">220dp</dimen>
     <dimen name="workout_detail_name_width">200dp</dimen>
     <dimen name="workout_detail_box_height">94dp</dimen>
     <dimen name="workout_player_control_icon_size">80dp</dimen>
@@ -44,6 +44,7 @@
     <dimen name="spacing_8dp">8dp</dimen>
     <dimen name="spacing_9dp">9dp</dimen>
     <dimen name="spacing_10dp">10dp</dimen>
+    <dimen name="spacing_11dp">11dp</dimen>
     <dimen name="spacing_12dp">12dp</dimen>
     <dimen name="spacing_14dp">14dp</dimen>
     <dimen name="spacing_15dp">15dp</dimen>
