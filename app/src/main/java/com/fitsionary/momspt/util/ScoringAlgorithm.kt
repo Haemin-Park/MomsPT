@@ -3,7 +3,11 @@ package com.fitsionary.momspt.util
 import com.fitsionary.momspt.data.api.response.Landmark
 import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
 import timber.log.Timber
+import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.acos
+import kotlin.math.sqrt
+
 
 class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
     val landmarksList = workoutLandmarks.poseData
@@ -20,12 +24,14 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
     fun pushKeyPoints(
         keyPoints: ArrayList<Landmark>,
         cameraWidth: Int,
-        cameraHeight: Int
+        cameraHeight: Int,
     ): Double {
+
         targetKeyPoints = keyPoints2Vec(keyPoints, cameraWidth, cameraHeight)
         var result: Double
         DTWTarget.add(targetKeyPoints)
         count++
+
         if (count % FRAME_CUT == 0) {
             // target 과 비교할 프레임만큼 resource 만들기
             for (i in count - FRAME_CUT until count) {
@@ -39,6 +45,7 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
             result = -1 * 500 / FRAME_CUT * result + 100
             return if (result > 0) result else 0.0
         }
+
         return (-1).toDouble()
     }
 
@@ -78,13 +85,13 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
         vector: ArrayList<Double>,
         transX: Double,
         transY: Double,
-        scaler: Double
+        scalar: Double
     ): ArrayList<Double> {
         for (i in 0 until vector.size) {
             if (i % 2 == 0) {
-                vector[i] = vector[i] / scaler - transX
+                vector[i] = vector[i] / scalar - transX
             } else {
-                vector[i] = vector[i] / scaler - transY
+                vector[i] = vector[i] / scalar - transY
             }
         }
         return vector
@@ -170,6 +177,204 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
 
         val check = v1Dotv2 / (absV1 * absV2)
         return abs(1 - check)
+    }
+
+    /**
+     * 운동 카운팅
+     */
+
+    fun calculateAngles(
+        keyPoints: ArrayList<Landmark>
+    ): Map<String, Double> {
+
+        val leftElbowAngle = getAngleThreePoint(keyPoints, 5, 7, 9)
+        val rightElbowAngle = getAngleThreePoint(keyPoints, 6, 8, 10)
+        val leftShoulderAngle = getAngleThreePoint(keyPoints, 6, 5, 7)
+        val rightShoulderAngle = getAngleThreePoint(keyPoints, 5, 6, 8)
+        val leftHip2ElbowAngle = getAngleThreePoint(keyPoints, 11, 5, 7)
+        val rightHip2ElbowAngle = getAngleThreePoint(keyPoints, 12, 6, 8)
+        val leftHipAngle = getAngleThreePoint(keyPoints, 5, 11, 13)
+        val rightHipAngle = getAngleThreePoint(keyPoints, 6, 12, 14)
+        val leftHip2KneeAngle = getAngleThreePoint(keyPoints, 12, 11, 13)
+        val rightHip2KneeAngle = getAngleThreePoint(keyPoints, 11, 12, 14)
+        val leftKneeAngle = getAngleThreePoint(keyPoints, 11, 13, 15)
+        val rightKneeAngle = getAngleThreePoint(keyPoints, 12, 14, 16)
+        val leftAnkleAngle = getAngleThreePoint(keyPoints, 13, 15, 17)
+        val rightAnkleAngle = getAngleThreePoint(keyPoints, 14, 16, 18)
+
+
+        return mapOf(
+            "leftElbowAngle" to leftElbowAngle,
+            "rightElbowAngle" to rightElbowAngle,
+            "leftShoulderAngle" to leftShoulderAngle,
+            "rightShoulderAngle" to rightShoulderAngle,
+            "leftHip2ElbowAngle" to leftHip2ElbowAngle,
+            "rightHip2ElbowAngle" to rightHip2ElbowAngle,
+            "leftHipAngle" to leftHipAngle,
+            "rightHipAngle" to rightHipAngle,
+            "leftHip2KneeAngle" to leftHip2KneeAngle,
+            "rightHip2KneeAngle" to rightHip2KneeAngle,
+            "leftKneeAngle" to leftKneeAngle,
+            "rightKneeAngle" to rightKneeAngle,
+            "leftAnkleAngle" to leftAnkleAngle,
+            "rightAnkleAngle" to rightAnkleAngle
+        )
+
+    }
+
+    data class WorkoutState(
+        val angle: Double?,
+        val up: Boolean,
+        val down: Boolean,
+        val reset: Boolean,
+        val count: Int
+    )
+
+    data class CountState(
+        val up: Boolean,
+        val down: Boolean,
+        val reset: Boolean,
+        val count: Int
+    )
+
+    fun workoutSelector(
+        angles: Map<String, Double>,
+        workoutCode: String,
+        up: Boolean,
+        down: Boolean,
+        reset: Boolean,
+        count: Int
+    ): WorkoutState {
+        var angle: Double? = 0.0
+        var cState = CountState(up, down, reset, count)
+        when (workoutCode) {
+            "W006" -> {
+                angle = angles["leftAnkleAngle"]
+                cState = countWorkout(angle, 150, 110, up, down, reset, count, 1)
+            }
+            "W007" -> {
+                angle = angles["leftHipAngle"]
+                cState = countWorkout(angle, 160, 120, up, down, reset, count, 1)
+            }
+            "W008" -> {
+                angle = angles["rightShoulderAngle"]
+                cState = countWorkout(angle, 160, 90, up, down, reset, count, 1)
+            }
+            "W009" -> {
+                angle = angles["rightHip2ElbowAngle"]
+                cState = countWorkout(angle, 160, 40, up, down, reset, count, 1)
+            }
+            "W011" -> {
+                angle = angles["leftHipAngle"]
+                cState = countWorkout(angle, 110, 95, up, down, reset, count, 0)
+            }
+            "W012" -> {
+                angle = angles["leftHipAngle"]
+                cState = countWorkout(angle, 110, 90, up, down, reset, count, 0)
+            }
+            "W015" -> {
+                angle = angles["leftHipAngle"]
+                cState = countWorkout(angle, 150, 120, up, down, reset, count, 0)
+            }
+            "W020" -> {
+                angle = angles["rightHipAngle"]
+                cState = countWorkout(angle, 170, 120, up, down, reset, count, 0)
+            }
+            "W022" -> {
+                angle = angles["leftHipAngle"]
+                cState = countWorkout(angle, 160, 110, up, down, reset, count, 0)
+            }
+            "W023" -> {
+                angle = angles["leftKneeAngle"]
+                cState = countWorkout(angle, 170, 120, up, down, reset, count, 0)
+            }
+            "W024" -> {
+                angle = angles["leftKneeAngle"]
+                cState = countWorkout(angle, 170, 150, up, down, reset, count, 0)
+            }
+        }
+
+        return WorkoutState(angle, cState.up, cState.down, cState.reset, cState.count)
+    }
+
+    private fun countWorkout(
+        angle: Double?,
+        upper: Int,
+        lower: Int,
+        up: Boolean,
+        down: Boolean,
+        reset: Boolean,
+        count: Int,
+        mode: Int
+    ): CountState {
+        var returnup: Boolean = up
+        var returndown: Boolean = down
+        var returnreset: Boolean = reset
+        var returncount: Int = count
+        if (mode == 0) {
+            if (angle!! > upper && !up) {
+                returnup = true
+            } else if (angle < lower && !down) {
+                returndown = true
+            } else if (angle > upper && up && down) {
+                returncount = count + 1
+                returnreset = true
+                returndown = false
+            } else if (angle > lower + 5 && angle < upper - 5 && reset) {
+                returndown = false
+                returnup = false
+                returnreset = false
+            }
+        } else {
+            if (angle!! < lower && !down) {
+                returndown = true
+            } else if (angle > upper && !up) {
+                returnup = true
+            } else if (angle < lower && down && up) {
+                returncount = count + 1
+                returnreset = true
+                returnup = false
+            } else if (angle > lower + 20 && angle < upper - 20 && reset) {
+                returndown = false
+                returnup = false
+                returnreset = false
+            }
+        }
+        return CountState(returnup, returndown, returnreset, returncount)
+    }
+
+    private fun getAngleThreePoint(
+        keyPoints: ArrayList<Landmark>,
+        poseIdx1: Int,
+        poseIdx2: Int,
+        poseIdx3: Int
+    ): Double {
+        val keypoint1: ArrayList<Double> = arrayListOf(keyPoints[poseIdx1].x, keyPoints[poseIdx1].y)
+        val keypoint2: ArrayList<Double> = arrayListOf(keyPoints[poseIdx2].x, keyPoints[poseIdx2].y)
+        val keypoint3: ArrayList<Double> = arrayListOf(keyPoints[poseIdx3].x, keyPoints[poseIdx3].y)
+
+        return calculateAngle(keypoint1, keypoint2, keypoint3)
+    }
+
+    private fun calculateAngle(
+        a: ArrayList<Double>,
+        b: ArrayList<Double>,
+        c: ArrayList<Double>
+    ): Double {
+        val vectorA: ArrayList<Double> = arrayListOf(a[0] - b[0], a[1] - b[1])
+        val vectorB: ArrayList<Double> = arrayListOf(c[0] - b[0], c[1] - b[1])
+
+        val distanceA = sqrt(vectorA[0] * vectorA[0] + vectorA[1] * vectorA[1])
+        val distanceB = sqrt(vectorB[0] * vectorB[0] + vectorB[1] * vectorB[1])
+        var product = 0.0
+        for (i in vectorA.indices) {
+            vectorA[i] /= distanceA
+            vectorB[i] /= distanceB
+            product += vectorA[i] * vectorB[i]
+        }
+
+        val radians = acos(product)
+        return radians / PI * 180
     }
 
     companion object {
