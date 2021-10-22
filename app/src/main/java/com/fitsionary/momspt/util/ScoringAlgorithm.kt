@@ -1,6 +1,7 @@
 package com.fitsionary.momspt.util
 
 import com.fitsionary.momspt.data.api.response.Landmark
+import com.fitsionary.momspt.data.enum.WorkoutPoseEnum
 import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
 import timber.log.Timber
 import kotlin.math.PI
@@ -111,7 +112,7 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
 
     /**
      * pose data를 FRAME_CUT씩 잘라서 DTW적용
-     * 키포인트 17개의 데이터를 하나의 vector로 표현 후 ArrayList<Double>에 저장
+     * 키포인트 19개의 데이터를 하나의 vector로 표현 후 ArrayList<Double>에 저장
      */
     private fun DTW(
         resourcePoseSet: ArrayList<ArrayList<Double>>,
@@ -186,22 +187,90 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
     fun calculateAngles(
         keyPoints: ArrayList<Landmark>
     ): Map<String, Double> {
-
-        val leftElbowAngle = getAngleThreePoint(keyPoints, 5, 7, 9)
-        val rightElbowAngle = getAngleThreePoint(keyPoints, 6, 8, 10)
-        val leftShoulderAngle = getAngleThreePoint(keyPoints, 6, 5, 7)
-        val rightShoulderAngle = getAngleThreePoint(keyPoints, 5, 6, 8)
-        val leftHip2ElbowAngle = getAngleThreePoint(keyPoints, 11, 5, 7)
-        val rightHip2ElbowAngle = getAngleThreePoint(keyPoints, 12, 6, 8)
-        val leftHipAngle = getAngleThreePoint(keyPoints, 5, 11, 13)
-        val rightHipAngle = getAngleThreePoint(keyPoints, 6, 12, 14)
-        val leftHip2KneeAngle = getAngleThreePoint(keyPoints, 12, 11, 13)
-        val rightHip2KneeAngle = getAngleThreePoint(keyPoints, 11, 12, 14)
-        val leftKneeAngle = getAngleThreePoint(keyPoints, 11, 13, 15)
-        val rightKneeAngle = getAngleThreePoint(keyPoints, 12, 14, 16)
-        val leftAnkleAngle = getAngleThreePoint(keyPoints, 13, 15, 17)
-        val rightAnkleAngle = getAngleThreePoint(keyPoints, 14, 16, 18)
-
+        val leftElbowAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.LEFT_SHOULDER.ordinal,
+            WorkoutPoseEnum.LEFT_ELBOW.ordinal,
+            WorkoutPoseEnum.LEFT_WRIST.ordinal
+        )
+        val rightElbowAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.RIGHT_SHOULDER.ordinal,
+            WorkoutPoseEnum.RIGHT_ELBOW.ordinal,
+            WorkoutPoseEnum.RIGHT_WRIST.ordinal
+        )
+        val leftShoulderAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.RIGHT_SHOULDER.ordinal,
+            WorkoutPoseEnum.LEFT_SHOULDER.ordinal,
+            WorkoutPoseEnum.LEFT_ELBOW.ordinal
+        )
+        val rightShoulderAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.LEFT_SHOULDER.ordinal,
+            WorkoutPoseEnum.RIGHT_SHOULDER.ordinal,
+            WorkoutPoseEnum.RIGHT_ELBOW.ordinal
+        )
+        val leftHip2ElbowAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.LEFT_HIP.ordinal,
+            WorkoutPoseEnum.LEFT_SHOULDER.ordinal,
+            WorkoutPoseEnum.LEFT_ELBOW.ordinal
+        )
+        val rightHip2ElbowAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.RIGHT_HIP.ordinal,
+            WorkoutPoseEnum.RIGHT_SHOULDER.ordinal,
+            WorkoutPoseEnum.RIGHT_ELBOW.ordinal
+        )
+        val leftHipAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.LEFT_SHOULDER.ordinal,
+            WorkoutPoseEnum.LEFT_HIP.ordinal,
+            WorkoutPoseEnum.LEFT_KNEE.ordinal
+        )
+        val rightHipAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.RIGHT_SHOULDER.ordinal,
+            WorkoutPoseEnum.RIGHT_HIP.ordinal,
+            WorkoutPoseEnum.RIGHT_KNEE.ordinal
+        )
+        val leftHip2KneeAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.RIGHT_HIP.ordinal,
+            WorkoutPoseEnum.LEFT_HIP.ordinal,
+            WorkoutPoseEnum.LEFT_KNEE.ordinal
+        )
+        val rightHip2KneeAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.LEFT_HIP.ordinal,
+            WorkoutPoseEnum.RIGHT_HIP.ordinal,
+            WorkoutPoseEnum.RIGHT_KNEE.ordinal
+        )
+        val leftKneeAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.LEFT_HIP.ordinal,
+            WorkoutPoseEnum.LEFT_KNEE.ordinal,
+            WorkoutPoseEnum.LEFT_ANKLE.ordinal
+        )
+        val rightKneeAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.RIGHT_HIP.ordinal,
+            WorkoutPoseEnum.RIGHT_KNEE.ordinal,
+            WorkoutPoseEnum.RIGHT_ANKLE.ordinal
+        )
+        val leftAnkleAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.LEFT_KNEE.ordinal,
+            WorkoutPoseEnum.LEFT_ANKLE.ordinal,
+            WorkoutPoseEnum.LEFT_FOOT_INDEX.ordinal
+        )
+        val rightAnkleAngle = getAngleThreePoint(
+            keyPoints,
+            WorkoutPoseEnum.RIGHT_KNEE.ordinal,
+            WorkoutPoseEnum.RIGHT_ANKLE.ordinal,
+            WorkoutPoseEnum.RIGHT_FOOT_INDEX.ordinal
+        )
 
         return mapOf(
             "leftElbowAngle" to leftElbowAngle,
@@ -219,7 +288,6 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
             "leftAnkleAngle" to leftAnkleAngle,
             "rightAnkleAngle" to rightAnkleAngle
         )
-
     }
 
     data class WorkoutState(

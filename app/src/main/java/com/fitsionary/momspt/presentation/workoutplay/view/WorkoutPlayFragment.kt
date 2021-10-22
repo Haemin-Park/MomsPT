@@ -14,7 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.api.response.Landmark
-import com.fitsionary.momspt.data.enum.PoseEnum
+import com.fitsionary.momspt.data.enum.CountingWorkoutEnum
+import com.fitsionary.momspt.data.enum.EntirePoseEnum
+import com.fitsionary.momspt.data.enum.WorkoutPoseEnum
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentWorkoutPlayBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
@@ -59,26 +61,6 @@ class WorkoutPlayFragment :
 
     companion object {
         private val TAG = WorkoutPlayFragment::class.java.simpleName
-
-        val Poses = listOf(
-            "PoseLandmark.NOSE",
-            "PoseLandmark.LEFT_EYE",
-            "PoseLandmark.RIGHT_EYE",
-            "PoseLandmark.LEFT_EAR",
-            "PoseLandmark.RIGHT_EAR",
-            "PoseLandmark.LEFT_SHOULDER",
-            "PoseLandmark.RIGHT_SHOULDER",
-            "PoseLandmark.LEFT_ELBOW",
-            "PoseLandmark.RIGHT_ELBOW",
-            "PoseLandmark.LEFT_WRIST",
-            "PoseLandmark.RIGHT_WRIST",
-            "PoseLandmark.LEFT_HIP",
-            "PoseLandmark.RIGHT_HIP",
-            "PoseLandmark.LEFT_KNEE",
-            "PoseLandmark.RIGHT_KNEE",
-            "PoseLandmark.LEFT_ANKLE",
-            "PoseLandmark.RIGHT_ANKLE"
-        )
 
         private const val OUTPUT_LANDMARKS_STREAM_NAME = "pose_landmarks"
 
@@ -192,6 +174,11 @@ class WorkoutPlayFragment :
                     FLIP_FRAMES_VERTICALLY
                 )
             )
+        var angle: Double?
+        var up = false
+        var down = false
+        var reset = false
+        var count = 0
         processor!!.addPacketCallback(
             OUTPUT_LANDMARKS_STREAM_NAME
         ) { packet: Packet ->
@@ -202,10 +189,12 @@ class WorkoutPlayFragment :
                     var idx = 0
                     val keyPoints = ArrayList<Landmark>()
                     for ((landmarkIndex, landmark) in poseLandmarks.landmarkList.withIndex()) {
-                        if (Poses.any { it == "PoseLandmark." + PoseEnum.values()[landmarkIndex].name }) {
+                        if (WorkoutPoseEnum.values()
+                                .any { it.name == EntirePoseEnum.values()[landmarkIndex].name }
+                        ) {
                             keyPoints.add(
                                 Landmark(
-                                    "PoseLandmark." + PoseEnum.values()[landmarkIndex].name,
+                                    EntirePoseEnum.values()[landmarkIndex].name,
                                     landmark.x.toDouble(),
                                     landmark.y.toDouble(),
                                     landmark.z.toDouble(),
@@ -215,8 +204,34 @@ class WorkoutPlayFragment :
                             idx++
                         }
                     }
-                    val resultScore =
-                        scoreAlgorithm.pushKeyPoints(keyPoints, parentWidth, parentHeight)
+
+                    val workoutCode = workoutItem.workoutCode
+                    val resultScore: Double
+                    if (workoutCode in CountingWorkoutEnum.values().map { it.name }) {
+                        val angles = scoreAlgorithm.calculateAngles(keyPoints)
+                        val wState = scoreAlgorithm.workoutSelector(
+                            angles,
+                            workoutCode,
+                            up,
+                            down,
+                            reset,
+                            count
+                        )
+                        angle = wState.angle
+                        up = wState.up
+                        down = wState.down
+                        reset = wState.reset
+                        count = wState.count
+                        Log.e(TAG, "Angle : " + angle.toString() + " " + count.toString())
+                        resultScore = count.toDouble()
+                    } else {
+                        resultScore =
+                            scoreAlgorithm.pushKeyPoints(
+                                keyPoints,
+                                parentWidth,
+                                parentHeight
+                            )
+                    }
 
                     if (resultScore > 0) {
                         viewModel.setScore(floor(resultScore).toInt())

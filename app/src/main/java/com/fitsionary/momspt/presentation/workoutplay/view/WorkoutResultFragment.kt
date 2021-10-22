@@ -52,7 +52,6 @@ class WorkoutResultFragment
         viewModel.isAlreadyExistWorkout.observe(viewLifecycleOwner, {})
         binding.layoutNextWorkout.setOnClickListener {
             viewModel.isAlreadyExistWorkout.value?.let { isExist ->
-                showToast(isExist.toString())
                 if (isExist)
                     findNavController().navigate(
                         WorkoutResultFragmentDirections.actionWorkoutResultFragmentToWorkoutPlayFragment(
