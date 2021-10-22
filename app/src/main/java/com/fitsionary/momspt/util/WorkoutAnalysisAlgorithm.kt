@@ -1,6 +1,7 @@
 package com.fitsionary.momspt.util
 
 import com.fitsionary.momspt.data.api.response.Landmark
+import com.fitsionary.momspt.data.enum.AngleEnum
 import com.fitsionary.momspt.data.enum.WorkoutPoseEnum
 import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
 import timber.log.Timber
@@ -10,7 +11,7 @@ import kotlin.math.acos
 import kotlin.math.sqrt
 
 
-class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
+class WorkoutAnalysisAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
     val landmarksList = workoutLandmarks.poseData
     private var count = 0
     var targetKeyPoints = ArrayList<Double>()
@@ -273,20 +274,20 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
         )
 
         return mapOf(
-            "leftElbowAngle" to leftElbowAngle,
-            "rightElbowAngle" to rightElbowAngle,
-            "leftShoulderAngle" to leftShoulderAngle,
-            "rightShoulderAngle" to rightShoulderAngle,
-            "leftHip2ElbowAngle" to leftHip2ElbowAngle,
-            "rightHip2ElbowAngle" to rightHip2ElbowAngle,
-            "leftHipAngle" to leftHipAngle,
-            "rightHipAngle" to rightHipAngle,
-            "leftHip2KneeAngle" to leftHip2KneeAngle,
-            "rightHip2KneeAngle" to rightHip2KneeAngle,
-            "leftKneeAngle" to leftKneeAngle,
-            "rightKneeAngle" to rightKneeAngle,
-            "leftAnkleAngle" to leftAnkleAngle,
-            "rightAnkleAngle" to rightAnkleAngle
+            AngleEnum.leftElbowAngle.name to leftElbowAngle,
+            AngleEnum.rightElbowAngle.name to rightElbowAngle,
+            AngleEnum.leftShoulderAngle.name to leftShoulderAngle,
+            AngleEnum.rightShoulderAngle.name to rightShoulderAngle,
+            AngleEnum.leftHip2ElbowAngle.name to leftHip2ElbowAngle,
+            AngleEnum.rightHip2ElbowAngle.name to rightHip2ElbowAngle,
+            AngleEnum.leftHipAngle.name to leftHipAngle,
+            AngleEnum.rightHipAngle.name to rightHipAngle,
+            AngleEnum.leftHip2KneeAngle.name to leftHip2KneeAngle,
+            AngleEnum.rightHip2KneeAngle.name to rightHip2KneeAngle,
+            AngleEnum.leftKneeAngle.name to leftKneeAngle,
+            AngleEnum.rightKneeAngle.name to rightKneeAngle,
+            AngleEnum.leftAnkleAngle.name to leftAnkleAngle,
+            AngleEnum.rightAnkleAngle.name to rightAnkleAngle
         )
     }
 
@@ -317,47 +318,47 @@ class ScoringAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
         var cState = CountState(up, down, reset, count)
         when (workoutCode) {
             "W006" -> {
-                angle = angles["leftAnkleAngle"]
+                angle = angles[AngleEnum.leftAnkleAngle.name]
                 cState = countWorkout(angle, 150, 110, up, down, reset, count, 1)
             }
             "W007" -> {
-                angle = angles["leftHipAngle"]
+                angle = angles[AngleEnum.leftHipAngle.name]
                 cState = countWorkout(angle, 160, 120, up, down, reset, count, 1)
             }
             "W008" -> {
-                angle = angles["rightShoulderAngle"]
+                angle = angles[AngleEnum.rightShoulderAngle.name]
                 cState = countWorkout(angle, 160, 90, up, down, reset, count, 1)
             }
             "W009" -> {
-                angle = angles["rightHip2ElbowAngle"]
+                angle = angles[AngleEnum.rightHip2ElbowAngle.name]
                 cState = countWorkout(angle, 160, 40, up, down, reset, count, 1)
             }
             "W011" -> {
-                angle = angles["leftHipAngle"]
+                angle = angles[AngleEnum.leftHipAngle.name]
                 cState = countWorkout(angle, 110, 95, up, down, reset, count, 0)
             }
             "W012" -> {
-                angle = angles["leftHipAngle"]
+                angle = angles[AngleEnum.leftHipAngle.name]
                 cState = countWorkout(angle, 110, 90, up, down, reset, count, 0)
             }
             "W015" -> {
-                angle = angles["leftHipAngle"]
+                angle = angles[AngleEnum.leftHipAngle.name]
                 cState = countWorkout(angle, 150, 120, up, down, reset, count, 0)
             }
             "W020" -> {
-                angle = angles["rightHipAngle"]
+                angle = angles[AngleEnum.rightHipAngle.name]
                 cState = countWorkout(angle, 170, 120, up, down, reset, count, 0)
             }
             "W022" -> {
-                angle = angles["leftHipAngle"]
+                angle = angles[AngleEnum.leftHipAngle.name]
                 cState = countWorkout(angle, 160, 110, up, down, reset, count, 0)
             }
             "W023" -> {
-                angle = angles["leftKneeAngle"]
+                angle = angles[AngleEnum.leftKneeAngle.name]
                 cState = countWorkout(angle, 170, 120, up, down, reset, count, 0)
             }
             "W024" -> {
-                angle = angles["leftKneeAngle"]
+                angle = angles[AngleEnum.leftKneeAngle.name]
                 cState = countWorkout(angle, 170, 150, up, down, reset, count, 0)
             }
         }
