@@ -9,6 +9,7 @@ import com.fitsionary.momspt.domain.WorkoutLandmarkDomainModel
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
 import com.fitsionary.momspt.repository.WorkoutPoseLandmarkRepository
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import timber.log.Timber
 import java.util.*
 
 class WorkoutPlayViewModel(application: Application, workoutCode: String) :
@@ -32,11 +33,23 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
     private lateinit var timer: Timer
 
     private val _timerCountDown = MutableLiveData<Long>()
+    val timerCountDown: LiveData<Long>
+        get() = _timerCountDown
     private val _guideCountDown = MutableLiveData<Long>()
+
+    private val _isWorkoutEnd = MutableLiveData<Boolean>(false)
+    val isWorkoutEnd: LiveData<Boolean>
+        get() = _isWorkoutEnd
 
     val cnt = MutableLiveData<Int>()
 
     val formattedTimer = Transformations.map(_timerCountDown) { time ->
+        Timber.i("뭐야1")
+        if (time <= 0L) {
+            Timber.i("뭐야2")
+            countDownTimerStop()
+            _isWorkoutEnd.value = true
+        }
         DateUtils.formatElapsedTime(time / 1000)
     }
 
@@ -63,9 +76,6 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                if (_timerCountDown.value == 0L) {
-                    timer.cancel()
-                }
                 if (_guideCountDown.value == 0L) {
                     isGuide.onNext(true)
                 }
