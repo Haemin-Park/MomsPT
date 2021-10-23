@@ -25,7 +25,7 @@
     <dimen name="workout_large_image_width">130dp</dimen>
     <dimen name="workout_large_image_height">90dp</dimen>
     <dimen name="workout_ic_height">19dp</dimen>
-    <dimen name="workout_detail_img_height">220dp</dimen>
+    <dimen name="workout_detail_img_height">240dp</dimen>
     <dimen name="workout_detail_name_width">200dp</dimen>
     <dimen name="workout_detail_box_height">94dp</dimen>
     <dimen name="workout_player_control_icon_size">80dp</dimen>

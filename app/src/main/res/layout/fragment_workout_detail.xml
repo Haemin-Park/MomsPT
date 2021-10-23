@@ -40,8 +40,8 @@
                         round_image_url="@{WorkoutItem.thumbnail}"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/workout_detail_img_height"
-                        android:layout_gravity="center"
                         android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
                         android:src="@drawable/sample"
                         app:layout_constraintTop_toTopOf="parent" />
 

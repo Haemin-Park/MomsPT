@@ -28,16 +28,15 @@
                 android:layout_marginEnd="@dimen/default_spacing"
                 android:background="@drawable/month_statistics_box_background"
                 android:gravity="center"
-                android:paddingTop="@dimen/spacing_17dp"
-                android:paddingBottom="@dimen/spacing_17dp"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageButton
                     android:id="@+id/btn_pre_date"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_26dp"
+                    android:layout_height="match_parent"
                     android:background="@null"
+                    android:paddingStart="@dimen/spacing_26dp"
+                    android:paddingEnd="@dimen/spacing_26dp"
                     android:src="@drawable/ic_back" />
 
                 <TextView
@@ -47,14 +46,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:paddingTop="@dimen/spacing_17dp"
+                    android:paddingBottom="@dimen/spacing_17dp"
                     tools:text="08월 18일" />
 
                 <ImageButton
                     android:id="@+id/btn_next_date"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_26dp"
+                    android:layout_height="match_parent"
                     android:background="@null"
+                    android:paddingStart="@dimen/spacing_26dp"
+                    android:paddingEnd="@dimen/spacing_26dp"
                     android:src="@drawable/ic_back_reverse" />
             </LinearLayout>
 

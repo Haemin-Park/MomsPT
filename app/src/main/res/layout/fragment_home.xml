@@ -62,7 +62,7 @@
                     android:id="@+id/seekbar_current_step"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/spacing_20dp"
+                    android:layout_marginTop="@dimen/spacing_10dp"
                     android:max="6"
                     android:maxHeight="1dp"
                     android:paddingStart="0dp"
