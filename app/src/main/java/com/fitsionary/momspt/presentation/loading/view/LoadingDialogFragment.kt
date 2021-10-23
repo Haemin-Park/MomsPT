@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.DialogFragmentLoadingBinding
