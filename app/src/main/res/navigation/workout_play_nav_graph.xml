@@ -15,7 +15,9 @@
             app:argType="com.fitsionary.momspt.data.model.WorkoutModel" />
         <action
             android:id="@+id/action_workoutPlayFragment_to_workoutResultFragment"
-            app:destination="@id/workoutResultFragment" />
+            app:destination="@id/workoutResultFragment"
+            app:popUpTo="@id/workoutPlayFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/workoutResultFragment"
@@ -31,7 +33,7 @@
         <action
             android:id="@+id/action_workoutResultFragment_to_workoutPlayFragment"
             app:destination="@id/workoutPlayFragment"
-            app:popUpTo="@id/workoutPlayFragment"
+            app:popUpTo="@id/workoutResultFragment"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>
