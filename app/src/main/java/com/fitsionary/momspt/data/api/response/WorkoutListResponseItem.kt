@@ -24,7 +24,7 @@ data class WorkoutListResponseItem(
     val videoCode: String,
     val ai: Boolean
 
-    ) : Parcelable
+) : Parcelable
 
 fun WorkoutListResponseItem.toModel(): WorkoutModel {
     return WorkoutModel(
@@ -42,6 +42,7 @@ fun WorkoutListResponseItem.toModel(): WorkoutModel {
         type = type,
         isFinish = history != null,
         rank = history?.score ?: RankEnum.NONE.name,
-        ai = ai
+        ai = ai,
+        aiStartTime = videoCheckTime[0].workoutStartTime
     )
 }

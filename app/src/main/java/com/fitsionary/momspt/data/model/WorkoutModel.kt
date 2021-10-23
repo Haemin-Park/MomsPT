@@ -17,5 +17,6 @@ data class WorkoutModel(
     val type: List<String>,
     val isFinish: Boolean,
     val rank: String,
-    val ai: Boolean
+    val ai: Boolean,
+    val aiStartTime: Long
 ) : Parcelable

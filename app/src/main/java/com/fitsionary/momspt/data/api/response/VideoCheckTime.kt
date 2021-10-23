@@ -6,6 +6,6 @@ import android.os.Parcelable
 
 @Parcelize
 data class VideoCheckTime(
-    val workoutFinishTime: Int,
-    val workoutStartTime: Int
+    val workoutFinishTime: Long,
+    val workoutStartTime: Long
 ) : Parcelable
