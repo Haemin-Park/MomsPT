@@ -8,12 +8,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:tag="fragment_guide">
 
         <TextView
+            android:id="@+id/tv_guide"
             style="@style/medium_30sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/start_ai_guide"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

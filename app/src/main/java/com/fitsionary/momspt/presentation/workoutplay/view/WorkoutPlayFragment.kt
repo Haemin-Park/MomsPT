@@ -23,7 +23,7 @@ import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.guide.view.GuideDialogFragment
 import com.fitsionary.momspt.presentation.workoutplay.view.PlayerControlDialogFragment.Companion.PLAYER_CONTROL_DIALOG_FRAGMENT_TAG
 import com.fitsionary.momspt.presentation.workoutplay.viewmodel.WorkoutPlayViewModel
-import com.fitsionary.momspt.util.ScoringAlgorithm
+import com.fitsionary.momspt.util.WorkoutAnalysisAlgorithm
 import com.fitsionary.momspt.util.rx.ui
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -55,7 +55,7 @@ class WorkoutPlayFragment :
     var isFirst = true
     var isEnd = false
     private var playWhenReady = false
-    private lateinit var scoreAlgorithm: ScoringAlgorithm
+    private lateinit var workoutAnalysisAlgorithm: WorkoutAnalysisAlgorithm
 
     private lateinit var mediaUrl: String
 
@@ -134,6 +134,8 @@ class WorkoutPlayFragment :
         workoutItem = safeArgs.workout
         binding.vm = viewModel
 
+        showWorkoutGuide()
+
         view.viewTreeObserver?.addOnWindowFocusChangeListener { _ ->
             binding.previewDisplayLayout.run {
                 parentWidth = width
@@ -160,12 +162,12 @@ class WorkoutPlayFragment :
             )
         }
         viewModel.workoutLandmarks.observe(viewLifecycleOwner, { landmarks ->
-            if (!::scoreAlgorithm.isInitialized) {
+            if (!::workoutAnalysisAlgorithm.isInitialized) {
                 Timber.i("Landmarks 로드 완료 " + landmarks.poseData.count())
-                scoreAlgorithm = ScoringAlgorithm(landmarks)
+                workoutAnalysisAlgorithm = WorkoutAnalysisAlgorithm(landmarks)
             }
         })
-        viewModel.isGuide.observeOn(ui()).subscribe { if (it) showGuide() else hideGuide() }
+        viewModel.isGuide.observeOn(ui()).subscribe { if (it) showAiGuide() else hideAiGuide() }
         processor!!
             .videoSurfaceOutput
             .setFlipY(
@@ -174,6 +176,7 @@ class WorkoutPlayFragment :
                     FLIP_FRAMES_VERTICALLY
                 )
             )
+
         var angle: Double?
         var up = false
         var down = false
@@ -183,7 +186,14 @@ class WorkoutPlayFragment :
             OUTPUT_LANDMARKS_STREAM_NAME
         ) { packet: Packet ->
             try {
-                if (playWhenReady && ::scoreAlgorithm.isInitialized) {
+                if (isFirst) {
+                    hideWorkoutGuide()
+                    activity?.runOnUiThread {
+                        isFirst = false
+                        startPlayer()
+                    }
+                }
+                if (playWhenReady && ::workoutAnalysisAlgorithm.isInitialized) {
                     val landmarksRaw = PacketGetter.getProtoBytes(packet)
                     poseLandmarks = NormalizedLandmarkList.parseFrom(landmarksRaw)
                     var idx = 0
@@ -207,9 +217,10 @@ class WorkoutPlayFragment :
 
                     val workoutCode = workoutItem.workoutCode
                     val resultScore: Double
+                    // 카운팅 대상 운동
                     if (workoutCode in CountingWorkoutEnum.values().map { it.name }) {
-                        val angles = scoreAlgorithm.calculateAngles(keyPoints)
-                        val wState = scoreAlgorithm.workoutSelector(
+                        val angles = workoutAnalysisAlgorithm.calculateAngles(keyPoints)
+                        val wState = workoutAnalysisAlgorithm.workoutSelector(
                             angles,
                             workoutCode,
                             up,
@@ -224,9 +235,9 @@ class WorkoutPlayFragment :
                         count = wState.count
                         Log.e(TAG, "Angle : " + angle.toString() + " " + count.toString())
                         resultScore = count.toDouble()
-                    } else {
+                    } else { // 유사도 측정 후 점수화 운동
                         resultScore =
-                            scoreAlgorithm.pushKeyPoints(
+                            workoutAnalysisAlgorithm.pushKeyPoints(
                                 keyPoints,
                                 parentWidth,
                                 parentHeight
@@ -385,13 +396,15 @@ class WorkoutPlayFragment :
         binding.playerView.player = player
         val mediaItem = MediaItem.fromUri(mediaUrl)
         player!!.apply {
-            playWhenReady = true
+            playWhenReady = false
             setMediaItem(mediaItem)
             seekTo(currentWindow, playbackPosition)
             prepare()
         }
-        playWhenReady = true
+        playWhenReady = false
+    }
 
+    private fun settingPlayer() {
         binding.playerView.apply {
             controllerAutoShow = false
             useController = false
@@ -426,34 +439,60 @@ class WorkoutPlayFragment :
                 super.onPlaybackStateChanged(state)
                 if (playWhenReady && state == Player.STATE_READY) {
                     // media actually playing
-                    if (isFirst) {
-                        viewModel.timerSet(player!!.contentDuration, 5000)
-                        isFirst = false
-                    }
-                    viewModel.countDownTimerStart()
                 } else if (playWhenReady) {
                     // might be idle (plays after prepare()),
                     // buffering (plays when data available)
                     // or ended (plays when seek away from end)
-                    viewModel.countDownTimerStop()
-                    if (state == Player.STATE_ENDED) {
-                        isEnd = true
-                        val resultScore = if (viewModel.cumulativeScore.value?.toInt() != 0) {
-                            viewModel.cumulativeScore.value!!.div(viewModel.cnt.value!!).toInt()
-                        } else
-                            0
-                        findNavController().navigate(
-                            WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
-                                workoutItem, resultScore
-                            )
-                        )
+                    if (state == Player.STATE_BUFFERING) {
+                        viewModel.countDownTimerStop()
                     }
                 } else {
                     // player paused in any state
-                    viewModel.countDownTimerStop()
+                    //viewModel.countDownTimerStop()
                 }
             }
         })
+
+//        viewModel.timerCountDown.observe(viewLifecycleOwner, {
+//            it?.let {
+//                if (it <= 0L) {
+//                    isEnd = true
+//                    val resultScore = if (viewModel.cumulativeScore.value?.toInt() != 0) {
+//                        viewModel.cumulativeScore.value!!.div(viewModel.cnt.value!!).toInt()
+//                    } else
+//                        0
+//                    findNavController().navigate(
+//                        WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
+//                            workoutItem, resultScore
+//                        )
+//                    )
+//                }
+//            }
+//        })
+        viewModel.isWorkoutEnd.observe(viewLifecycleOwner, {
+            it?.let {
+                if (it) {
+                    isEnd = true
+                    val resultScore = if (viewModel.cumulativeScore.value?.toInt() != 0) {
+                        viewModel.cumulativeScore.value!!.div(viewModel.cnt.value!!).toInt()
+                    } else
+                        0
+                    findNavController().navigate(
+                        WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
+                            workoutItem, resultScore
+                        )
+                    )
+                }
+            }
+        })
+    }
+
+    private fun startPlayer() {
+        playWhenReady = true
+        player!!.playWhenReady = true
+        viewModel.timerSet(player!!.contentDuration, workoutItem.aiStartTime)
+        viewModel.countDownTimerStart()
+        settingPlayer()
     }
 
     private fun releasePlayer() {
@@ -469,23 +508,46 @@ class WorkoutPlayFragment :
 
     private var guideDialogFragment: GuideDialogFragment? = null
 
-    private fun showGuide() {
+    private fun showAiGuide() {
         activity?.runOnUiThread {
             if (guideDialogFragment != null || (guideDialogFragment?.dialog)?.isShowing == true) {
                 return@runOnUiThread
             } else {
-                guideDialogFragment = GuideDialogFragment.newInstance()
+                guideDialogFragment = GuideDialogFragment.GuideDialogBuilder().create()
                 guideDialogFragment?.show(
                     childFragmentManager,
-                    GuideDialogFragment.GUIDE_DIALOG_FRAGMENT_TAG
+                    GuideDialogFragment.AI_GUIDE_DIALOG_FRAGMENT_TAG
                 )
             }
         }
     }
 
-    private fun hideGuide() {
+    private fun hideAiGuide() {
         activity?.runOnUiThread {
-            (childFragmentManager.findFragmentByTag(GuideDialogFragment.GUIDE_DIALOG_FRAGMENT_TAG) as? GuideDialogFragment)?.dismiss()
+            (childFragmentManager.findFragmentByTag(GuideDialogFragment.AI_GUIDE_DIALOG_FRAGMENT_TAG) as? GuideDialogFragment)?.dismiss()
+            guideDialogFragment = null
+        }
+    }
+
+    private fun showWorkoutGuide() {
+        activity?.runOnUiThread {
+            if (guideDialogFragment != null || (guideDialogFragment?.dialog)?.isShowing == true) {
+                return@runOnUiThread
+            } else {
+                guideDialogFragment =
+                    GuideDialogFragment.GuideDialogBuilder()
+                        .setGuideText(getString(R.string.workout_guide)).create()
+                guideDialogFragment?.show(
+                    childFragmentManager,
+                    GuideDialogFragment.WORKOUT_GUIDE_DIALOG_FRAGMENT_TAG
+                )
+            }
+        }
+    }
+
+    private fun hideWorkoutGuide() {
+        activity?.runOnUiThread {
+            (childFragmentManager.findFragmentByTag(GuideDialogFragment.WORKOUT_GUIDE_DIALOG_FRAGMENT_TAG) as? GuideDialogFragment)?.dismiss()
             guideDialogFragment = null
         }
     }

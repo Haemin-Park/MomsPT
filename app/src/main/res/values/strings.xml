@@ -83,5 +83,6 @@
     <string name="edit_today_weight"><b>오늘의 체중</b>을\n입력해주세요</string>
     <string name="ai">AI</string>
     <string name="success">SUCCESS</string>
+    <string name="workout_guide">카메라가 켜진 후 정면에 서주시면\n운동이 시작됩니다</string>
 
 </resources>
