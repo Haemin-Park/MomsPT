@@ -4,6 +4,13 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.fitsionary.momspt.presentation.mypage.viewmodel.EditProfileViewModel" />
+
+        <variable
+            name="myPageInfo"
+            type="com.fitsionary.momspt.data.api.response.MyPageInfoResponse" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,6 +23,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:id="@+id/container_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -23,6 +31,8 @@
                 android:paddingEnd="@dimen/default_spacing">
 
                 <ImageView
+                    android:id="@+id/iv_edit_mypage_profile"
+                    circle_image_url="@{myPageInfo.thumbnail}"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
                     android:layout_gravity="center"
@@ -38,15 +48,25 @@
                     android:text="@string/nickname" />
 
                 <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
-                    android:id="@+id/et_edit_nickname"
+                    android:id="@+id/et_edit_mypage_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/sign_up_edit_text_height"
                     android:inputType="text"
                     app:hintText="@string/write_nickname"
-                    app:inputText=""
+                    app:inputText="@={vm.nickname}"
                     app:maxLen="5"
                     app:rightText="@string/duplicate_check"
                     app:rightTextColor="@color/pink" />
+
+                <TextView
+                    style="@style/medium_14sp"
+                    validationResultTextColor="@{vm.successValidation}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_5dp"
+                    android:text="@{vm.validationResultText}"
+                    android:textColor="@color/dark_gray"
+                    android:visibility="@{vm.validationResultTextVisible}" />
 
                 <TextView
                     style="@style/medium_14sp"
@@ -57,8 +77,8 @@
                     android:text="@string/baby_name" />
 
                 <com.fitsionary.momspt.presentation.custom.CustomSignUpEditText
-                    android:id="@+id/et_edit_baby_name"
-                    inputText=""
+                    android:id="@+id/et_edit_mypage_baby_name"
+                    inputText="@={myPageInfo.babyName}"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/sign_up_edit_text_height"
                     android:inputType="text"
