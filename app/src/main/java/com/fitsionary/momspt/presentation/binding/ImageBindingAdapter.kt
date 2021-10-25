@@ -9,19 +9,22 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.fitsionary.momspt.R
 
 @BindingAdapter("image_url")
-fun setImageFromImageUrl(imageView: ImageView, imageUrl: String) {
-    Glide.with(imageView.context)
-        .load(imageUrl)
-        .placeholder(R.drawable.placeholder)
-        .into(imageView)
+fun setImageFromImageUrl(imageView: ImageView, imageUrl: String?) {
+    imageUrl?.let {
+        Glide.with(imageView.context)
+            .load(imageUrl)
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("round_image_url")
-fun setRoundImageFromImageUrl(imageView: ImageView, imageUrl: String) {
-    Glide.with(imageView.context)
-        .load(imageUrl)
-        .transform(CenterCrop(), RoundedCorners(30))
-        .into(imageView)
+fun setRoundImageFromImageUrl(imageView: ImageView, imageUrl: String?) {
+    imageUrl?.let {
+        Glide.with(imageView.context)
+            .load(imageUrl)
+            .transform(CenterCrop(), RoundedCorners(30))
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("android:src")
@@ -32,11 +35,13 @@ fun setImageFromResource(imageView: ImageView, resource: Int) {
 }
 
 @BindingAdapter("circle_image_url")
-fun setCircleImageFromImageUrl(imageView: ImageView, imageUrl: String) {
-    Glide.with(imageView.context)
-        .load(imageUrl)
-        .circleCrop()
-        .into(imageView)
+fun setCircleImageFromImageUrl(imageView: ImageView, imageUrl: String?) {
+    imageUrl?.let {
+        Glide.with(imageView.context)
+            .load(imageUrl)
+            .circleCrop()
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("score_image")

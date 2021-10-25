@@ -1,22 +1,19 @@
 package com.fitsionary.momspt.presentation.signup.viewmodel
 
-import android.app.Application
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.api.request.SignUpRequest
 import com.fitsionary.momspt.network.NetworkService
-import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
+import com.fitsionary.momspt.presentation.base.BaseViewModel
+import com.fitsionary.momspt.util.NICKNAME_DUPLICATE
+import com.fitsionary.momspt.util.NICKNAME_EMPTY
+import com.fitsionary.momspt.util.NICKNAME_VALIDATION
+import com.fitsionary.momspt.util.NICKNAME_WRONG_FORMAT
 import timber.log.Timber
 import java.util.regex.Pattern
 
-class SignUpViewModel(application: Application) : BaseAndroidViewModel(application) {
-    private val NICKNAME_VALIDATION = application.getString(R.string.validation_nickname)
-    private val NICKNAME_WRONG_FORMAT = application.getString(R.string.wrong_format_nickname)
-    private val NICKNAME_DUPLICATE = application.getString(R.string.duplicate_nickname)
-    private val NICKNAME_EMPTY = application.getString(R.string.empty_nickname)
-
+class SignUpViewModel : BaseViewModel() {
     // 닉네임엔 완성형 한글, 영어, 숫자만 가능
     private val pattern = Pattern.compile("^[가-힣a-zA-Z0-9]+$")
     val nickname = MutableLiveData<String?>()

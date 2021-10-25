@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import com.fitsionary.momspt.presentation.loading.view.LoadingDialogFragment
 import com.fitsionary.momspt.presentation.loading.view.LoadingDialogFragment.Companion.LOADING_DIALOG_FRAGMENT_TAG
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 
 abstract class BaseFragment<B : ViewDataBinding, VM : ViewModel>(@LayoutRes private val layoutResId: Int) :
     Fragment() {
@@ -33,6 +34,10 @@ abstract class BaseFragment<B : ViewDataBinding, VM : ViewModel>(@LayoutRes priv
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this
+    }
+
+    fun addDisposable(disposable: Disposable) {
+        compositeDisposable.add(disposable)
     }
 
     override fun onDestroy() {
