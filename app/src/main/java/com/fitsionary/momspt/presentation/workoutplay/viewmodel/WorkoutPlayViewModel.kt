@@ -33,8 +33,6 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
     private lateinit var timer: Timer
 
     private val _timerCountDown = MutableLiveData<Long>()
-    val timerCountDown: LiveData<Long>
-        get() = _timerCountDown
     private val _guideCountDown = MutableLiveData<Long>()
 
     private val _isWorkoutEnd = MutableLiveData<Boolean>(false)
@@ -44,9 +42,7 @@ class WorkoutPlayViewModel(application: Application, workoutCode: String) :
     val cnt = MutableLiveData<Int>()
 
     val formattedTimer = Transformations.map(_timerCountDown) { time ->
-        Timber.i("뭐야1")
         if (time <= 0L) {
-            Timber.i("뭐야2")
             countDownTimerStop()
             _isWorkoutEnd.value = true
         }
