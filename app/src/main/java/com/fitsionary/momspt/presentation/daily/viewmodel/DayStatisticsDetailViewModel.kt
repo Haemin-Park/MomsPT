@@ -16,11 +16,13 @@ class DayStatisticsDetailViewModel : BaseViewModel() {
         get() = _dayStatistics
 
     fun getDayStatisticsDetail(date: String) {
-        NetworkService.api.getDayStatisticsDetail(DayStatisticsDetailRequest(date))
-            .applyNetworkScheduler()
-            .subscribe({
-                Timber.i(it.toString())
-                _dayStatistics.value = it.toModel()
-            }, {})
+        addDisposable(
+            NetworkService.api.getDayStatisticsDetail(DayStatisticsDetailRequest(date))
+                .applyNetworkScheduler()
+                .subscribe({
+                    Timber.i(it.toString())
+                    _dayStatistics.value = it.toModel()
+                }, {})
+        )
     }
 }

@@ -25,39 +25,45 @@ class DayStatisticsViewModel : BaseViewModel() {
         get() = _weeklyStatistics
 
     fun getTodayUserStatistics() {
-        NetworkService.api.getTodayStatistics()
-            .applyNetworkScheduler()
-            .subscribe({
-                Timber.i(it.toString())
-                _todayStatistics.value = it.toModel()
-                updateWeight(_todayStatistics.value!!.weightNow)
-            }, {
-                Timber.e(it.message)
-            })
+        addDisposable(
+            NetworkService.api.getTodayStatistics()
+                .applyNetworkScheduler()
+                .subscribe({
+                    Timber.i(it.toString())
+                    _todayStatistics.value = it.toModel()
+                    updateWeight(_todayStatistics.value!!.weightNow)
+                }, {
+                    Timber.e(it.message)
+                })
+        )
     }
 
     fun editTodayUserWeight(weight: Double) {
-        NetworkService.api.editWeight(
-            EditWeightRequest(weight)
-        ).applyNetworkScheduler()
-            .subscribe({
-                Timber.i(it.toString())
-                if (it.success)
-                    updateWeight(weight)
-            }, {
-                Timber.e(it.message)
-            })
+        addDisposable(
+            NetworkService.api.editWeight(
+                EditWeightRequest(weight)
+            ).applyNetworkScheduler()
+                .subscribe({
+                    Timber.i(it.toString())
+                    if (it.success)
+                        updateWeight(weight)
+                }, {
+                    Timber.e(it.message)
+                })
+        )
     }
 
     fun getWeeklyUserStatistics() {
-        NetworkService.api.getWeeklyStatistics()
-            .applyNetworkScheduler()
-            .subscribe({
-                _weeklyStatistics.value = it.toModel()
-                Timber.i(it.toString())
-            }, {
-                Timber.e(it.message)
-            })
+        addDisposable(
+            NetworkService.api.getWeeklyStatistics()
+                .applyNetworkScheduler()
+                .subscribe({
+                    _weeklyStatistics.value = it.toModel()
+                    Timber.i(it.toString())
+                }, {
+                    Timber.e(it.message)
+                })
+        )
     }
 
     private fun updateWeight(weight: Double) {

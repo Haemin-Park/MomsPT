@@ -26,21 +26,23 @@ class WorkoutResultViewModel(application: Application) : BaseAndroidViewModel(ap
     }
 
     fun sendWorkoutResult(id: Int, date: String, rank: String) {
-        NetworkService.api.sendWorkoutResult(
-            WorkoutResultRequest(
-                date, rank, id
-            )
-        ).applyNetworkScheduler()
-            .subscribe({
-                Timber.i(it.toString())
-                if (it.success) {
-                    if (it.nextWorkout != null) {
-                        _nextWorkout.value = it.nextWorkout.toModel()
+        addDisposable(
+            NetworkService.api.sendWorkoutResult(
+                WorkoutResultRequest(
+                    date, rank, id
+                )
+            ).applyNetworkScheduler()
+                .subscribe({
+                    Timber.i(it.toString())
+                    if (it.success) {
+                        if (it.nextWorkout != null) {
+                            _nextWorkout.value = it.nextWorkout.toModel()
+                        }
                     }
-                }
-            }, {
-                Timber.e(it.message)
-            })
+                }, {
+                    Timber.e(it.message)
+                })
+        )
     }
 
     class ViewModelFactory(private val application: Application) :

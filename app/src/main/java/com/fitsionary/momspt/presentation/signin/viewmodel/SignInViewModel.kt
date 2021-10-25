@@ -15,13 +15,15 @@ class SignInViewModel(application: Application) : BaseAndroidViewModel(applicati
         get() = _result
 
     fun signIn(id: Long) {
-        NetworkService.api.signIn(SignInRequest(id))
-            .subscribe({
-                Timber.i("성공 $it")
-                _result.postValue(Event(true))
-            }, {
-                Timber.i("실패 $it")
-                _result.postValue(Event(false))
-            })
+        addDisposable(
+            NetworkService.api.signIn(SignInRequest(id))
+                .subscribe({
+                    Timber.i("성공 $it")
+                    _result.postValue(Event(true))
+                }, {
+                    Timber.i("실패 $it")
+                    _result.postValue(Event(false))
+                })
+        )
     }
 }

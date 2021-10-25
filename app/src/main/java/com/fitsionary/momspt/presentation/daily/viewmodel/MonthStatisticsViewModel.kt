@@ -22,12 +22,14 @@ class MonthStatisticsViewModel : BaseViewModel() {
     }
 
     fun getUserMonthlyStatistic(year: Int, month: Int) {
-        NetworkService.api.getMonthlyStatistics(year, month)
-            .applyNetworkScheduler()
-            .subscribe({
-                Timber.i(it.toString())
-                _monthlyStatistics.value = it.toModel(year, month)
-            }, {})
+        addDisposable(
+            NetworkService.api.getMonthlyStatistics(year, month)
+                .applyNetworkScheduler()
+                .subscribe({
+                    Timber.i(it.toString())
+                    _monthlyStatistics.value = it.toModel(year, month)
+                }, {})
+        )
     }
 
     private fun makeCalendarDates(
