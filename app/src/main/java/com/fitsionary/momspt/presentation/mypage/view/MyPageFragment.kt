@@ -6,9 +6,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.fitsionary.momspt.R
+import com.fitsionary.momspt.data.api.response.MyPageInfoResponse
 import com.fitsionary.momspt.databinding.FragmentMypageBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
-import com.fitsionary.momspt.presentation.binding.setCircleImageFromImageUrl
 import com.fitsionary.momspt.presentation.mypage.viewmodel.MyPageViewModel
 
 class MyPageFragment :
@@ -16,7 +16,7 @@ class MyPageFragment :
     override val viewModel: MyPageViewModel by lazy {
         ViewModelProvider(this).get(MyPageViewModel::class.java)
     }
-
+    var myPageInfo: MyPageInfoResponse? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val callback: OnBackPressedCallback =
@@ -30,13 +30,23 @@ class MyPageFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setCircleImageFromImageUrl(
-            binding.ivProfile,
-            "https://www.dementianews.co.kr/news/photo/201902/1501_1270_5524.jpg"
-        )
+        binding.vm = viewModel
+        viewModel.getUserMyPageInfo()
+
+        viewModel.myPageInfo.observe(viewLifecycleOwner, {
+            it?.let { info ->
+                myPageInfo = info
+            }
+        })
 
         binding.btnEditProfile.setOnClickListener {
-            findNavController().navigate(MyPageFragmentDirections.actionMainMypageToEditProfileFragment())
+            myPageInfo?.let { info ->
+                findNavController().navigate(
+                    MyPageFragmentDirections.actionMainMypageToEditProfileFragment(
+                        info
+                    )
+                )
+            }
         }
     }
 }

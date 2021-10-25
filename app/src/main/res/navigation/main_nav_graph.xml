@@ -116,7 +116,11 @@
         android:id="@+id/editProfileFragment"
         android:name="com.fitsionary.momspt.presentation.mypage.view.EditProfileFragment"
         android:label="프로필 수정"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile">
+        <argument
+            android:name="myPageInfo"
+            app:argType="com.fitsionary.momspt.data.api.response.MyPageInfoResponse" />
+    </fragment>
     <fragment
         android:id="@+id/dayStatisticsDetailFragment"
         android:name="com.fitsionary.momspt.presentation.daily.view.DayStatisticsDetailFragment"

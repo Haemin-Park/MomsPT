@@ -59,4 +59,13 @@ interface Api {
 
     @GET("/workout/keypoints")
     suspend fun getWorkoutPoseLandmark(@Query("workoutcode") workoutCode: String): WorkoutPoseLandmarkResponse
+
+    @GET("/mypage/info")
+    fun getMyPageInfo(): Single<MyPageInfoResponse>
+
+    @Multipart
+    @POST("/mypage/profile")
+    fun editProfileImage(
+        @Part file: MultipartBody.Part
+    ): Single<EditProfileImageResponse>
 }

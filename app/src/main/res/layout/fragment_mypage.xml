@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="com.fitsionary.momspt.presentation.mypage.viewmodel.MyPageViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -25,6 +32,7 @@
                     android:layout_height="@dimen/mypage_profile_img_diameter"
                     android:layout_marginTop="@dimen/spacing_20dp"
                     android:scaleType="centerCrop"
+                    circle_image_url="@{vm.myPageInfo.thumbnail}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -35,12 +43,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_16dp"
-                    android:text="아리따움"
+                    android:text="@{vm.myPageInfo.nickname}"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toStartOf="@id/tv_sir"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+                    app:layout_constraintTop_toBottomOf="@id/iv_profile"
+                    tools:text="아리따움" />
 
                 <TextView
                     android:id="@+id/tv_sir"
@@ -59,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_8dp"
-                    android:text="@{@string/baby_name_format(`튼튼이`)}"
+                    android:text="@{@string/baby_name_format(vm.myPageInfo.babyName)}"
                     android:textColor="@color/dark_gray_666666"
                     app:layout_constraintEnd_toStartOf="@id/tv_day"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -71,11 +80,12 @@
                     style="@style/medium_16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mypage_day"
+                    android:text="@{@string/after_birth_format(vm.myPageInfo.dayAfterBabyDue)}"
                     android:textColor="@color/pink"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_baby_name"
                     app:layout_constraintEnd_toStartOf="@id/tv_after"
-                    app:layout_constraintStart_toEndOf="@id/tv_baby_name" />
+                    app:layout_constraintStart_toEndOf="@id/tv_baby_name"
+                    tools:text="출산 후 40일" />
 
                 <TextView
                     android:id="@+id/tv_after"
