@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_dialog_background"
+        android:paddingStart="@dimen/spacing_25dp"
+        android:paddingTop="@dimen/spacing_35dp"
+        android:paddingEnd="@dimen/spacing_25dp"
+        android:paddingBottom="@dimen/spacing_25dp">
+
+        <ImageButton
+            android:id="@+id/btn_guide_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_cancle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/medium_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이렇게 따라하세요!"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

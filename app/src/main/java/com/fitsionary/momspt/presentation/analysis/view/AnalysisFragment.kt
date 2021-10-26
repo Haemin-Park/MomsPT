@@ -56,7 +56,7 @@ class AnalysisFragment :
                         .subscribe { if (it) showLoading() else hideLoading() }
                         .addTo(compositeDisposable)
 
-                    findNavController().navigate(AnalysisFragmentDirections.actionAnalysisFragmentToCustomGuideDialog())
+                    findNavController().navigate(AnalysisFragmentDirections.actionAnalysisFragmentToCustomBodyAnalysisGuideDialog())
 
                     viewModel.event.observe(viewLifecycleOwner, {
                         it.getContentIfNotHandled()?.let { event ->

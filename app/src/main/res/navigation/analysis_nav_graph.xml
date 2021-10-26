@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_analysisFragment_to_recordPreviewFragment"
             app:destination="@id/recordPreviewFragment" />
+        <action
+            android:id="@+id/action_analysisFragment_to_customBodyAnalysisGuideDialog"
+            app:destination="@id/customBodyAnalysisGuideDialog" />
     </fragment>
     <fragment
         android:id="@+id/recordPreviewFragment"
@@ -56,4 +59,9 @@
             android:id="@+id/action_analysisResultFragment_to_main_daily"
             app:destination="@id/main_daily" />
     </fragment>
+    <dialog
+        android:id="@+id/customBodyAnalysisGuideDialog"
+        android:name="com.fitsionary.momspt.presentation.custom.CustomBodyAnalysisGuideDialog"
+        android:label="CustomBodyAnalysisGuideDialog"
+        tools:layout="@layout/custom_dialog_body_analysis_guide" />
 </navigation>
