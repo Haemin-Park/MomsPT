@@ -109,6 +109,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_background"
                 android:text="@string/edit_finish"
+                android:enabled="@{vm.editButtonEnable}"
                 android:textColor="@color/white" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

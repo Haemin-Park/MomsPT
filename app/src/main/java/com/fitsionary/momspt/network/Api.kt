@@ -68,4 +68,10 @@ interface Api {
     fun editProfileImage(
         @Part file: MultipartBody.Part
     ): Single<EditProfileImageResponse>
+
+    @POST("/mypage/info")
+    fun editProfile(
+        @Body body: EditProfileRequest
+    ): Single<CommonResponse>
+
 }

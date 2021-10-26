@@ -35,6 +35,7 @@ class EditProfileFragment :
         )
     }
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private var selectedImg: Uri? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,23 +45,14 @@ class EditProfileFragment :
         binding.myPageInfo = myPageInfo
         binding.vm = viewModel
 
+        viewModel.nicknameValidationCheck()
+
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     val data: Intent? = result.data
                     val selectedImg = data?.data
                     setCircleImageFromImageUrl(binding.ivEditMypageProfile, selectedImg.toString())
-                    binding.btnEditFinish.setOnClickListener {
-                        selectedImg?.let {
-                            val disposable = Single.just(createCopyAndReturnRealPath(selectedImg))
-                                .subscribe({
-                                    it?.let { file ->
-                                        viewModel.editProfileImage(File(file))
-                                    }
-                                }, {})
-                            addDisposable(disposable)
-                        }
-                    }
                 }
             }
 
@@ -80,6 +72,32 @@ class EditProfileFragment :
         // 닉네임 수정 시 다시 유효성 검사 하도록
         viewModel.nickname.observe(viewLifecycleOwner, {
             viewModel.validationResultText.value = ""
+        })
+
+        binding.btnEditFinish.setOnClickListener {
+            selectedImg?.let {
+                val disposable = Single.just(createCopyAndReturnRealPath(it))
+                    .subscribe({ path ->
+                        path?.let { file ->
+                            viewModel.editProfileImage(File(file))
+                        }
+                    }, {})
+                addDisposable(disposable)
+            }
+            viewModel.editProfile(
+                binding.etEditMypageNickname.getInputText(),
+                binding.etEditMypageBabyName.getInputText()
+            )
+        }
+
+        viewModel.event.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { editProfileResult ->
+                if (editProfileResult) {
+                    showToast("프로필 수정 성공")
+                } else {
+                    showToast("프로필 수정 실패")
+                }
+            }
         })
     }
 

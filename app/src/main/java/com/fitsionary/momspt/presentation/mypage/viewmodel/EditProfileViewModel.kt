@@ -1,10 +1,8 @@
 package com.fitsionary.momspt.presentation.mypage.viewmodel
 
 import android.view.View
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
+import com.fitsionary.momspt.data.api.request.EditProfileRequest
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseViewModel
 import com.fitsionary.momspt.util.*
@@ -18,7 +16,7 @@ class EditProfileViewModel(private val originalNickname: String) : BaseViewModel
     // 닉네임엔 완성형 한글, 영어, 숫자만 가능
     private val pattern = Pattern.compile("^[가-힣a-zA-Z0-9]+$")
     val nickname = MutableLiveData(originalNickname)
-    val validationResultText = MutableLiveData<String>(null)
+    val validationResultText = MutableLiveData<String>()
     val validationResultTextVisible = Transformations.map(validationResultText) {
         if (it != null && it.isNotEmpty()) {
             View.VISIBLE
@@ -29,6 +27,13 @@ class EditProfileViewModel(private val originalNickname: String) : BaseViewModel
     var successValidation = Transformations.map(validationResultText) {
         it == NICKNAME_VALIDATION
     }
+    val editButtonEnable = Transformations.map(successValidation) { isValid ->
+        isValid
+    }
+
+    private val _event = MutableLiveData<Event<Boolean>>()
+    val event: LiveData<Event<Boolean>>
+        get() = _event
 
     fun nicknameValidationCheck() {
         nickname.value?.let { nickname ->
@@ -64,6 +69,24 @@ class EditProfileViewModel(private val originalNickname: String) : BaseViewModel
                 .doAfterTerminate { isLoading.onNext(false) }
                 .subscribe({
                     Timber.i(it.toString())
+                }, {
+                    Timber.e(it.message!!)
+                })
+        )
+    }
+
+    fun editProfile(nickname: String, babyName: String) {
+        addDisposable(
+            NetworkService.api.editProfile(
+                EditProfileRequest(nickname, babyName)
+            ).applyNetworkScheduler()
+                .subscribe({
+                    Timber.i(it.toString())
+                    if (it.success) {
+                        _event.value = Event(true)
+                    } else {
+                        _event.value = Event(false)
+                    }
                 }, {
                     Timber.e(it.message!!)
                 })
