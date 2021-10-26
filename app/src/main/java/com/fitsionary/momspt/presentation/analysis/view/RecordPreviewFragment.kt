@@ -1,5 +1,6 @@
 package com.fitsionary.momspt.presentation.analysis.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,8 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.util.Util
+import timber.log.Timber
+import java.io.File
 
 class RecordPreviewFragment :
     BaseFragment<FragmentRecordPreviewBinding, RecordPreviewViewModel>(R.layout.fragment_record_preview) {
@@ -27,6 +30,12 @@ class RecordPreviewFragment :
     private var player: SimpleExoPlayer? = null
     private var currentWindow = 0
     private var playbackPosition: Long = 0
+
+    val safeArgs: RecordPreviewFragmentArgs by navArgs()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        player = null
+    }
 
     override fun onStart() {
         super.onStart()
@@ -58,10 +67,8 @@ class RecordPreviewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val safeArgs: RecordPreviewFragmentArgs by navArgs()
-        val direction = safeArgs.direction
-        mediaUrl = safeArgs.filePath
 
+        val direction = safeArgs.direction
         viewModel.event.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { event ->
                 when (event.first) {
@@ -101,6 +108,7 @@ class RecordPreviewFragment :
     }
 
     private fun initializePlayer() {
+        mediaUrl = safeArgs.filePath
         val extractorsFactory =
             DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
         player = SimpleExoPlayer.Builder(requireContext(), extractorsFactory).build()

@@ -5,6 +5,7 @@ import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.daasuu.camerarecorder.CameraRecorder
@@ -19,6 +20,9 @@ import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.util.rx.ui
 import com.tbruyelle.rxpermissions3.RxPermissions
 import io.reactivex.rxjava3.kotlin.addTo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 
 class AnalysisFragment :
@@ -52,6 +56,8 @@ class AnalysisFragment :
                         .subscribe { if (it) showLoading() else hideLoading() }
                         .addTo(compositeDisposable)
 
+                    findNavController().navigate(AnalysisFragmentDirections.actionAnalysisFragmentToCustomGuideDialog())
+
                     viewModel.event.observe(viewLifecycleOwner, {
                         it.getContentIfNotHandled()?.let { event ->
                             when (event.first) {
@@ -60,13 +66,19 @@ class AnalysisFragment :
                                 }
                                 COUNT_UP_TIMER_END -> {
                                     cameraRecorder?.stop()
-                                    if (File(event.second).exists()) {
-                                        findNavController().navigate(
-                                            AnalysisFragmentDirections.actionAnalysisFragmentToRecordPreviewFragment(
-                                                direction, event.second
-                                            )
-                                        )
-
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        showLoading()
+                                        delay(3000L)
+                                        launch(Dispatchers.Main) {
+                                            if (File(event.second).exists()) {
+                                                findNavController().navigate(
+                                                    AnalysisFragmentDirections.actionAnalysisFragmentToRecordPreviewFragment(
+                                                        direction, event.second
+                                                    )
+                                                )
+                                            }
+                                        }
+                                        hideLoading()
                                     }
                                 }
                             }
