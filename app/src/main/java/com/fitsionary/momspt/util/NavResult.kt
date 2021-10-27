@@ -7,7 +7,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.fitsionary.momspt.data.model.WorkoutModel
 import kotlinx.android.parcel.Parcelize
 
 sealed class NavResult : Parcelable {
@@ -16,6 +15,9 @@ sealed class NavResult : Parcelable {
 
     @Parcelize
     object Ok : NavResult()
+
+    @Parcelize
+    data class Date(val year: Int, val month: Int, val day: Int) : NavResult()
 
     @Parcelize
     data class TodayWeight(val weight: Double) : NavResult()
