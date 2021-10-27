@@ -100,14 +100,22 @@ class WorkoutFragment :
                 )
             }
         }
+        var isWorkoutEnabled = false
+        viewModel.isWorkoutEnabled.observe(viewLifecycleOwner, {
+            it?.let { isWorkoutEnabled = it }
+        })
 
         workoutAdapter.onItemClickListener = object : OnItemClickListener<WorkoutModel> {
             override fun onClick(item: WorkoutModel) {
-                findNavController().navigate(
-                    WorkoutFragmentDirections.actionMainWorkoutToWorkoutDetailFragment(
-                        item
+                if (isWorkoutEnabled) {
+                    findNavController().navigate(
+                        WorkoutFragmentDirections.actionMainWorkoutToWorkoutDetailFragment(
+                            item
+                        )
                     )
-                )
+                } else {
+                    showToast(getString(R.string.disabled_workout))
+                }
             }
         }
     }

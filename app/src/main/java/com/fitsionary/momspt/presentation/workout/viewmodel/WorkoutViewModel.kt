@@ -2,6 +2,7 @@ package com.fitsionary.momspt.presentation.workout.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.fitsionary.momspt.data.api.request.StepWorkoutRequest
 import com.fitsionary.momspt.data.api.response.toModel
 import com.fitsionary.momspt.data.model.WorkoutModel
@@ -11,6 +12,9 @@ import com.fitsionary.momspt.util.rx.applyNetworkScheduler
 import timber.log.Timber
 
 class WorkoutViewModel : BaseViewModel() {
+    private val _currentStep = MutableLiveData<Int>()
+    private val _currentStepDay = MutableLiveData<Int>()
+
     private val _step = MutableLiveData(0)
     val step: LiveData<Int>
         get() = _step
@@ -23,15 +27,22 @@ class WorkoutViewModel : BaseViewModel() {
     val workoutList: LiveData<List<WorkoutModel>>
         get() = _workoutList
 
+    val isWorkoutEnabled = Transformations.switchMap(step) { step ->
+        Transformations.map(stepDay) { stepDay ->
+            step == _currentStep.value && stepDay == _currentStepDay.value
+        }
+    }
+
     fun getTodayInfo() {
         addDisposable(
             NetworkService.api.getTodayInfo()
                 .applyNetworkScheduler()
                 .subscribe({
                     Timber.i(it.toString())
+                    _currentStep.value = it.step
+                    _currentStepDay.value = it.day
                     _step.value = it.step
                     _stepDay.value = it.day
-
                 }, {
                     Timber.e(it.message!!)
                 })

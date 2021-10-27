@@ -11,6 +11,7 @@
     <string name="step_and_day_format">%d단계&#160;%d일차</string>
     <string name="hashtag_format">#%s</string>
     <string name="score_format">%d점</string>
+    <string name="count_format">%d회</string>
     <string name="minutes_format">%d분</string>
     <string name="calorie_format">%dkcal</string>
     <string name="baby_name_format">%s&#160;</string>
@@ -78,6 +79,6 @@
     <string name="edit_today_weight"><b>오늘의 체중</b>을\n입력해주세요</string>
     <string name="ai">AI</string>
     <string name="success">SUCCESS</string>
-    <string name="workout_guide">카메라가 켜진 후 정면에 서주시면\n운동이 시작됩니다</string>
-
+    <string name="workout_guide">카메라가 켜진 후 정면을 향해주시면\n운동이 시작됩니다</string>
+    <string name="disabled_workout">현재 제공되는 운동을 해주세요</string>
 </resources>
