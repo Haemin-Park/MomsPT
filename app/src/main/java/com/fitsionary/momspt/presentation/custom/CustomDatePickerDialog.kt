@@ -11,11 +11,13 @@ import android.view.WindowManager
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.CustomDialogDatePickerBinding
 import com.fitsionary.momspt.presentation.base.BaseDialogFragment
+import com.fitsionary.momspt.util.NavResult
+import com.fitsionary.momspt.util.setNavResult
+import java.util.*
 
 class CustomDatePickerDialog :
     BaseDialogFragment<CustomDialogDatePickerBinding>(R.layout.custom_dialog_date_picker) {
-    private lateinit var listener: CustomDialogChoiceClickedListener
-
+    private val calendar: Calendar = Calendar.getInstance()
     override fun onResume() {
         super.onResume()
 
@@ -47,29 +49,45 @@ class CustomDatePickerDialog :
                 dismiss()
             }
             binding.btnChoice.setOnClickListener {
-                listener.onChoiceClicked()
+                setNavResult(
+                    NavResult.Date(
+                        binding.pickerYear.value,
+                        binding.pickerMonth.value,
+                        binding.pickerDay.value
+                    )
+                )
                 dismiss()
             }
         }
-    }
-
-    class CustomDatePickerDialogBuilder {
-        private val dialog = CustomDatePickerDialog()
-
-        fun setOnOkClickedListener(listener: () -> Unit): CustomDatePickerDialogBuilder {
-            dialog.listener = object : CustomDialogChoiceClickedListener {
-                override fun onChoiceClicked() {
-                    listener()
-                }
-            }
-            return this
+        initYearPicker()
+        initMonthPicker()
+        initDayPicker()
+        binding.pickerMonth.setOnValueChangedListener { _, _, _ ->
+            settingDayPicker()
         }
-
-        fun create() = dialog
     }
 
-    interface CustomDialogChoiceClickedListener {
-        fun onChoiceClicked()
+    private fun initYearPicker() {
+        val year: Int = calendar.get(Calendar.YEAR)
+        binding.pickerYear.minValue = year - 1
+        binding.pickerYear.maxValue = year + 1
+        binding.pickerYear.value = year
     }
 
+    private fun initMonthPicker() {
+        val month: Int = calendar.get(Calendar.MONTH)
+        binding.pickerMonth.value = month + 1
+    }
+
+    private fun initDayPicker() {
+        val day: Int = calendar.get(Calendar.DATE)
+        binding.pickerDay.value = day
+        settingDayPicker()
+    }
+
+    private fun settingDayPicker() {
+        calendar.set(binding.pickerYear.value, binding.pickerMonth.value - 1, 1)
+        val maximumDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        binding.pickerDay.maxValue = maximumDay
+    }
 }
