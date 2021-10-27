@@ -3,6 +3,7 @@ package com.fitsionary.momspt.data.api.response
 
 import android.os.Parcelable
 import com.fitsionary.momspt.data.enum.RankEnum
+import com.fitsionary.momspt.data.enum.WorkoutAnalysisTypeEnum
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.util.TimeUtil
 import kotlinx.android.parcel.Parcelize
@@ -22,8 +23,8 @@ data class WorkoutListResponseItem(
     val type: List<String>,
     val videoCheckTime: List<VideoCheckTime>,
     val videoCode: String,
-    val ai: Boolean
-
+    val ai: Boolean,
+    val workoutAnalysisType: String
 ) : Parcelable
 
 fun WorkoutListResponseItem.toModel(): WorkoutModel {
@@ -43,6 +44,7 @@ fun WorkoutListResponseItem.toModel(): WorkoutModel {
         isFinish = history != null,
         rank = history?.score ?: RankEnum.NONE.name,
         ai = ai,
-        aiStartTime = videoCheckTime[0].workoutStartTime
+        aiStartTime = videoCheckTime[0].workoutStartTime,
+        workoutAnalysisType = WorkoutAnalysisTypeEnum.valueOf(workoutAnalysisType)
     )
 }

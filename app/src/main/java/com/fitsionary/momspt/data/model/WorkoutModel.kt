@@ -1,6 +1,7 @@
 package com.fitsionary.momspt.data.model
 
 import android.os.Parcelable
+import com.fitsionary.momspt.data.enum.WorkoutAnalysisTypeEnum
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -18,5 +19,6 @@ data class WorkoutModel(
     val isFinish: Boolean,
     val rank: String,
     val ai: Boolean,
-    val aiStartTime: Long
+    val aiStartTime: Long,
+    val workoutAnalysisType: WorkoutAnalysisTypeEnum
 ) : Parcelable

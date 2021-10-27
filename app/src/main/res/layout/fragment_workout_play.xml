@@ -65,20 +65,21 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_spacing"
             android:padding="10dp"
-            android:text="@{@string/score_format(vm.score)}"
+            android:text="@{vm.currentScore}"
             android:textColor="@color/white"
-            android:visibility="@{vm.guideVisible}"
+            android:visibility="@{vm.aiGuideVisible}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="10점" />
 
         <ImageView
-            score_image="@{vm.score}"
+            analysisType="@{vm.workoutAnalysisType}"
+            score="@{vm.score}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_10dp"
             android:layout_marginEnd="@dimen/default_spacing"
-            android:visibility="@{vm.guideVisible}"
+            android:visibility="@{vm.aiGuideVisible}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_score"
             tools:src="@drawable/ic_perpect" />

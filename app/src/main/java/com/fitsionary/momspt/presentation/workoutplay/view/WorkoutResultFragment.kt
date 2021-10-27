@@ -37,7 +37,7 @@ class WorkoutResultFragment
         binding.workoutItem = workoutItem
         binding.vm = viewModel
 
-        val rank = makeScoreToRank(safeArgs.resultScore)
+        val rank = makeScoreToRank(safeArgs.resultScore, workoutItem.workoutAnalysisType)
         viewModel.sendWorkoutResult(workoutItem.workoutId, getRequestDateFormat(), rank)
         setRankText(binding.tvResultCumulativeScore, rank)
 
