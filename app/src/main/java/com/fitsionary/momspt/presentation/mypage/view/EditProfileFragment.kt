@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.FragmentEditProfileBinding
@@ -28,7 +29,7 @@ import java.io.OutputStream
 class EditProfileFragment :
     BaseFragment<FragmentEditProfileBinding, EditProfileViewModel>(R.layout.fragment_edit_profile) {
     val safeArgs: EditProfileFragmentArgs by navArgs()
-    var originalNickname = ""
+    private var originalNickname = ""
     override val viewModel: EditProfileViewModel by lazy {
         ViewModelProvider(this, EditProfileViewModel.ViewModelFactory(originalNickname)).get(
             EditProfileViewModel::class.java
@@ -93,9 +94,10 @@ class EditProfileFragment :
         viewModel.event.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { editProfileResult ->
                 if (editProfileResult) {
-                    showToast("프로필 수정 성공")
+                    showToast(getString(R.string.edit_profile_success))
+                    findNavController().navigateUp()
                 } else {
-                    showToast("프로필 수정 실패")
+                    showToast(getString(R.string.edit_profile_fail))
                 }
             }
         })
