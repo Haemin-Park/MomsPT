@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/main_home">
+    app:startDestination="@id/splashFragment">
     <include app:graph="@navigation/analysis_nav_graph" />
     <fragment
         android:id="@+id/splashFragment"
@@ -45,6 +45,9 @@
                 android:name="direction"
                 app:argType="com.fitsionary.momspt.data.enum.DirectionEnum" />
         </action>
+        <action
+            android:id="@+id/action_signUpFragment_to_customDatePickerDialog"
+            app:destination="@id/customDatePickerDialog" />
     </fragment>
     <fragment
         android:id="@+id/main_home"
@@ -161,4 +164,9 @@
             android:name="stepDay"
             app:argType="integer" />
     </dialog>
+    <dialog
+        android:id="@+id/customDatePickerDialog"
+        android:name="com.fitsionary.momspt.presentation.custom.CustomDatePickerDialog"
+        android:label="CustomDatePickerDialog"
+        tools:layout="@layout/custom_dialog_date_picker" />
 </navigation>
