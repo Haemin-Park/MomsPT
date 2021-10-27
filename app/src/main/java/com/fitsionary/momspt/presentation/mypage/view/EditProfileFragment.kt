@@ -52,7 +52,7 @@ class EditProfileFragment :
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     val data: Intent? = result.data
-                    val selectedImg = data?.data
+                    selectedImg = data?.data
                     setCircleImageFromImageUrl(binding.ivEditMypageProfile, selectedImg.toString())
                 }
             }
