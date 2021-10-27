@@ -14,8 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.api.response.Landmark
-import com.fitsionary.momspt.data.enum.CountingWorkoutEnum
 import com.fitsionary.momspt.data.enum.EntirePoseEnum
+import com.fitsionary.momspt.data.enum.WorkoutAnalysisTypeEnum
 import com.fitsionary.momspt.data.enum.WorkoutPoseEnum
 import com.fitsionary.momspt.data.model.WorkoutModel
 import com.fitsionary.momspt.databinding.FragmentWorkoutPlayBinding
@@ -27,6 +27,7 @@ import com.fitsionary.momspt.util.WorkoutAnalysisAlgorithm
 import com.fitsionary.momspt.util.rx.ui
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.STATE_ENDED
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
 import com.google.mediapipe.components.*
@@ -47,7 +48,11 @@ class WorkoutPlayFragment :
     override val viewModel: WorkoutPlayViewModel by lazy {
         ViewModelProvider(
             this,
-            WorkoutPlayViewModel.ViewModelFactory(application, workoutItem.workoutCode)
+            WorkoutPlayViewModel.ViewModelFactory(
+                application,
+                workoutItem.workoutCode,
+                workoutItem.workoutAnalysisType
+            )
         ).get(WorkoutPlayViewModel::class.java)
     }
 
@@ -56,6 +61,8 @@ class WorkoutPlayFragment :
     var isEnd = false
     private var playWhenReady = false
     private lateinit var workoutAnalysisAlgorithm: WorkoutAnalysisAlgorithm
+
+    private var aiGuideStart = false
 
     private lateinit var mediaUrl: String
 
@@ -167,7 +174,12 @@ class WorkoutPlayFragment :
                 workoutAnalysisAlgorithm = WorkoutAnalysisAlgorithm(landmarks)
             }
         })
-        viewModel.isGuide.observeOn(ui()).subscribe { if (it) showAiGuide() else hideAiGuide() }
+        viewModel.isAiGuide.observeOn(ui()).subscribe { if (it) showAiGuide() else hideAiGuide() }
+        viewModel.aiGuideStart.observe(viewLifecycleOwner, {
+            it?.let { status ->
+                aiGuideStart = status
+            }
+        })
         processor!!
             .videoSurfaceOutput
             .setFlipY(
@@ -214,27 +226,28 @@ class WorkoutPlayFragment :
                             idx++
                         }
                     }
-
                     val workoutCode = workoutItem.workoutCode
-                    val resultScore: Double
+                    var resultScore = 0.0
                     // 카운팅 대상 운동
-                    if (workoutCode in CountingWorkoutEnum.values().map { it.name }) {
-                        val angles = workoutAnalysisAlgorithm.calculateAngles(keyPoints)
-                        val wState = workoutAnalysisAlgorithm.workoutSelector(
-                            angles,
-                            workoutCode,
-                            up,
-                            down,
-                            reset,
-                            count
-                        )
-                        angle = wState.angle
-                        up = wState.up
-                        down = wState.down
-                        reset = wState.reset
-                        count = wState.count
-                        Log.e(TAG, "Angle : " + angle.toString() + " " + count.toString())
-                        resultScore = count.toDouble()
+                    if (workoutItem.workoutAnalysisType == WorkoutAnalysisTypeEnum.COUNTING) {
+                        if (aiGuideStart) {
+                            val angles = workoutAnalysisAlgorithm.calculateAngles(keyPoints)
+                            val wState = workoutAnalysisAlgorithm.workoutSelector(
+                                angles,
+                                workoutCode,
+                                up,
+                                down,
+                                reset,
+                                count
+                            )
+                            angle = wState.angle
+                            up = wState.up
+                            down = wState.down
+                            reset = wState.reset
+                            count = wState.count
+
+                            resultScore = count.toDouble()
+                        }
                     } else { // 유사도 측정 후 점수화 운동
                         resultScore =
                             workoutAnalysisAlgorithm.pushKeyPoints(
@@ -296,7 +309,6 @@ class WorkoutPlayFragment :
             releasePlayer()
         }
         converter?.close()
-        viewModel.countDownTimerStop()
 
         // Hide preview display until we re-open the camera again.
         previewDisplayView!!.visibility = View.GONE
@@ -402,9 +414,35 @@ class WorkoutPlayFragment :
             prepare()
         }
         playWhenReady = false
+        settingCustomPlayer()
     }
 
-    private fun settingPlayer() {
+    private fun settingCustomPlayer() {
+        player?.addListener(object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                super.onIsPlayingChanged(isPlaying)
+                if (isPlaying) {
+                    // Active playback.
+                    viewModel.countDownTimerStart()
+                } else {
+                    // Not playing because playback is paused, ended, suppressed, or the player
+                    // is buffering, stopped or failed. Check player.getPlayWhenReady,
+                    // player.getPlaybackState, player.getPlaybackSuppressionReason and
+                    // player.getPlaybackError for details.
+                    viewModel.countDownTimerStop()
+                    if (player?.playbackState == STATE_ENDED) {
+                        isEnd = true
+                        val resultScore = getResultScore()
+                        findNavController().navigate(
+                            WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
+                                workoutItem, resultScore
+                            )
+                        )
+                    }
+                }
+            }
+        })
+
         binding.playerView.apply {
             controllerAutoShow = false
             useController = false
@@ -416,13 +454,10 @@ class WorkoutPlayFragment :
                         if (playWhenReady) {
                             player!!.playWhenReady = false
                             playWhenReady = false
-                            viewModel.countDownTimerStop()
                             playerControlDialogFragment.setState(isPlaying = false)
-
                         } else {
                             player!!.playWhenReady = true
                             playWhenReady = true
-                            viewModel.countDownTimerStart()
                             playerControlDialogFragment.setState(isPlaying = true)
                         }
                     }
@@ -433,66 +468,23 @@ class WorkoutPlayFragment :
                 )
             }
         }
+    }
 
-        player?.addListener(object : Player.Listener {
-            override fun onPlaybackStateChanged(state: Int) {
-                super.onPlaybackStateChanged(state)
-                if (playWhenReady && state == Player.STATE_READY) {
-                    // media actually playing
-                } else if (playWhenReady) {
-                    // might be idle (plays after prepare()),
-                    // buffering (plays when data available)
-                    // or ended (plays when seek away from end)
-                    if (state == Player.STATE_BUFFERING) {
-                        viewModel.countDownTimerStop()
-                    }
-                } else {
-                    // player paused in any state
-                    //viewModel.countDownTimerStop()
-                }
-            }
-        })
-
-//        viewModel.timerCountDown.observe(viewLifecycleOwner, {
-//            it?.let {
-//                if (it <= 0L) {
-//                    isEnd = true
-//                    val resultScore = if (viewModel.cumulativeScore.value?.toInt() != 0) {
-//                        viewModel.cumulativeScore.value!!.div(viewModel.cnt.value!!).toInt()
-//                    } else
-//                        0
-//                    findNavController().navigate(
-//                        WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
-//                            workoutItem, resultScore
-//                        )
-//                    )
-//                }
-//            }
-//        })
-        viewModel.isWorkoutEnd.observe(viewLifecycleOwner, {
-            it?.let {
-                if (it) {
-                    isEnd = true
-                    val resultScore = if (viewModel.cumulativeScore.value?.toInt() != 0) {
-                        viewModel.cumulativeScore.value!!.div(viewModel.cnt.value!!).toInt()
-                    } else
-                        0
-                    findNavController().navigate(
-                        WorkoutPlayFragmentDirections.actionWorkoutPlayFragmentToWorkoutResultFragment(
-                            workoutItem, resultScore
-                        )
-                    )
-                }
-            }
-        })
+    private fun getResultScore(): Int {
+        return when (workoutItem.workoutAnalysisType) {
+            WorkoutAnalysisTypeEnum.SCORING ->
+                if (viewModel.cumulativeScore.value?.toInt() != 0) {
+                    viewModel.cumulativeScore.value!!.div(viewModel.cnt.value!!)
+                } else
+                    0
+            WorkoutAnalysisTypeEnum.COUNTING -> viewModel.score.value ?: 0
+        }
     }
 
     private fun startPlayer() {
-        playWhenReady = true
-        player!!.playWhenReady = true
         viewModel.timerSet(player!!.contentDuration, workoutItem.aiStartTime)
-        viewModel.countDownTimerStart()
-        settingPlayer()
+        player!!.playWhenReady = true
+        playWhenReady = true
     }
 
     private fun releasePlayer() {
