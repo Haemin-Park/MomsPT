@@ -84,4 +84,5 @@
     <string name="disabled_workout">현재 제공되는 운동을 해주세요</string>
     <string name="edit_profile_success">프로필 수정 성공</string>
     <string name="edit_profile_fail">프로필 수정 실패</string>
+    <string name="help_link">https://puzzle-blouse-b1f.notion.site/08900aaefdba430ab846a20314cfb10a</string>
 </resources>

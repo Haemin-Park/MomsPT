@@ -1,5 +1,7 @@
 package com.fitsionary.momspt.presentation.home.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -74,6 +76,11 @@ class HomeFragment :
                     )
                 )
             }
+        }
+
+        binding.ivHelp.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_link)))
+            startActivity(intent)
         }
     }
 }
