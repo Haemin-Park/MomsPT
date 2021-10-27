@@ -11,8 +11,10 @@ import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.enum.DirectionEnum
 import com.fitsionary.momspt.databinding.FragmentSignUpBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
-import com.fitsionary.momspt.presentation.custom.CustomDatePickerDialog
 import com.fitsionary.momspt.presentation.signup.viewmodel.SignUpViewModel
+import com.fitsionary.momspt.util.NavResult
+import com.fitsionary.momspt.util.navResult
+import timber.log.Timber
 
 
 class SignUpFragment :
@@ -23,24 +25,28 @@ class SignUpFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.vm = viewModel
 
         val safeArgs: SignUpFragmentArgs by navArgs()
         val nickname = safeArgs.nickname
         viewModel.nickname.value = nickname
 
+        navResult(findNavController()) { result ->
+            when (result) {
+                is NavResult.Date -> {
+                    viewModel.birthDay.value =
+                        getString(R.string.date_format, result.year, result.month, result.day)
+                }
+                else -> Timber.i("unexpected result type")
+            }
+        }
+
         binding.etNickname.setRightTextClickListener {
             viewModel.nicknameValidationCheck()
         }
 
         binding.tvBirthDay.setOnClickListener {
-            val dialog = CustomDatePickerDialog.CustomDatePickerDialogBuilder()
-                .setOnOkClickedListener {
-                    viewModel.birthDay.value = "2020-12-31"
-                }
-                .create()
-            dialog.show(parentFragmentManager, dialog.tag)
+            findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToCustomDatePickerDialog())
         }
 
         binding.containerSignUp.setOnTouchListener { _, _ ->
