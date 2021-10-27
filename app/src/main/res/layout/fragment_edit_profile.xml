@@ -43,7 +43,7 @@
                     style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_50dp"
+                    android:layout_marginTop="@dimen/default_spacing"
                     android:layout_marginBottom="@dimen/spacing_8dp"
                     android:text="@string/nickname" />
 
