@@ -25,21 +25,10 @@
             android:id="@+id/btn_kakao_sign_in"
             android:layout_width="match_parent"
             android:layout_height="@dimen/sign_in_button_height"
-            android:layout_marginBottom="@dimen/spacing_14dp"
             app:bgColor="@color/yellow"
-            app:layout_constraintBottom_toTopOf="@+id/btn_naver_sign_in"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:symbolImg="@drawable/ic_kakao_simbol"
             app:text="@string/kakao_sign_in"
             app:textColor="@color/black" />
-
-        <com.fitsionary.momspt.presentation.custom.CustomSignInButton
-            android:id="@+id/btn_naver_sign_in"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/sign_in_button_height"
-            app:bgColor="@color/green"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:symbolImg="@drawable/ic_naver_simbol"
-            app:text="@string/naver_sign_in"
-            app:textColor="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

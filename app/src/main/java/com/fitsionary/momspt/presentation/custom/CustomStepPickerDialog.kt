@@ -52,7 +52,6 @@ class CustomStepPickerDialog :
         }
 
         binding.btnStepPickerCancel.setOnClickListener {
-            setNavResult(NavResult.Cancel)
             dismiss()
         }
         binding.btnStepPickerChoice.setOnClickListener {
@@ -64,7 +63,7 @@ class CustomStepPickerDialog :
             )
             dismiss()
         }
-        binding.pickerStep.setOnValueChangedListener { picker, oldVal, newVal ->
+        binding.pickerStep.setOnValueChangedListener { _, _, newVal ->
             settingPicker(newVal)
         }
     }
