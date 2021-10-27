@@ -32,6 +32,7 @@ class MainActivity :
             R.id.main_mypage,
         )
         val dialogId = setOf(
+            R.id.customDatePickerDialog,
             R.id.customStepPickerDialog,
             R.id.customEditTodayWeightDialog
         )
