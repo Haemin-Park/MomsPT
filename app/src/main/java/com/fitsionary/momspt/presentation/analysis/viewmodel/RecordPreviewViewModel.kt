@@ -3,6 +3,7 @@ package com.fitsionary.momspt.presentation.analysis.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.fitsionary.momspt.data.api.request.SignUpRequest
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
 import com.fitsionary.momspt.util.BASE_URL
@@ -20,6 +21,7 @@ import java.io.File
 class RecordPreviewViewModel(application: Application) : BaseAndroidViewModel(application) {
     companion object {
         // event type
+        val SIGN_UP_FINISH = "SIGN_UP_FINISH"
         val START_ANALYSIS_RESULT_ACTIVITY = "START_ANALYSIS_RESULT_ACTIVITY"
     }
 
@@ -30,6 +32,18 @@ class RecordPreviewViewModel(application: Application) : BaseAndroidViewModel(ap
     private val _event = MutableLiveData<Event<Pair<String, String>>>()
     val event: LiveData<Event<Pair<String, String>>>
         get() = _event
+
+    fun signUp(signUpRequest: SignUpRequest) {
+        addDisposable(
+            NetworkService.api.signUp(
+                signUpRequest
+            ).subscribe({
+                Timber.i("회원가입 $it.message")
+                if (it.success)
+                    _event.value = Event(Pair(SIGN_UP_FINISH, ""))
+            }, {})
+        )
+    }
 
     fun sendVideo() {
         val file = File(videoPath)

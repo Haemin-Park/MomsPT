@@ -10,14 +10,13 @@ import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.enum.DirectionEnum
 import com.fitsionary.momspt.databinding.FragmentRecordPreviewBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel
+import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel.Companion.SIGN_UP_FINISH
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel.Companion.START_ANALYSIS_RESULT_ACTIVITY
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.util.Util
-import timber.log.Timber
-import java.io.File
 
 class RecordPreviewFragment :
     BaseFragment<FragmentRecordPreviewBinding, RecordPreviewViewModel>(R.layout.fragment_record_preview) {
@@ -69,9 +68,12 @@ class RecordPreviewFragment :
         super.onViewCreated(view, savedInstanceState)
 
         val direction = safeArgs.direction
+        val signUpRequest = safeArgs.signUpRequest
+
         viewModel.event.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { event ->
                 when (event.first) {
+                    SIGN_UP_FINISH -> showToast("회원가입 성공")
                     START_ANALYSIS_RESULT_ACTIVITY -> {
                         showResult(direction)
                     }
@@ -82,9 +84,10 @@ class RecordPreviewFragment :
         binding.btnReRecord.setOnClickListener {
             findNavController().navigateUp()
         }
-        // for test
+
         binding.btnSend.setOnClickListener {
-            showResult(direction)
+            signUpRequest?.let { viewModel.signUp(it) }
+            viewModel.sendVideo()
         }
     }
 

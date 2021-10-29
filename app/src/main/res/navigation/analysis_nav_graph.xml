@@ -12,6 +12,11 @@
         <argument
             android:name="direction"
             app:argType="com.fitsionary.momspt.data.enum.DirectionEnum" />
+        <argument
+            android:name="signUpRequest"
+            android:defaultValue="@null"
+            app:argType="com.fitsionary.momspt.data.api.request.SignUpRequest"
+            app:nullable="true" />
         <action
             android:id="@+id/action_analysisFragment_to_recordPreviewFragment"
             app:destination="@id/recordPreviewFragment" />
@@ -30,6 +35,11 @@
         <argument
             android:name="filePath"
             app:argType="string" />
+        <argument
+            android:name="signUpRequest"
+            android:defaultValue="@null"
+            app:argType="com.fitsionary.momspt.data.api.request.SignUpRequest"
+            app:nullable="true" />
         <action
             android:id="@+id/action_recordPreviewFragment_to_analysisResultFragment_in_sign_in_scenario"
             app:destination="@id/analysisResultFragment"

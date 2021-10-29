@@ -39,6 +39,7 @@ class AnalysisFragment :
 
         val safeArgs: AnalysisFragmentArgs by navArgs()
         val direction = safeArgs.direction
+        val signUpRequest = safeArgs.signUpRequest
 
         binding.vm = viewModel
 
@@ -73,7 +74,7 @@ class AnalysisFragment :
                                             if (File(event.second).exists()) {
                                                 findNavController().navigate(
                                                     AnalysisFragmentDirections.actionAnalysisFragmentToRecordPreviewFragment(
-                                                        direction, event.second
+                                                        direction, event.second, signUpRequest
                                                     )
                                                 )
                                             }

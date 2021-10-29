@@ -62,7 +62,7 @@ class SignUpFragment :
         binding.btnNext.setOnClickListener {
             findNavController().navigate(
                 SignUpFragmentDirections.actionSignUpFragmentToAnalysisFragment(
-                    DirectionEnum.TO_MAIN
+                    DirectionEnum.TO_MAIN, viewModel.getSignUpRequest()
                 )
             )
         }

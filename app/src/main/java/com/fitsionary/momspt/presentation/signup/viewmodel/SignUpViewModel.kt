@@ -61,21 +61,13 @@ class SignUpViewModel : BaseViewModel() {
         }
     }
 
-    fun signUp() {
-        addDisposable(
-            NetworkService.api.signUp(
-                SignUpRequest(
-                    nickname = nickname.value!!,
-                    babyDue = birthDay.value!!,
-                    weightBeforePregnancy = if (isNumeric(preWeight.value)) preWeight.value!!.toInt() else null,
-                    weightNow = if (isNumeric(currentWeight.value)) currentWeight.value!!.toInt() else null,
-                    heightNow = if (isNumeric(currentHeight.value)) currentHeight.value!!.toInt() else null
-                )
-            ).subscribe({
-                Timber.i("회원가입 $it.message")
-            }, {})
-        )
-    }
+    fun getSignUpRequest() = SignUpRequest(
+        nickname = nickname.value!!,
+        babyDue = birthDay.value!!,
+        weightBeforePregnancy = if (isNumeric(preWeight.value)) preWeight.value!!.toInt() else null,
+        weightNow = if (isNumeric(currentWeight.value)) currentWeight.value!!.toInt() else null,
+        heightNow = if (isNumeric(currentHeight.value)) currentHeight.value!!.toInt() else null
+    )
 
     private fun isNumeric(strNum: String?): Boolean {
         if (strNum.isNullOrEmpty()) {
