@@ -30,4 +30,10 @@ class TokenDataStore(val context: Context) {
             preferences[tokenKey] = token
         }
     }
+
+    suspend fun removeToken() {
+        context.dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
 }

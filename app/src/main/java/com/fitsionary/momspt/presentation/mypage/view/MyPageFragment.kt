@@ -52,10 +52,6 @@ class MyPageFragment :
             }
         }
 
-        binding.tvLogout.setOnClickListener {
-            removeToken()
-        }
-
         binding.tvWithdraw.setOnClickListener {
             viewModel.deleteUser()
         }
