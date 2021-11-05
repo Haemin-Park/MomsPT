@@ -44,8 +44,7 @@ class WorkoutAnalysisAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
             result = DTW(DTWTarget, DTWResource)
             DTWTarget.clear()
             DTWResource.clear()
-            result = (-1 * 400 / FRAME_CUT * result + 100)
-            Timber.i("result " + result.toString())
+            result = -1 * 500 / FRAME_CUT * result + 100
             return if (result > 0) result else 0.0
         }
 
