@@ -131,16 +131,7 @@
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <TextView
-                style="@style/medium_16sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:paddingTop="@dimen/spacing_15dp"
-                android:paddingBottom="@dimen/spacing_15dp"
-                android:text="@string/sign_out"
-                android:textColor="@color/black" />
-
-            <TextView
+                android:id="@+id/tv_withdraw"
                 style="@style/medium_16sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

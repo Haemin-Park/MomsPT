@@ -52,10 +52,10 @@ interface Api {
     fun getDayStatisticsDetail(@Body body: DayStatisticsDetailRequest): Single<DayStatisticsDetailResponse>
 
     @Multipart
-    @POST("/upload")
+    @POST("/user/bodyshape")
     fun sendVideo(
         @Part file: MultipartBody.Part
-    ): Single<String>
+    ): Single<BodyAnalysisResultResponse>
 
     @GET("/workout/keypoints")
     suspend fun getWorkoutPoseLandmark(@Query("workoutcode") workoutCode: String): WorkoutPoseLandmarkResponse
@@ -74,4 +74,6 @@ interface Api {
         @Body body: EditProfileRequest
     ): Single<CommonResponse>
 
+    @DELETE("user/withdrawal")
+    fun deleteUser(): Single<CommonResponse>
 }
