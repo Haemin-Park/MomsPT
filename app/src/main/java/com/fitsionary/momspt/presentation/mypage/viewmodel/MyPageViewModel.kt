@@ -3,6 +3,8 @@ package com.fitsionary.momspt.presentation.mypage.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fitsionary.momspt.data.api.response.MyPageInfoResponse
+import com.fitsionary.momspt.data.api.response.toModel
+import com.fitsionary.momspt.data.model.MyPageInfoModel
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseViewModel
 import com.fitsionary.momspt.util.Event
@@ -10,8 +12,8 @@ import com.fitsionary.momspt.util.rx.applyNetworkScheduler
 import timber.log.Timber
 
 class MyPageViewModel : BaseViewModel() {
-    private val _myPageInfo = MutableLiveData<MyPageInfoResponse>()
-    val myPageInfo: LiveData<MyPageInfoResponse>
+    private val _myPageInfo = MutableLiveData<MyPageInfoModel>()
+    val myPageInfo: LiveData<MyPageInfoModel>
         get() = _myPageInfo
 
     private val _event = MutableLiveData<Event<Boolean>>()
@@ -24,7 +26,7 @@ class MyPageViewModel : BaseViewModel() {
             .subscribe(
                 {
                     Timber.i(it.toString())
-                    _myPageInfo.value = it
+                    _myPageInfo.value = it.toModel()
                 }, {
                     Timber.e(it.message)
                 }

@@ -13,7 +13,6 @@ import com.fitsionary.momspt.presentation.signin.viewmodel.SignInViewModel
 import com.fitsionary.momspt.util.CurrentUser
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -27,11 +26,6 @@ class SignInFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewLifecycleOwner.lifecycleScope.launch {
-            MomsPTApplication.getInstance().getTokenDataStore().token.collect {
-                CurrentUser.token = it
-            }
-        }
 
         var id = ""
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->

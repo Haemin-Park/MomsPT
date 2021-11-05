@@ -8,18 +8,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fitsionary.momspt.MomsPTApplication
 import com.fitsionary.momspt.R
-import com.fitsionary.momspt.data.api.response.MyPageInfoResponse
+import com.fitsionary.momspt.data.model.MyPageInfoModel
 import com.fitsionary.momspt.databinding.FragmentMypageBinding
 import com.fitsionary.momspt.presentation.base.BaseFragment
 import com.fitsionary.momspt.presentation.mypage.viewmodel.MyPageViewModel
+import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MyPageFragment :
     BaseFragment<FragmentMypageBinding, MyPageViewModel>(R.layout.fragment_mypage) {
     override val viewModel: MyPageViewModel by lazy {
         ViewModelProvider(this).get(MyPageViewModel::class.java)
     }
-    var myPageInfo: MyPageInfoResponse? = null
+    lateinit var myPageInfo: MyPageInfoModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val callback: OnBackPressedCallback =
@@ -43,12 +45,25 @@ class MyPageFragment :
         })
 
         binding.btnEditProfile.setOnClickListener {
-            myPageInfo?.let { info ->
+            myPageInfo.let { info ->
                 findNavController().navigate(
                     MyPageFragmentDirections.actionMainMypageToEditProfileFragment(
                         info
                     )
                 )
+            }
+        }
+
+        binding.tvLogout.setOnClickListener {
+            // 로그아웃
+            UserApiClient.instance.logout { error ->
+                if (error != null) {
+                    Timber.i("로그아웃 실패. SDK에서 토큰 삭제됨 $error")
+                } else {
+                    Timber.i("로그아웃 성공. SDK에서 토큰 삭제됨")
+                    removeToken()
+                    findNavController().navigate(MyPageFragmentDirections.actionMainMypageToSplashFragment())
+                }
             }
         }
 
@@ -60,6 +75,14 @@ class MyPageFragment :
             it.getContentIfNotHandled()?.let { success ->
                 if (success) {
                     removeToken()
+                    // 연결 끊기
+                    UserApiClient.instance.unlink { error ->
+                        if (error != null) {
+                            Timber.e("연결 끊기 실패 $error")
+                        } else {
+                            Timber.i("연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                        }
+                    }
                     findNavController().navigate(MyPageFragmentDirections.actionMainMypageToSplashFragment())
                 }
             }
