@@ -4,19 +4,26 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.fitsionary.momspt.MomsPTApplication
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.data.enum.DirectionEnum
+import com.fitsionary.momspt.data.model.BodyAnalysisResultModel
 import com.fitsionary.momspt.databinding.FragmentRecordPreviewBinding
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel
+import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel.Companion.SHOW_ANALYSIS_RESULT
 import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel.Companion.SIGN_UP_FINISH
-import com.fitsionary.momspt.presentation.analysis.viewmodel.RecordPreviewViewModel.Companion.START_ANALYSIS_RESULT_ACTIVITY
 import com.fitsionary.momspt.presentation.base.BaseFragment
+import com.fitsionary.momspt.util.CurrentUser
+import com.fitsionary.momspt.util.rx.ui
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.util.Util
+import io.reactivex.rxjava3.kotlin.addTo
+import kotlinx.coroutines.launch
 
 class RecordPreviewFragment :
     BaseFragment<FragmentRecordPreviewBinding, RecordPreviewViewModel>(R.layout.fragment_record_preview) {
@@ -31,6 +38,8 @@ class RecordPreviewFragment :
     private var playbackPosition: Long = 0
 
     val safeArgs: RecordPreviewFragmentArgs by navArgs()
+    private lateinit var filePath: String
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         player = null
@@ -69,13 +78,21 @@ class RecordPreviewFragment :
 
         val direction = safeArgs.direction
         val signUpRequest = safeArgs.signUpRequest
+        filePath = safeArgs.filePath
 
         viewModel.event.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { event ->
                 when (event.first) {
-                    SIGN_UP_FINISH -> showToast("회원가입 성공")
-                    START_ANALYSIS_RESULT_ACTIVITY -> {
-                        showResult(direction)
+                    SIGN_UP_FINISH -> {
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            MomsPTApplication.getInstance().getTokenDataStore().saveToken(
+                                CurrentUser.token
+                            )
+                        }
+                        showToast("회원가입 성공")
+                    }
+                    SHOW_ANALYSIS_RESULT -> {
+                        showResult(direction, event.second as BodyAnalysisResultModel)
                     }
                 }
             }
@@ -87,23 +104,28 @@ class RecordPreviewFragment :
 
         binding.btnSend.setOnClickListener {
             signUpRequest?.let { viewModel.signUp(it) }
-            viewModel.sendVideo()
+            viewModel.sendVideo(filePath)
         }
+
+        viewModel.isLoading
+            .observeOn(ui())
+            .subscribe { if (it) showLoading() else hideLoading() }
+            .addTo(compositeDisposable)
     }
 
-    private fun showResult(direction: DirectionEnum) {
+    private fun showResult(direction: DirectionEnum, bodyAnalysisResult: BodyAnalysisResultModel) {
         when (direction) {
             DirectionEnum.TO_MAIN -> {
                 findNavController().navigate(
                     RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragmentInSignInScenario(
-                        direction, ""
+                        direction, bodyAnalysisResult
                     )
                 )
             }
             DirectionEnum.TO_DAILY -> {
                 findNavController().navigate(
                     RecordPreviewFragmentDirections.actionRecordPreviewFragmentToAnalysisResultFragmentInMainScenario(
-                        direction, ""
+                        direction, bodyAnalysisResult
                     )
                 )
             }
@@ -111,7 +133,7 @@ class RecordPreviewFragment :
     }
 
     private fun initializePlayer() {
-        mediaUrl = safeArgs.filePath
+        mediaUrl = filePath
         val extractorsFactory =
             DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)
         player = SimpleExoPlayer.Builder(requireContext(), extractorsFactory).build()

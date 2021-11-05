@@ -24,17 +24,16 @@ class SignInFragment :
         ViewModelProvider(this).get(SignInViewModel::class.java)
     }
     var userNickname = ""
-    var userToken = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             MomsPTApplication.getInstance().getTokenDataStore().token.collect {
-                Timber.i("토큰 $it")
                 CurrentUser.token = it
             }
         }
 
+        var id = ""
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Timber.e("로그인 실패 $error")
@@ -42,9 +41,10 @@ class SignInFragment :
                 Timber.i("로그인 성공 $token")
                 UserApiClient.instance.me { user, _ ->
                     if (user != null) {
-                        viewModel.signIn(user.id)
-                        userToken = token.accessToken
+                        id = user.id.toString()
+                        CurrentUser.token = token.accessToken
                         userNickname = user.kakaoAccount?.profile?.nickname ?: ""
+                        viewModel.signIn(id)
                     }
                 }
             }
@@ -64,12 +64,16 @@ class SignInFragment :
             it.getContentIfNotHandled()?.let { loginResult ->
                 if (loginResult) {
                     viewLifecycleOwner.lifecycleScope.launch {
-                        MomsPTApplication.getInstance().getTokenDataStore().saveToken(userToken)
+                        MomsPTApplication.getInstance().getTokenDataStore()
+                            .saveToken(CurrentUser.token)
+                        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToMainHome())
                     }
-                    findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToMainHome())
                 } else {
                     findNavController().navigate(
-                        SignInFragmentDirections.actionSignInFragmentToSignUpFragment(userNickname)
+                        SignInFragmentDirections.actionSignInFragmentToSignUpFragment(
+                            userNickname,
+                            id
+                        )
                     )
                 }
             }

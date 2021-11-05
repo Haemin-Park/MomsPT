@@ -17,6 +17,7 @@ class SignUpViewModel : BaseViewModel() {
     // 닉네임엔 완성형 한글, 영어, 숫자만 가능
     private val pattern = Pattern.compile("^[가-힣a-zA-Z0-9]+$")
     val nickname = MutableLiveData<String?>()
+    val id = MutableLiveData<String?>()
     val validationResultText = MutableLiveData<String>(null)
     val validationResultTextVisible = Transformations.map(validationResultText) {
         if (it != null && it.isNotEmpty()) {
@@ -66,7 +67,8 @@ class SignUpViewModel : BaseViewModel() {
         babyDue = birthDay.value!!,
         weightBeforePregnancy = if (isNumeric(preWeight.value)) preWeight.value!!.toInt() else null,
         weightNow = if (isNumeric(currentWeight.value)) currentWeight.value!!.toInt() else null,
-        heightNow = if (isNumeric(currentHeight.value)) currentHeight.value!!.toInt() else null
+        heightNow = if (isNumeric(currentHeight.value)) currentHeight.value!!.toInt() else null,
+        id.value!!
     )
 
     private fun isNumeric(strNum: String?): Boolean {

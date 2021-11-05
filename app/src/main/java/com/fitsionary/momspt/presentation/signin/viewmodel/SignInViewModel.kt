@@ -14,7 +14,7 @@ class SignInViewModel(application: Application) : BaseAndroidViewModel(applicati
     val result: LiveData<Event<Boolean>>
         get() = _result
 
-    fun signIn(id: Long) {
+    fun signIn(id: String) {
         addDisposable(
             NetworkService.api.signIn(SignInRequest(id))
                 .subscribe({

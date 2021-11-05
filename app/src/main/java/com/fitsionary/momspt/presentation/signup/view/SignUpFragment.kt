@@ -29,7 +29,9 @@ class SignUpFragment :
 
         val safeArgs: SignUpFragmentArgs by navArgs()
         val nickname = safeArgs.nickname
+        val id = safeArgs.id
         viewModel.nickname.value = nickname
+        viewModel.id.value = id
 
         navResult(findNavController()) { result ->
             when (result) {

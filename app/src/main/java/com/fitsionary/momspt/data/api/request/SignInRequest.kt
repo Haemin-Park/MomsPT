@@ -5,5 +5,5 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SignInRequest(
-    val kakaoId: Long
+    val kakaoId: String
 ) : Parcelable

@@ -38,6 +38,9 @@
         <argument
             android:name="nickname"
             app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="string" />
         <action
             android:id="@+id/action_signUpFragment_to_analysisFragment"
             app:destination="@id/analysis_nav_graph">
@@ -102,6 +105,11 @@
         <action
             android:id="@+id/action_main_mypage_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_main_mypage_to_splashFragment"
+            app:destination="@id/splashFragment"
+            app:popUpTo="@id/main_nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/workoutDetailFragment"

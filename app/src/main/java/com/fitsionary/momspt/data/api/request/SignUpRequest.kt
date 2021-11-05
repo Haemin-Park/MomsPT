@@ -9,5 +9,6 @@ data class SignUpRequest(
     var babyDue: String,
     var weightBeforePregnancy: Int?,
     var weightNow: Int?,
-    var heightNow: Int?
+    var heightNow: Int?,
+    var kakaoId: String,
 ) : Parcelable
