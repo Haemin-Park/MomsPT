@@ -18,6 +18,7 @@ class CustomBodyAnalysisGuideDialog :
 
     override fun onResume() {
         super.onResume()
+        isCancelable = false
 
         val outMetrics = DisplayMetrics()
         val display: Display?
