@@ -11,6 +11,7 @@ import android.view.WindowManager
 import com.fitsionary.momspt.R
 import com.fitsionary.momspt.databinding.CustomDialogBodyAnalysisGuideBinding
 import com.fitsionary.momspt.presentation.base.BaseDialogFragment
+import com.fitsionary.momspt.presentation.binding.setImageFromResource
 
 class CustomBodyAnalysisGuideDialog :
     BaseDialogFragment<CustomDialogBodyAnalysisGuideBinding>(R.layout.custom_dialog_body_analysis_guide) {
@@ -42,8 +43,23 @@ class CustomBodyAnalysisGuideDialog :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnGuideCancel.setOnClickListener {
-            dismiss()
+        var currentGuideStep = 1
+
+        binding.btnNextGuide.setOnClickListener {
+            when (currentGuideStep) {
+                1 -> {
+                    currentGuideStep += 1
+                    setImageFromResource(binding.ivGuideStep, R.drawable.guide2)
+                }
+                2 -> {
+                    currentGuideStep += 1
+                    setImageFromResource(binding.ivGuideStep, R.drawable.guide3)
+                    binding.btnNextGuide.text = getString(R.string.start)
+                }
+                3 -> {
+                    dismiss()
+                }
+            }
         }
     }
 }

@@ -15,22 +15,33 @@
         android:paddingEnd="@dimen/spacing_25dp"
         android:paddingBottom="@dimen/spacing_25dp">
 
-        <ImageButton
-            android:id="@+id/btn_guide_cancel"
+        <ImageView
+            android:id="@+id/iv_guide_step"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/ic_cancle"
+            android:layout_height="500dp"
+            android:src="@drawable/guide1"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            style="@style/medium_20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="이렇게 따라하세요!"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            style="@style/bold_20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guide_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_next_guide"
+            style="@style/medium_18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/next"
+            android:textColor="@color/pink"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
