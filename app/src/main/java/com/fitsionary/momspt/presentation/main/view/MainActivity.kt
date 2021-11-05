@@ -45,12 +45,16 @@ class MainActivity :
             if (nd.id in topLevelDestinations) {
                 binding.toolbarMain.visibility = View.VISIBLE
                 binding.toolbarMain.setTitleMargin(16, 0, 0, 0)
-                binding.bottomNavigationMain.visibility = View.VISIBLE
-                if (nd.id == R.id.main_home) {
+
+                if (nd.id == R.id.main_home)
                     binding.toolbarMain.setLogo(R.drawable.ic_logo2)
-                } else {
+                else
                     binding.toolbarMain.logo = null
-                }
+
+                if (nd.id in dialogId)
+                    binding.bottomNavigationMain.visibility = View.GONE
+                else
+                    binding.bottomNavigationMain.visibility = View.VISIBLE
             } else {
                 binding.bottomNavigationMain.visibility = View.GONE
                 when (nd.id) {

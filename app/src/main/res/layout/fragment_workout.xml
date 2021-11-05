@@ -10,110 +10,104 @@
             type="com.fitsionary.momspt.presentation.workout.viewmodel.WorkoutViewModel" />
     </data>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:overScrollMode="never">
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical">
+            android:layout_height="@dimen/workout_current_stage_box_height"
+            android:layout_marginLeft="@dimen/default_spacing"
+            android:layout_marginTop="@dimen/default_spacing"
+            android:layout_marginRight="@dimen/default_spacing"
+            android:background="@drawable/round_background"
+            android:backgroundTint="@color/light_pink"
+            android:paddingLeft="@dimen/default_spacing"
+            android:paddingRight="@dimen/default_spacing">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/workout_current_stage_box_height"
-                android:layout_marginLeft="@dimen/default_spacing"
-                android:layout_marginTop="@dimen/default_spacing"
-                android:layout_marginRight="@dimen/default_spacing"
+            <TextView
+                android:id="@+id/tv_workout_current_stage"
+                style="@style/bold_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16dp"
+                android:text="@string/workout_current_stage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="@dimen/workout_current_stage_img_width"
+                android:layout_height="@dimen/workout_current_stage_img_height"
+                android:src="@drawable/workout_current_stage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/layout_step"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_16dp"
                 android:background="@drawable/round_background"
-                android:backgroundTint="@color/light_pink"
-                android:paddingLeft="@dimen/default_spacing"
-                android:paddingRight="@dimen/default_spacing">
+                android:backgroundTint="@color/pink"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_workout_current_stage">
 
-                <TextView
-                    android:id="@+id/tv_workout_current_stage"
-                    style="@style/bold_16sp"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_16dp"
-                    android:text="@string/workout_current_stage"
+                    android:layout_marginEnd="@dimen/spacing_8dp"
+                    android:src="@drawable/workout_current_stage_icon"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:layout_width="@dimen/workout_current_stage_img_width"
-                    android:layout_height="@dimen/workout_current_stage_img_height"
-                    android:src="@drawable/workout_current_stage"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/layout_step"
+                <TextView
+                    style="@style/medium_14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_16dp"
-                    android:background="@drawable/round_background"
-                    android:backgroundTint="@color/pink"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/spacing_10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_workout_current_stage">
+                    android:layout_marginEnd="@dimen/spacing_5dp"
+                    android:text="@{@string/step_format(vm.step)}"
+                    android:textColor="@color/white"
+                    tools:text="1단계" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_8dp"
-                        android:src="@drawable/workout_current_stage_icon"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_5dp"
+                    android:src="@drawable/ic_white_arrow" />
 
-                    <TextView
-                        style="@style/medium_14sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_5dp"
-                        android:text="@{@string/step_format(vm.step)}"
-                        android:textColor="@color/white"
-                        tools:text="1단계" />
+                <TextView
+                    style="@style/medium_14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/step_day_format(vm.stepDay)}"
+                    android:textColor="@color/white"
+                    tools:text="3일차" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_5dp"
-                        android:src="@drawable/ic_white_arrow" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        style="@style/medium_14sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{@string/step_day_format(vm.stepDay)}"
-                        android:textColor="@color/white"
-                        tools:text="3일차" />
-                </LinearLayout>
+        <TextView
+            style="@style/bold_18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_spacing"
+            android:layout_marginTop="@dimen/spacing_40dp"
+            android:layout_marginRight="@dimen/default_spacing"
+            android:layout_marginBottom="@dimen/spacing_18dp"
+            android:text="@string/recommend_workout" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                style="@style/bold_18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_spacing"
-                android:layout_marginTop="@dimen/spacing_40dp"
-                android:layout_marginRight="@dimen/default_spacing"
-                android:layout_marginBottom="@dimen/spacing_18dp"
-                android:text="@string/recommend_workout" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_workout"
-                bindItems="@{vm.workoutList}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:orientation="vertical"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-        </LinearLayout>
-    </ScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_workout"
+            bindItems="@{vm.workoutList}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
 </layout>
