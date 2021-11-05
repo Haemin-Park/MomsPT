@@ -21,7 +21,6 @@
     <!--string-->
     <string name="app_name">맘스피티</string>
     <string name="kakao_sign_in">카카오로 시작하기</string>
-    <string name="naver_sign_in">네이버로 시작하기</string>
     <string name="sign_up_text">맘스피티를 이용하기 위한\n추가 정보를 입력하세요</string>
     <string name="write_nickname">닉네임을 입력하세요.</string>
     <string name="duplicate_check">중복확인</string>
@@ -86,4 +85,6 @@
     <string name="help_link">https://puzzle-blouse-b1f.notion.site/08900aaefdba430ab846a20314cfb10a</string>
     <string name="body_shape_recommend_workout">체형 추천 운동</string>
     <string name="current_body_shape">현재 체형</string>
+    <string name="start">시작하기</string>
+    <string name="guide_comment">이렇게 따라하세요!</string>
 </resources>
