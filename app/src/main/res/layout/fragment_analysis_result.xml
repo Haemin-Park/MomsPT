@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="BodyAnalysisResult"
+            type="com.fitsionary.momspt.data.model.BodyAnalysisResultModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/spacing_8dp"
-                        android:text="현재 체형" />
+                        android:text="@string/current_body_shape" />
                 </LinearLayout>
 
                 <TextView
@@ -55,7 +62,7 @@
                     android:layout_marginLeft="@dimen/default_spacing"
                     android:layout_marginTop="@dimen/spacing_8dp"
                     android:layout_marginRight="@dimen/default_spacing"
-                    android:text="골반이 오른쪽 위로 올라간 체형입니다."
+                    android:text="@{BodyAnalysisResult.bodyComment}"
                     android:textColor="@color/dark_gray"
                     tools:text="골반이 오른쪽 위로 올라간 체형입니다." />
 
@@ -80,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/spacing_8dp"
-                        android:text="체형 추천 운동" />
+                        android:text="@string/body_shape_recommend_workout" />
                 </LinearLayout>
 
                 <TextView
@@ -91,7 +98,7 @@
                     android:layout_marginTop="@dimen/spacing_8dp"
                     android:layout_marginRight="@dimen/default_spacing"
                     android:paddingBottom="@dimen/spacing_12dp"
-                    android:text="좌측 골반 저근을 강화시키는 운동 중심으로 진행할 예정입니다."
+                    android:text="@{BodyAnalysisResult.workoutComment}"
                     android:textColor="@color/dark_gray"
                     tools:text="좌측 골반 저근을 강화시키는 운동 중심으로 진행할 예정입니다." />
             </LinearLayout>

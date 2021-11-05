@@ -25,7 +25,7 @@ object FormDataUtil {
         return MultipartBody.Part.createFormData(
             name = key,
             filename = file.name,
-            body = file.asRequestBody("video/*".toMediaType())
+            body = file.asRequestBody("video/mp4".toMediaType())
         )
     }
 }

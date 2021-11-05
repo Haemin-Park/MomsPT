@@ -4,9 +4,10 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.fitsionary.momspt.data.api.request.SignUpRequest
+import com.fitsionary.momspt.data.api.response.BodyAnalysisResultResponse
+import com.fitsionary.momspt.data.model.BodyAnalysisResultModel
 import com.fitsionary.momspt.network.NetworkService
 import com.fitsionary.momspt.presentation.base.BaseAndroidViewModel
-import com.fitsionary.momspt.util.BASE_URL
 import com.fitsionary.momspt.util.Event
 import com.fitsionary.momspt.util.FormDataUtil
 import com.fitsionary.momspt.util.rx.applyNetworkScheduler
@@ -22,15 +23,14 @@ class RecordPreviewViewModel(application: Application) : BaseAndroidViewModel(ap
     companion object {
         // event type
         val SIGN_UP_FINISH = "SIGN_UP_FINISH"
-        val START_ANALYSIS_RESULT_ACTIVITY = "START_ANALYSIS_RESULT_ACTIVITY"
+        val SHOW_ANALYSIS_RESULT = "START_ANALYSIS_RESULT_ACTIVITY"
     }
 
     private var parentFile = getParentFile(application)
-    private lateinit var defaultFileName: String
-    private lateinit var videoPath: String
+    private lateinit var resultFileName: String
 
-    private val _event = MutableLiveData<Event<Pair<String, String>>>()
-    val event: LiveData<Event<Pair<String, String>>>
+    private val _event = MutableLiveData<Event<Pair<String, Any>>>()
+    val event: LiveData<Event<Pair<String, Any>>>
         get() = _event
 
     fun signUp(signUpRequest: SignUpRequest) {
@@ -45,8 +45,9 @@ class RecordPreviewViewModel(application: Application) : BaseAndroidViewModel(ap
         )
     }
 
-    fun sendVideo() {
+    fun sendVideo(videoPath: String) {
         val file = File(videoPath)
+        resultFileName = "${file.nameWithoutExtension}.glb"
         addDisposable(
             NetworkService.api.sendVideo(
                 FormDataUtil.getVideoBody(FormDataUtil.FILE, file)
@@ -54,28 +55,21 @@ class RecordPreviewViewModel(application: Application) : BaseAndroidViewModel(ap
                 .doOnSubscribe { isLoading.onNext(true) }
                 .doAfterTerminate { isLoading.onNext(false) }
                 .subscribe({
-                    downloadResult(BASE_URL + it)
+                    Timber.i(it.toString())
+                    if (it.glbURL != null)
+                        downloadResult(it, resultFileName, parentFile)
                 }, {
                     Timber.e(it.message!!)
                 })
         )
     }
 
-    private fun downloadResult(url: String) {
-        val resultFileName = "$defaultFileName.glb"
-        val resultFilePath = parentFile.absolutePath + "/$resultFileName"
-
-        val file = File(resultFilePath)
-        if (!file.exists()) {
-            downloadResult(url, resultFileName, parentFile)
-        } else {
-            _event.value =
-                Event(Pair(START_ANALYSIS_RESULT_ACTIVITY, resultFilePath))
-        }
-    }
-
-    private fun downloadResult(url: String, fileName: String, parentFile: File) {
-        val task = DownloadTask.Builder(url, parentFile)
+    private fun downloadResult(
+        analysisResult: BodyAnalysisResultResponse,
+        fileName: String,
+        parentFile: File
+    ) {
+        val task = DownloadTask.Builder(analysisResult.glbURL!!, parentFile)
             .setFilename(fileName)
             .build()
 
@@ -137,11 +131,16 @@ class RecordPreviewViewModel(application: Application) : BaseAndroidViewModel(ap
 
             override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
                 isLoading.onNext(false)
+                val result = BodyAnalysisResultModel(
+                    bodyComment = analysisResult.bodyComment,
+                    workoutComment = analysisResult.workoutComment,
+                    filePath = parentFile.absolutePath + "/$fileName"
+                )
                 _event.value =
                     Event(
                         Pair(
-                            START_ANALYSIS_RESULT_ACTIVITY,
-                            parentFile.absolutePath + "/$fileName"
+                            SHOW_ANALYSIS_RESULT,
+                            result
                         )
                     )
             }

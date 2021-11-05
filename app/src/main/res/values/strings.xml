@@ -63,7 +63,6 @@
     <string name="step">단계</string>
     <string name="sir">&#160;님</string>
     <string name="withdraw">회원탈퇴</string>
-    <string name="sign_out">로그아웃</string>
     <string name="set_alarm">알림설정</string>
     <string name="edit_profile">프로필 수정</string>
     <string name="after">이 흘렀어요</string>
@@ -85,4 +84,6 @@
     <string name="edit_profile_success">프로필 수정 성공</string>
     <string name="edit_profile_fail">프로필 수정 실패</string>
     <string name="help_link">https://puzzle-blouse-b1f.notion.site/08900aaefdba430ab846a20314cfb10a</string>
+    <string name="body_shape_recommend_workout">체형 추천 운동</string>
+    <string name="current_body_shape">현재 체형</string>
 </resources>

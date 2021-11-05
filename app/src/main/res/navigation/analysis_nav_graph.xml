@@ -60,8 +60,8 @@
             android:name="direction"
             app:argType="com.fitsionary.momspt.data.enum.DirectionEnum" />
         <argument
-            android:name="filePath"
-            app:argType="string" />
+            android:name="bodyAnalysisResultModel"
+            app:argType="com.fitsionary.momspt.data.model.BodyAnalysisResultModel" />
         <action
             android:id="@+id/action_analysisResultFragment_to_main_home"
             app:destination="@id/main_home" />

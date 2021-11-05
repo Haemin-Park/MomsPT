@@ -34,7 +34,7 @@ class AnalysisResultFragment
             Utils.init()
         }
 
-        private val kDefaultObjectPosition = Float3(0.0f, 0.0f, -300.0f)
+        private val kDefaultObjectPosition = Float3(-300.0f, 0.0f, 0.0f)
         private val TAG = AnalysisResultFragment::class.simpleName
     }
 
@@ -66,8 +66,11 @@ class AnalysisResultFragment
         binding.surface.setOnTouchListener(modelViewer)
 
         val safeArgs: AnalysisResultFragmentArgs by navArgs()
+        val bodyAnalysisResult = safeArgs.bodyAnalysisResultModel
+        binding.bodyAnalysisResult = bodyAnalysisResult
+
         val direction = safeArgs.direction
-        val path = safeArgs.filePath
+        val path = bodyAnalysisResult.filePath
 
         if (File(path).exists()) {
             isSuccess = true
