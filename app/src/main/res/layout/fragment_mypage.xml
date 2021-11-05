@@ -28,11 +28,12 @@
 
                 <ImageView
                     android:id="@+id/iv_profile"
+                    circle_image_url="@{vm.myPageInfo.thumbnail}"
                     android:layout_width="@dimen/mypage_profile_img_diameter"
                     android:layout_height="@dimen/mypage_profile_img_diameter"
                     android:layout_marginTop="@dimen/spacing_20dp"
                     android:scaleType="centerCrop"
-                    circle_image_url="@{vm.myPageInfo.thumbnail}"
+                    android:src="@drawable/profile"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -129,6 +130,17 @@
                 android:text="@string/set_alarm"
                 android:textColor="@color/black"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <TextView
+                android:id="@+id/tv_logout"
+                style="@style/medium_16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingTop="@dimen/spacing_15dp"
+                android:paddingBottom="@dimen/spacing_15dp"
+                android:text="@string/logout"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_withdraw"

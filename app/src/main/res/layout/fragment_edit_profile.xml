@@ -10,7 +10,7 @@
 
         <variable
             name="myPageInfo"
-            type="com.fitsionary.momspt.data.api.response.MyPageInfoResponse" />
+            type="com.fitsionary.momspt.data.model.MyPageInfoModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

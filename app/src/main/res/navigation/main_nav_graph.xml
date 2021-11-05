@@ -15,6 +15,9 @@
             app:destination="@id/signInFragment"
             app:popUpTo="@+id/splashFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_main_home"
+            app:destination="@id/main_home" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -135,7 +138,7 @@
         tools:layout="@layout/fragment_edit_profile">
         <argument
             android:name="myPageInfo"
-            app:argType="com.fitsionary.momspt.data.api.response.MyPageInfoResponse" />
+            app:argType="com.fitsionary.momspt.data.model.MyPageInfoModel" />
     </fragment>
     <fragment
         android:id="@+id/dayStatisticsDetailFragment"
