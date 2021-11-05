@@ -44,7 +44,8 @@ class WorkoutAnalysisAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
             result = DTW(DTWTarget, DTWResource)
             DTWTarget.clear()
             DTWResource.clear()
-            result = -1 * 500 / FRAME_CUT * result + 100
+            result = (-1 * 400 / FRAME_CUT * result + 100)
+            Timber.i("result " + result.toString())
             return if (result > 0) result else 0.0
         }
 
@@ -330,8 +331,11 @@ class WorkoutAnalysisAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
                 cState = countWorkout(angle, 160, 90, up, down, reset, count, 1)
             }
             "W009" -> {
+                val angle2: Double? = angles[AngleEnum.leftHip2ElbowAngle.name]
                 angle = angles[AngleEnum.rightHip2ElbowAngle.name]
-                cState = countWorkout(angle, 160, 40, up, down, reset, count, 1)
+
+                cState = countWorkout(abs(angle!! - angle2!!), 100, 30, up, down, reset, count, 1)
+                Timber.i("LOG ANGLE " + abs(angle!! - angle2!!).toString())
             }
             "W011" -> {
                 angle = angles[AngleEnum.leftHipAngle.name]
@@ -355,7 +359,7 @@ class WorkoutAnalysisAlgorithm(workoutLandmarks: WorkoutLandmarkDomainModel) {
             }
             "W023" -> {
                 angle = angles[AngleEnum.leftKneeAngle.name]
-                cState = countWorkout(angle, 170, 120, up, down, reset, count, 0)
+                cState = countWorkout(angle, 170, 140, up, down, reset, count, 0)
             }
             "W024" -> {
                 angle = angles[AngleEnum.leftKneeAngle.name]
