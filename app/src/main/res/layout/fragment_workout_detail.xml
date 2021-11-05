@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="WorkoutItem"
             type="com.fitsionary.momspt.data.model.WorkoutModel" />
@@ -40,17 +42,19 @@
                         round_image_url="@{WorkoutItem.thumbnail}"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/workout_detail_img_height"
-                        android:scaleType="centerCrop"
                         android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/sample"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <include
+                        android:id="@+id/layout_ai_badge_detail_large"
                         layout="@layout/layout_ai_badge_large"
                         android:layout_width="@dimen/ai_badge_large_diameter"
                         android:layout_height="@dimen/ai_badge_large_diameter"
                         android:layout_marginEnd="@dimen/spacing_10dp"
                         android:layout_marginBottom="@dimen/spacing_10dp"
+                        android:visibility="@{WorkoutItem.ai ? View.VISIBLE : View.INVISIBLE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

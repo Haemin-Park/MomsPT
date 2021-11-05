@@ -141,131 +141,131 @@ class WorkoutPlayFragment :
         workoutItem = safeArgs.workout
         binding.vm = viewModel
 
-        showWorkoutGuide()
+        if (workoutItem.ai) {
+            showWorkoutGuide()
 
-        view.viewTreeObserver?.addOnWindowFocusChangeListener { _ ->
-            binding.previewDisplayLayout.run {
-                parentWidth = width
-                parentHeight = height
+            view.viewTreeObserver?.addOnWindowFocusChangeListener { _ ->
+                binding.previewDisplayLayout.run {
+                    parentWidth = width
+                    parentHeight = height
+                }
             }
-        }
 
-        mediaUrl = workoutItem.video
+            previewDisplayView = SurfaceView(application)
+            setupPreviewDisplayView()
 
-        previewDisplayView = SurfaceView(application)
-        setupPreviewDisplayView()
-
-        // Initialize asset manager so that MediaPipe native libraries can access the app assets, e.g.,
-        // binary graphs.
-        AndroidAssetUtil.initializeNativeAssetManager(application)
-        eglManager = EglManager(null)
-        application.run {
-            processor = FrameProcessor(
-                this,
-                eglManager!!.nativeContext,
-                applicationInfo.metaData.getString("binaryGraphName"),
-                applicationInfo.metaData.getString("inputVideoStreamName"),
-                applicationInfo.metaData.getString("outputVideoStreamName")
-            )
-        }
-        viewModel.workoutLandmarks.observe(viewLifecycleOwner, { landmarks ->
-            if (!::workoutAnalysisAlgorithm.isInitialized) {
-                Timber.i("Landmarks 로드 완료 " + landmarks.poseData.count())
-                workoutAnalysisAlgorithm = WorkoutAnalysisAlgorithm(landmarks)
-            }
-        })
-        viewModel.isAiGuide.observeOn(ui()).subscribe { if (it) showAiGuide() else hideAiGuide() }
-        viewModel.aiGuideStart.observe(viewLifecycleOwner, {
-            it?.let { status ->
-                aiGuideStart = status
-            }
-        })
-        processor!!
-            .videoSurfaceOutput
-            .setFlipY(
-                application.applicationInfo.metaData.getBoolean(
-                    "flipFramesVertically",
-                    FLIP_FRAMES_VERTICALLY
+            // Initialize asset manager so that MediaPipe native libraries can access the app assets, e.g.,
+            // binary graphs.
+            AndroidAssetUtil.initializeNativeAssetManager(application)
+            eglManager = EglManager(null)
+            application.run {
+                processor = FrameProcessor(
+                    this,
+                    eglManager!!.nativeContext,
+                    applicationInfo.metaData.getString("binaryGraphName"),
+                    applicationInfo.metaData.getString("inputVideoStreamName"),
+                    applicationInfo.metaData.getString("outputVideoStreamName")
                 )
-            )
-
-        var angle: Double?
-        var up = false
-        var down = false
-        var reset = false
-        var count = 0
-        processor!!.addPacketCallback(
-            OUTPUT_LANDMARKS_STREAM_NAME
-        ) { packet: Packet ->
-            try {
-                if (isFirst) {
-                    hideWorkoutGuide()
-                    activity?.runOnUiThread {
-                        isFirst = false
-                        startPlayer()
-                    }
-                }
-                if (playWhenReady && ::workoutAnalysisAlgorithm.isInitialized) {
-                    val landmarksRaw = PacketGetter.getProtoBytes(packet)
-                    poseLandmarks = NormalizedLandmarkList.parseFrom(landmarksRaw)
-                    var idx = 0
-                    val keyPoints = ArrayList<Landmark>()
-                    for ((landmarkIndex, landmark) in poseLandmarks.landmarkList.withIndex()) {
-                        if (WorkoutPoseEnum.values()
-                                .any { it.name == EntirePoseEnum.values()[landmarkIndex].name }
-                        ) {
-                            keyPoints.add(
-                                Landmark(
-                                    EntirePoseEnum.values()[landmarkIndex].name,
-                                    landmark.x.toDouble(),
-                                    landmark.y.toDouble(),
-                                    landmark.z.toDouble(),
-                                    landmark.visibility.toDouble()
-                                )
-                            )
-                            idx++
-                        }
-                    }
-                    val workoutCode = workoutItem.workoutCode
-                    var resultScore = 0.0
-                    // 카운팅 대상 운동
-                    if (workoutItem.workoutAnalysisType == WorkoutAnalysisTypeEnum.COUNTING) {
-                        if (aiGuideStart) {
-                            val angles = workoutAnalysisAlgorithm.calculateAngles(keyPoints)
-                            val wState = workoutAnalysisAlgorithm.workoutSelector(
-                                angles,
-                                workoutCode,
-                                up,
-                                down,
-                                reset,
-                                count
-                            )
-                            angle = wState.angle
-                            up = wState.up
-                            down = wState.down
-                            reset = wState.reset
-                            count = wState.count
-
-                            resultScore = count.toDouble()
-                        }
-                    } else { // 유사도 측정 후 점수화 운동
-                        resultScore =
-                            workoutAnalysisAlgorithm.pushKeyPoints(
-                                keyPoints,
-                                parentWidth,
-                                parentHeight
-                            )
-                    }
-
-                    if (resultScore > 0) {
-                        viewModel.setScore(floor(resultScore).toInt())
-                    }
-                }
-            } catch (exception: InvalidProtocolBufferException) {
-                Log.e(TAG, "Failed to get proto.", exception)
             }
+            viewModel.workoutLandmarks.observe(viewLifecycleOwner, { landmarks ->
+                if (!::workoutAnalysisAlgorithm.isInitialized) {
+                    Timber.i("Landmarks 로드 완료 " + landmarks.poseData.count())
+                    workoutAnalysisAlgorithm = WorkoutAnalysisAlgorithm(landmarks)
+                }
+            })
+            viewModel.isAiGuide.observeOn(ui())
+                .subscribe { if (it) showAiGuide() else hideAiGuide() }
+            viewModel.aiGuideStart.observe(viewLifecycleOwner, {
+                it?.let { status ->
+                    aiGuideStart = status
+                }
+            })
+            processor!!
+                .videoSurfaceOutput
+                .setFlipY(
+                    application.applicationInfo.metaData.getBoolean(
+                        "flipFramesVertically",
+                        FLIP_FRAMES_VERTICALLY
+                    )
+                )
+
+            var angle: Double?
+            var up = false
+            var down = false
+            var reset = false
+            var count = 0
+            processor!!.addPacketCallback(
+                OUTPUT_LANDMARKS_STREAM_NAME
+            ) { packet: Packet ->
+                try {
+                    if (isFirst) {
+                        hideWorkoutGuide()
+                        activity?.runOnUiThread {
+                            startPlayer()
+                        }
+                    }
+                    if (playWhenReady && ::workoutAnalysisAlgorithm.isInitialized) {
+                        val landmarksRaw = PacketGetter.getProtoBytes(packet)
+                        poseLandmarks = NormalizedLandmarkList.parseFrom(landmarksRaw)
+                        var idx = 0
+                        val keyPoints = ArrayList<Landmark>()
+                        for ((landmarkIndex, landmark) in poseLandmarks.landmarkList.withIndex()) {
+                            if (WorkoutPoseEnum.values()
+                                    .any { it.name == EntirePoseEnum.values()[landmarkIndex].name }
+                            ) {
+                                keyPoints.add(
+                                    Landmark(
+                                        EntirePoseEnum.values()[landmarkIndex].name,
+                                        landmark.x.toDouble(),
+                                        landmark.y.toDouble(),
+                                        landmark.z.toDouble(),
+                                        landmark.visibility.toDouble()
+                                    )
+                                )
+                                idx++
+                            }
+                        }
+                        val workoutCode = workoutItem.workoutCode
+                        var resultScore = 0.0
+                        // 카운팅 대상 운동
+                        if (workoutItem.workoutAnalysisType == WorkoutAnalysisTypeEnum.COUNTING) {
+                            if (aiGuideStart) {
+                                val angles = workoutAnalysisAlgorithm.calculateAngles(keyPoints)
+                                val wState = workoutAnalysisAlgorithm.workoutSelector(
+                                    angles,
+                                    workoutCode,
+                                    up,
+                                    down,
+                                    reset,
+                                    count
+                                )
+                                angle = wState.angle
+                                up = wState.up
+                                down = wState.down
+                                reset = wState.reset
+                                count = wState.count
+
+                                resultScore = count.toDouble()
+                            }
+                        } else { // 유사도 측정 후 점수화 운동
+                            resultScore =
+                                workoutAnalysisAlgorithm.pushKeyPoints(
+                                    keyPoints,
+                                    parentWidth,
+                                    parentHeight
+                                )
+                        }
+
+                        if (resultScore > 0) {
+                            viewModel.setScore(floor(resultScore).toInt())
+                        }
+                    }
+                } catch (exception: InvalidProtocolBufferException) {
+                    Log.e(TAG, "Failed to get proto.", exception)
+                }
+            }
+            PermissionHelper.checkAndRequestCameraPermissions(activity)
         }
-        PermissionHelper.checkAndRequestCameraPermissions(activity)
     }
 
     override fun onResume() {
@@ -274,25 +274,29 @@ class WorkoutPlayFragment :
             initializePlayer()
         }
 
-        application.run {
-            converter = ExternalTextureConverter(
-                eglManager!!.context,
-                applicationInfo.metaData.getInt(
-                    "converterNumBuffers",
-                    NUM_BUFFERS
+        if (workoutItem.ai) {
+            application.run {
+                converter = ExternalTextureConverter(
+                    eglManager!!.context,
+                    applicationInfo.metaData.getInt(
+                        "converterNumBuffers",
+                        NUM_BUFFERS
+                    )
                 )
-            )
-            converter!!.setFlipY(
-                applicationInfo.metaData.getBoolean(
-                    "flipFramesVertically",
-                    FLIP_FRAMES_VERTICALLY
+                converter!!.setFlipY(
+                    applicationInfo.metaData.getBoolean(
+                        "flipFramesVertically",
+                        FLIP_FRAMES_VERTICALLY
+                    )
                 )
-            )
-        }
+            }
 
-        converter!!.setConsumer(processor)
-        if (PermissionHelper.cameraPermissionsGranted(activity)) {
-            startCamera()
+            converter!!.setConsumer(processor)
+            if (PermissionHelper.cameraPermissionsGranted(activity)) {
+                startCamera()
+            }
+        } else {
+            startPlayer()
         }
     }
 
@@ -308,10 +312,12 @@ class WorkoutPlayFragment :
         if (Util.SDK_INT < 24) {
             releasePlayer()
         }
-        converter?.close()
+        if (workoutItem.ai) {
+            converter?.close()
 
-        // Hide preview display until we re-open the camera again.
-        previewDisplayView!!.visibility = View.GONE
+            // Hide preview display until we re-open the camera again.
+            previewDisplayView!!.visibility = View.GONE
+        }
     }
 
     override fun onStop() {
@@ -404,10 +410,11 @@ class WorkoutPlayFragment :
     }
 
     private fun initializePlayer() {
+        mediaUrl = workoutItem.video
         player = SimpleExoPlayer.Builder(application).build()
         binding.playerView.player = player
         val mediaItem = MediaItem.fromUri(mediaUrl)
-        player!!.apply {
+        player?.apply {
             playWhenReady = false
             setMediaItem(mediaItem)
             seekTo(currentWindow, playbackPosition)
@@ -423,6 +430,10 @@ class WorkoutPlayFragment :
                 super.onIsPlayingChanged(isPlaying)
                 if (isPlaying) {
                     // Active playback.
+                    if (isFirst) {
+                        viewModel.timerSet(player?.contentDuration ?: 0, workoutItem.aiStartTime)
+                        isFirst = false
+                    }
                     viewModel.countDownTimerStart()
                 } else {
                     // Not playing because playback is paused, ended, suppressed, or the player
@@ -478,22 +489,22 @@ class WorkoutPlayFragment :
                 } else
                     0
             WorkoutAnalysisTypeEnum.COUNTING -> viewModel.score.value ?: 0
+            WorkoutAnalysisTypeEnum.NONE -> 100
         }
     }
 
     private fun startPlayer() {
-        viewModel.timerSet(player!!.contentDuration, workoutItem.aiStartTime)
-        player!!.playWhenReady = true
+        player?.playWhenReady = true
         playWhenReady = true
     }
 
     private fun releasePlayer() {
-        if (player != null) {
-            player!!.playWhenReady = false
+        player?.run {
             playWhenReady = false
-            playbackPosition = player!!.currentPosition
-            currentWindow = player!!.currentWindowIndex
-            player!!.release()
+            playWhenReady = false
+            playbackPosition = currentPosition
+            currentWindow = currentWindowIndex
+            release()
             player = null
         }
     }

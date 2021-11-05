@@ -40,6 +40,7 @@ class WorkoutPlayViewModel(
         when (workoutAnalysisType) {
             WorkoutAnalysisTypeEnum.SCORING -> application.getString(R.string.score_format, it)
             WorkoutAnalysisTypeEnum.COUNTING -> application.getString(R.string.count_format, it)
+            WorkoutAnalysisTypeEnum.NONE -> ""
         }
     }
 
@@ -60,8 +61,10 @@ class WorkoutPlayViewModel(
     val aiGuideStart: LiveData<Boolean>
         get() = _aiGuideStart
 
-    val aiGuideVisible = Transformations.map(_aiGuideStart) {
-        if (it == null || it) {
+    val isAiWorkout = workoutAnalysisType != WorkoutAnalysisTypeEnum.NONE
+
+    val aiGuideVisible = Transformations.map(_aiGuideStart) { aiGuideStart ->
+        if (isAiWorkout && aiGuideStart) {
             View.VISIBLE
         } else
             View.INVISIBLE
@@ -82,15 +85,17 @@ class WorkoutPlayViewModel(
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                if (_aiGuideCountDown.value == 0L) {
-                    isAiGuide.onNext(true)
-                }
-                if (_aiGuideCountDown.value == -1000L) {
-                    isAiGuide.onNext(false)
-                    _aiGuideStart.postValue(true)
+                if (isAiWorkout) {
+                    if (_aiGuideCountDown.value == 0L) {
+                        isAiGuide.onNext(true)
+                    }
+                    if (_aiGuideCountDown.value == -1000L) {
+                        isAiGuide.onNext(false)
+                        _aiGuideStart.postValue(true)
+                    }
+                    _aiGuideCountDown.postValue(_aiGuideCountDown.value?.minus(1000))
                 }
                 _timerCountDown.postValue(_timerCountDown.value?.minus(1000))
-                _aiGuideCountDown.postValue(_aiGuideCountDown.value?.minus(1000))
             }
         }, 1000, 1000)
     }

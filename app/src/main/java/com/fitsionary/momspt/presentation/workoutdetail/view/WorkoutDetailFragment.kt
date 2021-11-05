@@ -63,7 +63,7 @@ class WorkoutDetailFragment
         viewModel.isAlreadyExistWorkout.observe(viewLifecycleOwner, {})
         binding.btnPlayWorkout.setOnClickListener {
             viewModel.isAlreadyExistWorkout.value?.let { isExist ->
-                if (isExist)
+                if (isExist || !workoutItem.ai)
                     startWorkoutPlay()
                 else
                     viewModel.downloadLandmarks()

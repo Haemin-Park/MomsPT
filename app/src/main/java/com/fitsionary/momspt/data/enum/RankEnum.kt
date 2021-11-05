@@ -25,6 +25,7 @@ enum class RankEnum(val rankName: String) {
                         else -> A_PLUS
                     }).name
                 }
+                else -> A_PLUS.name
             }
     }
 }

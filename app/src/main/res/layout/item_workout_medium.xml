@@ -59,11 +59,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <include
+                    android:id="@+id/layout_ai_badge_large"
                     layout="@layout/layout_ai_badge_large"
                     android:layout_width="@dimen/ai_badge_large_diameter"
                     android:layout_height="@dimen/ai_badge_large_diameter"
                     android:layout_marginEnd="@dimen/spacing_10dp"
                     android:layout_marginBottom="@dimen/spacing_10dp"
+                    android:visibility="@{MediumWorkoutItem.ai ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,7 +52,7 @@ class WorkoutResultFragment
         viewModel.isAlreadyExistWorkout.observe(viewLifecycleOwner, {})
         binding.layoutNextWorkout.setOnClickListener {
             viewModel.isAlreadyExistWorkout.value?.let { isExist ->
-                if (isExist)
+                if (isExist || !workoutItem.ai)
                     findNavController().navigate(
                         WorkoutResultFragmentDirections.actionWorkoutResultFragmentToWorkoutPlayFragment(
                             nextWorkout!!

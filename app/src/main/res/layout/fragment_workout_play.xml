@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.fitsionary.momspt.presentation.workoutplay.viewmodel.WorkoutPlayViewModel" />
@@ -41,6 +43,7 @@
             android:id="@+id/preview_display_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:visibility="@{vm.aiWorkout ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="4"
