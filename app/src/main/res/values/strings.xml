@@ -87,4 +87,5 @@
     <string name="current_body_shape">현재 체형</string>
     <string name="start">시작하기</string>
     <string name="guide_comment">이렇게 따라하세요!</string>
+    <string name="logout">로그아웃</string>
 </resources>
