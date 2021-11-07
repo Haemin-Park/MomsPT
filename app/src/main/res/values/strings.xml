@@ -88,4 +88,5 @@
     <string name="start">시작하기</string>
     <string name="guide_comment">이렇게 따라하세요!</string>
     <string name="logout">로그아웃</string>
+    <string name="sign_in_success">회원가입 성공</string>
 </resources>

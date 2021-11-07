@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.util.Util
 import io.reactivex.rxjava3.kotlin.addTo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RecordPreviewFragment :
@@ -84,12 +85,15 @@ class RecordPreviewFragment :
             it.getContentIfNotHandled()?.let { event ->
                 when (event.first) {
                     SIGN_UP_FINISH -> {
+                        showToast(getString(R.string.sign_in_success))
                         viewLifecycleOwner.lifecycleScope.launch {
                             MomsPTApplication.getInstance().getTokenDataStore().saveToken(
                                 CurrentUser.token
                             )
+                            launch(Dispatchers.Main) {
+                                viewModel.sendVideo(filePath)
+                            }
                         }
-                        showToast("회원가입 성공")
                     }
                     SHOW_ANALYSIS_RESULT -> {
                         showResult(direction, event.second as BodyAnalysisResultModel)
@@ -103,8 +107,11 @@ class RecordPreviewFragment :
         }
 
         binding.btnSend.setOnClickListener {
-            signUpRequest?.let { viewModel.signUp(it) }
-            viewModel.sendVideo(filePath)
+            if (signUpRequest == null) {
+                viewModel.sendVideo(filePath)
+            } else {
+                viewModel.signUp(signUpRequest)
+            }
         }
 
         viewModel.isLoading

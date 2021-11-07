@@ -38,10 +38,12 @@ class RecordPreviewViewModel(application: Application) : BaseAndroidViewModel(ap
             NetworkService.api.signUp(
                 signUpRequest
             ).subscribe({
-                Timber.i("회원가입 $it.message")
+                Timber.i("회원가입 $it")
                 if (it.success)
-                    _event.value = Event(Pair(SIGN_UP_FINISH, ""))
-            }, {})
+                    _event.postValue(Event(Pair(SIGN_UP_FINISH, "")))
+            }, {
+                Timber.e(it.message)
+            })
         )
     }
 
