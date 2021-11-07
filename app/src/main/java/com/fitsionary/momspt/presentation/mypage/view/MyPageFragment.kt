@@ -61,8 +61,10 @@ class MyPageFragment :
                     Timber.i("로그아웃 실패. SDK에서 토큰 삭제됨 $error")
                 } else {
                     Timber.i("로그아웃 성공. SDK에서 토큰 삭제됨")
-                    removeToken()
-                    findNavController().navigate(MyPageFragmentDirections.actionMainMypageToSplashFragment())
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        MomsPTApplication.getInstance().getTokenDataStore().removeToken()
+                        findNavController().navigate(MyPageFragmentDirections.actionMainMypageToSplashFragment())
+                    }
                 }
             }
         }
@@ -74,24 +76,20 @@ class MyPageFragment :
         viewModel.event.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { success ->
                 if (success) {
-                    removeToken()
-                    // 연결 끊기
-                    UserApiClient.instance.unlink { error ->
-                        if (error != null) {
-                            Timber.e("연결 끊기 실패 $error")
-                        } else {
-                            Timber.i("연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        MomsPTApplication.getInstance().getTokenDataStore().removeToken()
+                        // 연결 끊기
+                        UserApiClient.instance.unlink { error ->
+                            if (error != null) {
+                                Timber.e("연결 끊기 실패 $error")
+                            } else {
+                                Timber.i("연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                            }
                         }
+                        findNavController().navigate(MyPageFragmentDirections.actionMainMypageToSplashFragment())
                     }
-                    findNavController().navigate(MyPageFragmentDirections.actionMainMypageToSplashFragment())
                 }
             }
         })
-    }
-
-    private fun removeToken() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            MomsPTApplication.getInstance().getTokenDataStore().removeToken()
-        }
     }
 }
