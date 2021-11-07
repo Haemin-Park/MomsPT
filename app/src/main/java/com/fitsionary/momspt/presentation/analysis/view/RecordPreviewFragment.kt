@@ -90,9 +90,7 @@ class RecordPreviewFragment :
                             MomsPTApplication.getInstance().getTokenDataStore().saveToken(
                                 CurrentUser.token
                             )
-                            launch(Dispatchers.Main) {
-                                viewModel.sendVideo(filePath)
-                            }
+                            viewModel.sendVideo(filePath)
                         }
                     }
                     SHOW_ANALYSIS_RESULT -> {
